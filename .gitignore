@@ -1,0 +1,8 @@
+bin/**/* 
+bin/moip-android-module.apk
+bin/classes.dex
+bin/*
+bin/resources.ap_
+*.class
+.classpath
+gen/*
