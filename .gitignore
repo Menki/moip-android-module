@@ -5,4 +5,4 @@ bin/*
 bin/resources.ap_
 *.class
 .classpath
-gen/*
+gen/com/*
