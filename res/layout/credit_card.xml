@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" 
+     android:scrollbars="vertical" 
+     android:layout_height="fill_parent" 
+     android:layout_width="fill_parent">
+     
+<TableLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:stretchColumns="1">
+
+    <TextView
+        android:text="@string/credit_card"
+        android:textSize="18px"
+        android:paddingBottom="6dip" />
+        
+	<View
+        android:layout_height="4dip"
+        android:background="#FF909090" 
+        android:layout_marginBottom="6dip"/>        
+
+	<TableRow>
+	    <TextView
+	        android:layout_column="1"
+	        android:text="@string/brand"/>	        
+	    <Spinner 
+	        android:id="@+id/brand"
+	        android:prompt="@string/choose_brand"
+	        android:entries="@array/brands_array" />	        
+	</TableRow>
+
+	<TableRow>
+	    <TextView
+	        android:layout_column="1"
+	        android:text="@string/credit_card_number" />
+	</TableRow>
+	<TableRow>	 	        
+	    <EditText
+	    	android:id="@+id/credit_card_number"
+	    	android:layout_column="1"
+	        android:maxLength="16"
+	        android:inputType="number" />
+	</TableRow>
+	
+	<TableRow>
+	    <TextView
+	        android:layout_column="1"
+	        android:text="@string/expiration_date" />
+	    <EditText
+	    	android:id="@+id/expiration_date"
+	    	android:layout_column="2"
+	        android:inputType="date" />
+	</TableRow>
+	
+	<TableRow>
+	    <TextView
+	        android:layout_column="1"
+	        android:text="@string/secure_code"
+	        android:lines="2"/>
+	    <EditText
+	    	android:id="@+id/secure_code"
+	    	android:layout_column="2"
+	        android:inputType="date" />
+	</TableRow>
+
+    <TextView
+        android:text="@string/credit_card_owner"
+        android:textSize="18px"
+        android:layout_marginTop="18dip"
+        android:layout_marginBottom="6dip" />
+        
+	<View
+        android:layout_height="4dip"
+        android:background="#FF909090" 
+        android:layout_marginBottom="6dip"/>    	
+	<TableRow>
+	    <TextView
+	        android:layout_column="1"
+	        android:text="@string/owner_name"/>
+	    <EditText
+	    	android:id="@+id/owner_name"
+	    	android:layout_column="2"
+	        android:inputType="textCapSentences" />
+	</TableRow>
+	
+	<TableRow>
+		<Spinner 
+	        android:id="@+id/identification_type"
+	        android:prompt="@string/choose_identification_type"
+	        android:layout_column="1"
+	        android:entries="@array/identification_types_array" />	
+	    <EditText
+	    	android:id="@+id/identification_number"
+	    	android:layout_column="2"
+	        android:inputType="number"  />
+	</TableRow>
+	
+	<TableRow>
+	    <TextView
+	        android:layout_column="1"
+	        android:text="@string/owner_phone_number" />
+	    <EditText
+	    	android:id="@+id/credit_card_phone_number"
+	    	android:layout_column="2"
+	        android:inputType="number" />
+	</TableRow>
+	
+	<TableRow>
+	    <TextView
+	        android:layout_column="1"
+	        android:text="@string/born_date"
+	        android:lines="2" />
+	    <EditText
+	    	android:id="@+id/born_date"
+	    	android:layout_column="2"
+	        android:inputType="date" />
+	</TableRow>
+	
+	<TableRow>
+	    <TextView
+	        android:layout_column="1"
+	        android:text="@string/installments"  />
+	    <EditText
+	    	android:id="@+id/installments"
+	    	android:layout_column="2"
+	        android:inputType="number" />
+	</TableRow>
+	
+	<TableRow>
+	    <TextView
+	        android:layout_column="1"
+	        android:text="@string/payment_type"  />
+	    <RadioGroup	android:layout_column="2" >
+	    	<RadioButton
+	    		android:checked="false"
+	    		android:text="@string/cash_payment" />
+			<RadioButton
+	    		android:checked="false"
+	    		android:text="@string/installment_payment" />	    		
+	    </RadioGroup>
+	</TableRow>
+	
+	<Button
+		android:layout_gravity="center"
+		android:layout_weight="1"
+		android:text="@string/next_step"
+		android:id="@+id/credit_card_next_step" />
+</TableLayout>
+</ScrollView>
