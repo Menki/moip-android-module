@@ -5,6 +5,9 @@
 
 package com.menki.moip;
 
+import com.menki.moip.Constants.PaymentType;
+import com.menki.moip.Constants.RemoteServer;
+
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
@@ -16,12 +19,18 @@ import android.widget.Button;
 public class PaymentButton extends Button implements OnClickListener
 {
 	private Context hostActivity = null;
+	private PaymentType type = PaymentType.NONE;
+	private RemoteServer server = RemoteServer.NONE;
+	private String key;
 	
-	public PaymentButton(Context context, int id) 
+	public PaymentButton(Context context, int id, String token, PaymentType t, RemoteServer s) 
 	{
 		super(context);
 		
 		hostActivity = context;
+		type = t;
+		server = s;
+		key = token;
 		
 		Button button = (Button) ((Activity)context).findViewById(id);
 		

@@ -13,6 +13,8 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import com.menki.moip.*;
+import com.menki.moip.Constants.PaymentType;
+import com.menki.moip.Constants.RemoteServer;
 
 public class MoIPTestApp extends Activity 
 {
@@ -23,9 +25,13 @@ public class MoIPTestApp extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.moiptestapp);
         
+        //TODO: verificar o que é necessário para autenticar no server
+        String token = "XXXXXXXXXXXXXXXXXX";
+        
         //Creating object from PaymentButton class
         //PaymentButton object will be bound to the resource id referenced
-        PaymentButton payButton = new PaymentButton(this, R.id.PaymentButton);
+        PaymentButton payButton = new PaymentButton(this, R.id.PaymentButton, token,
+        										PaymentType.PAGAMENTO_DIRETO, RemoteServer.TEST);
         
     }
 }
