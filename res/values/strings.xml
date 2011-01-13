@@ -26,9 +26,7 @@
 		<item>Master Card</item>
 		<item>Visa</item>
 	</string-array>
-	
-	
-	    
+
      <!-- Strings for payer screen -->
     <string name="payer">Pagador</string>
     <string name="full_name">Nome completo:</string>
@@ -78,9 +76,9 @@
     
     <!-- Strings and arrays shared between payer screen and credi card screen-->
     <string name="choose_identification_type">Escolha um tipo de documento:</string>
-    <string-array name="identification_types_array">
-		<item>RG</item>
-		<item>CPF</item>
-	</string-array>
-            
+    <string name="rg">RG</string>
+    <string name="cpf">CPF</string>
+    <string name="identification_type">Tipo de identificação:</string>
+    <string name="identification_number">Número:</string>
+
 </resources>
