@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Payment implements Serializable{
+public class PaymentData implements Serializable{
 	/**
 	 * Default serial version ID
 	 */

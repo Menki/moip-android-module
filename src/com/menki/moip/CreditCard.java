@@ -30,7 +30,7 @@ public class CreditCard extends Activity implements OnClickListener {
 	private EditText installments;
 	private RadioGroup paymentType;
 	private Button nextStep;
-	private Payment payment;
+	private PaymentData payment;
 	
     /** Called when the activity is first created. */
     @Override
@@ -77,7 +77,7 @@ public class CreditCard extends Activity implements OnClickListener {
 		final SimpleDateFormat dayMonthAndYear = new SimpleDateFormat("dd/MM/yyyy");
 		RadioButton checkedItem;
 		
-		payment = new Payment();
+		payment = new PaymentData();
 		payment.setBrand(brand.getSelectedItem().toString());
 		payment.setCreditCardNumber(creditCardNumber.getEditableText().toString());
 		
