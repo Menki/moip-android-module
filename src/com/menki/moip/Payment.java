@@ -43,13 +43,15 @@ public class Payment implements Serializable{
 	public Boolean save() {
 		if (!isChangesValid())	return false;
 		
+		//TODO: Implement this method, that must save every changed attribute in preferences.
+		
 		return true;
 	}
 	
 	public Boolean isChangesValid() {
 		if(false) errors.add("");
 		
-		//TODO: Implementar metodo de validacao que percorre todas as mudanças e valida seus atributos
+		//TODO: Implement this method, that must check if for any of the changed attributes the new value is valid.
 		
 		return errors.isEmpty();
 	}
