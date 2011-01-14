@@ -1,5 +1,6 @@
 package com.menki.moip;
 
+//import java.io.Serializable;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -71,7 +72,7 @@ public class Payment implements Serializable{
 	public Payment() {
 		super();
 	}
-	
+		
 	public Boolean save() {
 		if (!isChangesValid())	return false;
 		
