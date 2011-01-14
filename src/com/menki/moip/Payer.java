@@ -105,6 +105,6 @@ public class Payer extends Activity implements OnClickListener {
 		payment.setState(state.getSelectedItem().toString());
 		
 		payment.setZipCode(zipCode.getEditableText().toString());
-		payment.setFixPhone(fixedPhone.getEditableText().toString());
+		payment.setFixedPhone(fixedPhone.getEditableText().toString());
 	}
 }

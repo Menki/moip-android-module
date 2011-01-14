@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.Iterator;
 
 import android.content.Context;
+import android.content.SharedPreferences.Editor;
+import android.preference.PreferenceManager;
 
 public class Payment implements Serializable{
 	/**
@@ -63,9 +65,9 @@ public class Payment implements Serializable{
 	private String city;
 	private String state;
 	private String zipCode;
-	private String fixPhone;
-	private ArrayList<String> changes = new ArrayList<String>(); ;
-	private ArrayList<String> errors = new ArrayList<String>();;
+	private String fixedPhone;
+	private ArrayList<String> changes = new ArrayList<String>();
+	private ArrayList<String> errors = new ArrayList<String>();
 	private Context context;
 	
 	public Payment(Context ctx) {
@@ -74,18 +76,85 @@ public class Payment implements Serializable{
 	}
 	
 	public Boolean save() {
-		if (!isChangesValid())	return false;
+		if (!isChangesValid()) return false;
 		
-//		Iterator<String> itr = changes.iterator();
-//		while(itr.hasNext()){
-//			
-//		}
+		Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+
+		Iterator<String> itr = changes.iterator();
+		while(itr.hasNext()){
+			String current = itr.next();
+			
+			if (current.equals(ATTR_EXP_DATE) || current.equals(ATTR_BORN_DATE)){ // current is a date attribute
+				Date date = (Date) getValueOf(current);
+				editor.putString(current, date.toString());
+			} 
+			else if (current.equals(ATTR_INSTALLMENTS) || current.equals(ATTR_ST_NUMBER)){ // current is a int attribute
+				editor.putInt(current, (Integer) getValueOf(current));
+			}
+			else { // current is a string attribute
+				editor.putString(current, (String)getValueOf(current));
+			}
+		}
 		
 		changes.clear();
 		errors.clear();
+		
 		return true;
 	}
 	
+	private Object getValueOf(String attr) {
+		if (attr.equals(ATTR_BRAND)) 
+			return getBrand();
+		else if (attr.equals(ATTR_CREDIT_CARD)) 
+			return getCreditCardNumber();
+		else if (attr.equals(ATTR_EXP_DATE))
+			return getExpirationDate();
+		else if (attr.equals(ATTR_SECURE_CODE)) 
+			return getSecureCode();
+		else if (attr.equals(ATTR_OWNER_NAME)) 
+			return getOwnerName();
+		else if (attr.equals(ATTR_OWNER_ID_TYPE)) 
+			return getOwnerIdentificationType();
+		else if (attr.equals(ATTR_OWNER_ID_NUM)) 
+			return getOwnerIdentificationNumber();
+		else if (attr.equals(ATTR_OWNER_PHONE_NUM)) 
+			return getOwnerPhoneNumber();
+		else if (attr.equals(ATTR_BORN_DATE)) 
+			return getBornDate();
+		else if (attr.equals(ATTR_INSTALLMENTS)) 
+			return getInstallments();
+		else if (attr.equals(ATTR_PAYMENT_TYPE)) 
+			return getPayerIdentificationType();
+		else if (attr.equals(ATTR_FULL_NAME)) 
+			return getFullName();
+		else if (attr.equals(ATTR_EMAIL)) 
+			return getEmail();
+		else if (attr.equals(ATTR_CELL_PHONE)) 
+			return getCellPhone();
+		else if (attr.equals(ATTR_PAYER_ID_TYPE)) 
+			return getPayerIdentificationType();
+		else if (attr.equals(ATTR_PAYER_ID_NUM)) 
+			return getPayerIdentificationNumber();
+		else if (attr.equals(ATTR_ST_ADDRESS)) 
+			return getStreetAddress();
+		else if (attr.equals(ATTR_ST_NUMBER)) 
+			return getStreetNumber();
+		else if (attr.equals(ATTR_ST_COMPLEMENT)) 
+			return getStreetComplement();
+		else if (attr.equals(ATTR_NEIGHBORHOOD)) 
+			return getNeighborhood();
+		else if (attr.equals(ATTR_CITY)) 
+			return getCity();
+		else if (attr.equals(ATTR_STATE)) 
+			return getState();
+		else if (attr.equals(ATTR_ZIP_CODE)) 
+			return getZipCode();
+		else if (attr.equals(ATTR_FIXED_PHONE)) 
+			return getFixedPhone();
+		else 
+			return null;
+	}
+
 	public Boolean isChangesValid() {
 		if(false) errors.add("");
 		
@@ -304,13 +373,13 @@ public class Payment implements Serializable{
 			this.zipCode = zipCode;
 		}
 	}
-	public String getFixPhone() {
-		return fixPhone;
+	public String getFixedPhone() {
+		return fixedPhone;
 	}
-	public void setFixPhone(String fixPhone) {
-		if (!fixPhone.equals(getFixPhone())) {
+	public void setFixedPhone(String fixedPhone) {
+		if (!fixedPhone.equals(getFixedPhone())) {
 			changes.add(ATTR_FIXED_PHONE);
-			this.fixPhone = fixPhone;
+			this.fixedPhone = fixedPhone;
 		}
 	}
 }
