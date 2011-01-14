@@ -3,12 +3,39 @@ package com.menki.moip;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+
+import android.content.Context;
 
 public class Payment implements Serializable{
 	/**
-	 * Default serial version ID
+	 * Constants
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L; // Default serial version ID
+	private static final String ATTR_BRAND = "brand";
+	private static final String ATTR_CREDIT_CARD = "credit_card";
+	private static final String ATTR_EXP_DATE = "expiration_date";
+	private static final String ATTR_SECURE_CODE = "secure_code";
+	private static final String ATTR_OWNER_NAME = "owner_name";
+	private static final String ATTR_OWNER_ID_TYPE = "owner_identification_type";
+	private static final String ATTR_OWNER_ID_NUM = "owner_identification_number";
+	private static final String ATTR_OWNER_PHONE_NUM = "owner_phone_number";
+	private static final String ATTR_BORN_DATE = "born_date";
+	private static final String ATTR_INSTALLMENTS = "installments";
+	private static final String ATTR_PAYMENT_TYPE = "payment_type";
+	private static final String ATTR_FULL_NAME = "full_name";
+	private static final String ATTR_EMAIL = "email";
+	private static final String ATTR_CELL_PHONE = "cell_phone";
+	private static final String ATTR_PAYER_ID_TYPE = "payer_identification_type";
+	private static final String ATTR_PAYER_ID_NUM = "payer_identification_number";
+	private static final String ATTR_ST_ADDRESS = "street_address";
+	private static final String ATTR_ST_NUMBER = "street_number";
+	private static final String ATTR_ST_COMPLEMENT = "street_complement";
+	private static final String ATTR_NEIGHBORHOOD = "neighborhood";
+	private static final String ATTR_CITY = "city";
+	private static final String ATTR_STATE = "state";
+	private static final String ATTR_ZIP_CODE = "zip_code";
+	private static final String ATTR_FIXED_PHONE = "fixed_phone";
 	
 	/**
 	 * Attributes
@@ -37,14 +64,26 @@ public class Payment implements Serializable{
 	private String state;
 	private String zipCode;
 	private String fixPhone;
-	private ArrayList<String> changes;
-	private ArrayList<String> errors;
+	private ArrayList<String> changes = new ArrayList<String>(); ;
+	private ArrayList<String> errors = new ArrayList<String>();;
+	private Context hostActivity = null;
+	
+	public Payment() {
+		super();
+	}
 	
 	public Boolean save() {
 		if (!isChangesValid())	return false;
 		
 		//TODO: Implement this method, that must save every changed attribute in preferences.
+//		Iterator<String> itr = changes.iterator();
+//		while(itr.hasNext()){
+//			
+//		}
 		
+		
+		changes.clear();
+		errors.clear();
 		return true;
 	}
 	
@@ -64,7 +103,7 @@ public class Payment implements Serializable{
 	}
 	public void setBrand(String brand) {
 		if (!brand.equals(getBrand())) {
-			changes.add("brand");
+			changes.add(ATTR_BRAND);
 			this.brand = brand;
 		}
 	}
@@ -73,7 +112,7 @@ public class Payment implements Serializable{
 	}
 	public void setCreditCardNumber(String creditCardNumber) {
 		if (!creditCardNumber.equals(getCreditCardNumber())) {
-			changes.add("credit_card");
+			changes.add(ATTR_CREDIT_CARD);
 			this.creditCardNumber = creditCardNumber;
 		}
 	}
@@ -82,7 +121,7 @@ public class Payment implements Serializable{
 	}
 	public void setExpirationDate(Date expirationDate) {
 		if (!expirationDate.equals(getExpirationDate())) {
-			changes.add("expiration_date");
+			changes.add(ATTR_EXP_DATE);
 			this.expirationDate = expirationDate;
 		}
 	}
@@ -91,7 +130,7 @@ public class Payment implements Serializable{
 	}
 	public void setSecureCode(String secureCode) {
 		if (!secureCode.equals(getSecureCode())) {
-			changes.add("secure_code");
+			changes.add(ATTR_SECURE_CODE);
 			this.secureCode = secureCode;
 		}
 	}
@@ -100,7 +139,7 @@ public class Payment implements Serializable{
 	}
 	public void setOwnerName(String ownerName) {
 		if (!ownerName.equals(getOwnerName())) {
-			changes.add("owner_name");
+			changes.add(ATTR_OWNER_NAME);
 			this.ownerName = ownerName;
 		}
 	}
@@ -109,7 +148,7 @@ public class Payment implements Serializable{
 	}
 	public void setOwnerIdentificationType(String ownerIdentificationType) {
 		if (!ownerIdentificationType.equals(getOwnerIdentificationType())) {
-			changes.add("identification_type");
+			changes.add(ATTR_OWNER_ID_TYPE);
 			this.ownerIdentificationType = ownerIdentificationType;
 		}
 	}
@@ -118,7 +157,7 @@ public class Payment implements Serializable{
 	}
 	public void setOwnerIdentificationNumber(String ownerIdentificationNumber) {
 		if (!ownerIdentificationNumber.equals(getOwnerIdentificationNumber())) {
-			changes.add("owner_identification_number");
+			changes.add(ATTR_OWNER_ID_NUM);
 			this.ownerIdentificationNumber = ownerIdentificationNumber;
 		}
 	}
@@ -127,7 +166,7 @@ public class Payment implements Serializable{
 	}
 	public void setOwnerPhoneNumber(String ownerPhoneNumber) {
 		if (!ownerPhoneNumber.equals(getOwnerPhoneNumber())) {
-			changes.add("owner_phone_number");
+			changes.add(ATTR_OWNER_PHONE_NUM);
 			this.ownerPhoneNumber = ownerPhoneNumber;
 		}
 	}
@@ -136,7 +175,7 @@ public class Payment implements Serializable{
 	}
 	public void setBornDate(Date bornDate) {
 		if (!bornDate.equals(getBornDate())) {
-			changes.add("born_date");
+			changes.add(ATTR_BORN_DATE);
 			this.bornDate = bornDate;
 		}
 	}
@@ -145,7 +184,7 @@ public class Payment implements Serializable{
 	}
 	public void setInstallments(int installments) {
 		if (installments != getInstallments()) {
-			changes.add("installments");
+			changes.add(ATTR_INSTALLMENTS);
 			this.installments = installments;
 		}
 	}
@@ -154,7 +193,7 @@ public class Payment implements Serializable{
 	}
 	public void setPaymentType(String paymentType) {
 		if (!paymentType.equals(getPaymentType())) {
-			changes.add("payment_type");
+			changes.add(ATTR_PAYMENT_TYPE);
 			this.paymentType = paymentType;
 		}
 	}
@@ -163,7 +202,7 @@ public class Payment implements Serializable{
 	}
 	public void setFullName(String fullName) {
 		if (!fullName.equals(getFullName())) {
-			changes.add("full_name");
+			changes.add(ATTR_FULL_NAME);
 			this.fullName = fullName;
 		}
 	}
@@ -172,7 +211,7 @@ public class Payment implements Serializable{
 	}
 	public void setEmail(String email) {
 		if (!email.equals(getEmail())) {
-			changes.add("email");
+			changes.add(ATTR_EMAIL);
 			this.email = email;
 		}
 	}
@@ -181,7 +220,7 @@ public class Payment implements Serializable{
 	}
 	public void setCellPhone(String cellPhone) {
 		if (!cellPhone.equals(getCellPhone())) {
-			changes.add("cell_phone");
+			changes.add(ATTR_CELL_PHONE);
 			this.cellPhone = cellPhone;
 		}
 	}
@@ -190,7 +229,7 @@ public class Payment implements Serializable{
 	}
 	public void setPayerIdentificationType(String payerIdentificationType) {
 		if (!payerIdentificationType.equals(getPayerIdentificationType())) {
-			changes.add("identification_type");
+			changes.add(ATTR_PAYER_ID_TYPE);
 			this.payerIdentificationType = payerIdentificationType;
 		}
 	}
@@ -199,7 +238,7 @@ public class Payment implements Serializable{
 	}
 	public void setPayerIdentificationNumber(String payerIdentificationNumber) {
 		if (!payerIdentificationNumber.equals(getPayerIdentificationNumber())) {
-			changes.add("payer_identification_number");
+			changes.add(ATTR_PAYER_ID_NUM);
 			this.payerIdentificationNumber = payerIdentificationNumber;
 		}
 	}
@@ -208,7 +247,7 @@ public class Payment implements Serializable{
 	}
 	public void setStreetAddress(String streetAddress) {
 		if (!streetAddress.equals(getStreetAddress())) {
-			changes.add("street_address");
+			changes.add(ATTR_ST_ADDRESS);
 			this.streetAddress = streetAddress;
 		}
 	}
@@ -217,7 +256,7 @@ public class Payment implements Serializable{
 	}
 	public void setStreetNumber(int streetNumber) {
 		if (streetNumber != getStreetNumber()) {
-			changes.add("street_number");
+			changes.add(ATTR_ST_NUMBER);
 			this.streetNumber = streetNumber;
 		}
 	}
@@ -226,7 +265,7 @@ public class Payment implements Serializable{
 	}
 	public void setStreetComplement(String streetComplement) {
 		if (!streetComplement.equals(getStreetComplement())) {
-			changes.add("street_complement");
+			changes.add(ATTR_ST_COMPLEMENT);
 			this.streetComplement = streetComplement;
 		}
 	}
@@ -235,7 +274,7 @@ public class Payment implements Serializable{
 	}
 	public void setNeighborhood(String neighborhood) {
 		if (!neighborhood.equals(getNeighborhood())) {
-			changes.add("neighborhood");
+			changes.add(ATTR_NEIGHBORHOOD);
 			this.neighborhood = neighborhood;
 		}
 	}
@@ -244,7 +283,7 @@ public class Payment implements Serializable{
 	}
 	public void setCity(String city) {
 		if (!city.equals(getCity())) {
-			changes.add("city");
+			changes.add(ATTR_CITY);
 			this.city = city;
 		}
 	}
@@ -253,7 +292,7 @@ public class Payment implements Serializable{
 	}
 	public void setState(String state) {
 		if (!state.equals(getState())) {
-			changes.add("state");
+			changes.add(ATTR_STATE);
 			this.state = state;
 		}
 	}
@@ -262,7 +301,7 @@ public class Payment implements Serializable{
 	}
 	public void setZipCode(String zipCode) {
 		if (!zipCode.equals(getZipCode())) {
-			changes.add("zip_code");
+			changes.add(ATTR_ZIP_CODE);
 			this.zipCode = zipCode;
 		}
 	}
@@ -271,7 +310,7 @@ public class Payment implements Serializable{
 	}
 	public void setFixPhone(String fixPhone) {
 		if (!fixPhone.equals(getFixPhone())) {
-			changes.add("fix_phone");
+			changes.add(ATTR_FIXED_PHONE);
 			this.fixPhone = fixPhone;
 		}
 	}
