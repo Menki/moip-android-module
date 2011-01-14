@@ -37,6 +37,8 @@ public class CreditCard extends Activity implements OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.credit_card);
+        
+        payment = new Payment();
         setViews();
         setListeners();
     }
@@ -45,14 +47,14 @@ public class CreditCard extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		switch(v.getId()){
 		case(R.id.credit_card_next_step):
+			// Set payment object attributes and persist it
 			setPayment();
+			payment.save();
+
+			// Go to Payer screen passing to its activity the payment object
 			Intent intent = new Intent(this.getApplicationContext( ), Payer.class);
-			Bundle b =getIntent( ).getExtras( );
-			intent.putExtra("paymentType", b.getInt("paymentType"));
-			intent.putExtra("server", b.getInt("server"));
-			intent.putExtra("key", b.getString("key"));
-			intent.putExtra("token", b.getString("token"));
-			this.startActivity(intent);
+			intent.putExtra("payment", payment);
+			startActivity(intent);
 			break;
 		}
 	}
@@ -82,7 +84,6 @@ public class CreditCard extends Activity implements OnClickListener {
 		final SimpleDateFormat dayMonthAndYear = new SimpleDateFormat("dd/MM/yyyy");
 		RadioButton checkedItem;
 		
-		payment = new Payment();
 		payment.setBrand(brand.getSelectedItem().toString());
 		payment.setCreditCardNumber(creditCardNumber.getEditableText().toString());
 		
@@ -107,9 +108,12 @@ public class CreditCard extends Activity implements OnClickListener {
 			Log.e(TAG, "Error while parsing date from field expiration date.");
 		}
 		
-		int n = Integer.parseInt(installments.getEditableText().toString());
-		payment.setInstallments(n);
-
+		String installmentsStr = installments.getEditableText().toString().trim();
+		if (installmentsStr.length() != 0) {
+			int n = Integer.parseInt(installmentsStr);
+			payment.setInstallments(n);
+		}
+		
 		checkedItem = (RadioButton) findViewById(paymentType.getCheckedRadioButtonId());
 		payment.setOwnerIdentificationType(checkedItem.getText().toString());		
 	}
