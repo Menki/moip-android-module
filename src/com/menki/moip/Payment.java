@@ -11,7 +11,7 @@ public class Payment implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	/**
-	 * Attibutes
+	 * Attributes
 	 */
 	private String brand;
 	private String creditCardNumber;
@@ -118,7 +118,7 @@ public class Payment implements Serializable{
 	}
 	public void setOwnerIdentificationNumber(String ownerIdentificationNumber) {
 		if (!ownerIdentificationNumber.equals(getOwnerIdentificationNumber())) {
-			changes.add("owner_identification_numbers");
+			changes.add("owner_identification_number");
 			this.ownerIdentificationNumber = ownerIdentificationNumber;
 		}
 	}
@@ -225,8 +225,8 @@ public class Payment implements Serializable{
 		return streetComplement;
 	}
 	public void setStreetComplement(String streetComplement) {
-		if (!streetAddress.equals(getStreetAddress())) {
-			changes.add("street_address");
+		if (!streetComplement.equals(getStreetComplement())) {
+			changes.add("street_complement");
 			this.streetComplement = streetComplement;
 		}
 	}
