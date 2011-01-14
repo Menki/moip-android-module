@@ -66,21 +66,20 @@ public class Payment implements Serializable{
 	private String fixPhone;
 	private ArrayList<String> changes = new ArrayList<String>(); ;
 	private ArrayList<String> errors = new ArrayList<String>();;
-	private Context hostActivity = null;
+	private Context context;
 	
-	public Payment() {
+	public Payment(Context ctx) {
 		super();
+		context = ctx;
 	}
 	
 	public Boolean save() {
 		if (!isChangesValid())	return false;
 		
-		//TODO: Implement this method, that must save every changed attribute in preferences.
 //		Iterator<String> itr = changes.iterator();
 //		while(itr.hasNext()){
 //			
 //		}
-		
 		
 		changes.clear();
 		errors.clear();

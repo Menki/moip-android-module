@@ -38,7 +38,7 @@ public class CreditCard extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.credit_card);
         
-        payment = new Payment();
+        payment = new Payment(this);
         setViews();
         setListeners();
     }
