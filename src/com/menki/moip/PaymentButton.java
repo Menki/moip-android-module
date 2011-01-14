@@ -8,12 +8,15 @@
 
 package com.menki.moip;
 
+import java.io.Serializable;
+
 import com.menki.moip.Constants.PaymentType;
 import com.menki.moip.Constants.RemoteServer;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
@@ -34,7 +37,7 @@ public class PaymentButton extends Button implements OnClickListener
 									PaymentType pt, RemoteServer s, Handler h) 
 	{
 		super(context);
-		
+			
 		hostActivity = context;
 		type = pt;
 		server = s;
@@ -51,7 +54,7 @@ public class PaymentButton extends Button implements OnClickListener
 		}
 		catch( NullPointerException e)
 		{
-			Log.i("MENKI [PaymentButton] ", e.getMessage());
+			Log.e("MENKI [PaymentButton] ", e.getMessage());
 			e.printStackTrace( );
 		}		
 	}
@@ -62,7 +65,21 @@ public class PaymentButton extends Button implements OnClickListener
 	{
 		Log.i("MENKI [PaymentButton]", "onClick( )");
 		
-		Intent intent = new Intent(hostActivity.getApplicationContext(), CreditCard.class);
-		hostActivity.startActivity(intent);		
+		//calling Payment form depending on PaymentType
+		switch(this.type)
+		{
+			case PAGAMENTO_DIRETO:
+				Intent intent = new Intent(hostActivity.getApplicationContext(), CreditCard.class);
+				intent.putExtra("paymentType", this.type);
+				intent.putExtra("server", this.server);
+				intent.putExtra("key", this.key);
+				intent.putExtra("token", this.token);
+				//TODO: how to pass handler? I think we'll need a singleton class :-|
+				hostActivity.startActivity(intent);
+				break;
+			default:
+				Log.w("MENKI [PaymentButton] ", " onClick( ): Undefined payment type");
+				break;
+		}
 	}
 }
