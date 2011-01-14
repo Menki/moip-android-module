@@ -11,6 +11,8 @@ package com.menki.moip.test;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 
 import com.menki.moip.*;
 import com.menki.moip.Constants.PaymentType;
@@ -25,12 +27,27 @@ public class MoIPTestApp extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.moiptestapp);
         
-        //TODO: verificar o que é necessário para autenticar no server
+        //key and token for authentication on MoIP server
         String token = "XXXXXXXXXXXXXXXXXX";
+        String key = "XXXXXXXXXXXXXXXXXX";
+        
+        //Handler for handling payment return callback (handleMessage)
+        Handler handler = new Handler( )
+        {
+        	@Override
+			public void handleMessage(Message msg) 
+        	{
+				//TODO: handles message after payment transaction
+			}
+        	
+        };
+        
         
         //Creating object from PaymentButton class
         //PaymentButton object will be bound to the resource id referenced
-        PaymentButton payButton = new PaymentButton(this, R.id.PaymentButton, token,
-        										PaymentType.PAGAMENTO_DIRETO, RemoteServer.TEST);
+        //unused parameters must be set to null
+        PaymentButton payButton = new PaymentButton(this, R.id.PaymentButton, token, key,
+        									PaymentType.PAGAMENTO_DIRETO, RemoteServer.TEST, handler);
+        
     }
 }

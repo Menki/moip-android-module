@@ -1,4 +1,7 @@
 /**
+ * Menki Mobile Solutions
+ * http://www.menkimobile.com.br
+ * 
  * @author Gustavo Scaramelli
  *
  */
@@ -14,7 +17,6 @@ public interface Constants
 	public static enum RemoteServer { NONE, TEST, PRODUCTION}; 
 	
 	//URLs de conexão
-	//TODO: verificar se é pertinente definir alguma URL aqui
 	public static final String TEST_SERVER = "https://desenvolvedor.moip.com.br/sandbox";
 	public static final String PRODUCTION_SERVER = "https://www.moip.com.br";
 }

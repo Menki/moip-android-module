@@ -1,4 +1,7 @@
 /**
+ * Menki Mobile Solutions
+ * http://www.menkimobile.com.br
+ * 
  * @author Gustavo Scaramelli
  *
  */
@@ -11,6 +14,7 @@ import com.menki.moip.Constants.RemoteServer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,18 +26,23 @@ public class PaymentButton extends Button implements OnClickListener
 	private Context hostActivity = null;
 	private PaymentType type = PaymentType.NONE;
 	private RemoteServer server = RemoteServer.NONE;
-	private String key;
+	private String key, token;
+	private Button button = null;
+	private Handler handler = null;
 	
-	public PaymentButton(Context context, int id, String token, PaymentType t, RemoteServer s) 
+	public PaymentButton(Context context, int id, String t, String k, 
+									PaymentType pt, RemoteServer s, Handler h) 
 	{
 		super(context);
 		
 		hostActivity = context;
-		type = t;
+		type = pt;
 		server = s;
-		key = token;
+		key = k;
+		token = t;
+		handler = h;
 		
-		Button button = (Button) ((Activity)context).findViewById(id);
+		button = (Button) ((Activity)context).findViewById(id);
 		
 		//testing for a valid button
 		try
@@ -44,27 +53,14 @@ public class PaymentButton extends Button implements OnClickListener
 		{
 			Log.i("MENKI [PaymentButton] ", e.getMessage());
 			e.printStackTrace( );
-		}
-		
-		
+		}		
 	}
 
-//	public PaymentButton(Context context, AttributeSet attrs) 
-//	{
-//		super(context, attrs);
-//		// TODO Auto-generated constructor stub
-//	}
-//	
-//	public PaymentButton(Context context, AttributeSet attrs, int defStyle) 
-//	{
-//		super(context, attrs, defStyle);
-//		// TODO Auto-generated constructor stub
-//	}
 
 	@Override
 	public void onClick(View v)
 	{
-		System.out.println("MENKI: PaymentoButton - onClick( )");
+		Log.i("MENKI [PaymentButton]", "onClick( )");
 		
 		Intent intent = new Intent(hostActivity.getApplicationContext(), CreditCard.class);
 		hostActivity.startActivity(intent);		
