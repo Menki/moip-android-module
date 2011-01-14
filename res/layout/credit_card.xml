@@ -125,7 +125,6 @@
 
 	<TextView
         android:text="@string/born_date"
-        android:lines="2" 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
     <EditText
