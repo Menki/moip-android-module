@@ -81,4 +81,6 @@
     <string name="identification_type">Tipo de identificação:</string>
     <string name="identification_number">Número:</string>
 
+<string name="test_app_title">MoIP for Android - Test App</string>
+<string name="pagamento_direto_button">Pagamento Direto</string>
 </resources>
