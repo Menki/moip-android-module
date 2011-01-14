@@ -47,6 +47,11 @@ public class CreditCard extends Activity implements OnClickListener {
 		case(R.id.credit_card_next_step):
 			setPayment();
 			Intent intent = new Intent(this.getApplicationContext( ), Payer.class);
+			Bundle b =getIntent( ).getExtras( );
+			intent.putExtra("paymentType", b.getInt("paymentType"));
+			intent.putExtra("server", b.getInt("server"));
+			intent.putExtra("key", b.getString("key"));
+			intent.putExtra("token", b.getString("token"));
 			this.startActivity(intent);
 			break;
 		}
