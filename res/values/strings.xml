@@ -41,7 +41,7 @@
     <string name="state">Estado:</string>
     <string name="choose_state">Escolha um estado</string>
     <string name="zip_code">CEP:</string>
-    <string name="fix_phone">Telefone fixo:</string>
+    <string name="fixed_phone">Telefone fixo:</string>
     
     <!-- Arrays for payer screen -->
     <string-array name="state_array">
