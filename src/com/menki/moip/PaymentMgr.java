@@ -8,8 +8,8 @@
 
 package com.menki.moip;
 
+import android.content.Context;
 import android.os.Handler;
-import android.widget.Button;
 
 import com.menki.moip.Constants.RemoteServer;
 
@@ -21,10 +21,9 @@ public class PaymentMgr
 	private RemoteServer server = RemoteServer.NONE;
 	private String key, token;
 	private Handler handler = null;
-	private PaymentDetails paymentDetails;
+	private PaymentDetails paymentDetails = PaymentDetails.getInstance();
 	
-	public PaymentMgr( ) 
-	{ }
+	private PaymentMgr() {}
 	
 	/**
 	 * 
@@ -92,9 +91,7 @@ public class PaymentMgr
 	{
 		return paymentDetails;
 	}
-
-	public void setPaymentDetails(PaymentDetails paymentDetails) 
-	{
-		this.paymentDetails = paymentDetails;
+	public void savePaymentDetails(Context context) {
+		paymentDetails.save(context);
 	}
 }

@@ -10,7 +10,6 @@ package com.menki.moip;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,7 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class Payer extends Activity implements OnClickListener {
-	private static final String TAG = "PayerActivity";
+//	private static final String TAG = "PayerActivity";
 	
 	private EditText fullName;
 	private EditText email;
@@ -40,7 +39,6 @@ public class Payer extends Activity implements OnClickListener {
 	private EditText zipCode;
 	private EditText fixedPhone;
 	private Button nextStep;
-	private PaymentDetails payment;
 	
     /** Called when the activity is first created. */
     @Override
@@ -48,7 +46,6 @@ public class Payer extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.payer);
         
-        payment = (PaymentDetails) this.getIntent( ).getSerializableExtra("payment");
         setViews();
         setListeners();  
     }
@@ -57,9 +54,8 @@ public class Payer extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		switch(v.getId()){
 		case(R.id.payer_next_step):
-			// Set payment object attributes and persist it
+			// Set payment objects and persist them
 			setPayment();
-			payment.save();
 			
 			showSummaryDialog( );
 			break;
@@ -89,33 +85,35 @@ public class Payer extends Activity implements OnClickListener {
 	
 	private void setPayment() {
 		RadioButton checkedItem;
+		PaymentMgr paymentMgr = PaymentMgr.getInstance();
+		PaymentDetails paymentDetails = paymentMgr.getPaymentDetails();
 		
-		payment.setFullName(fullName.getEditableText().toString());
-		payment.setEmail(email.getEditableText().toString());
-		payment.setCellPhone(cellPhone.getEditableText().toString());
+		paymentDetails.setFullName(fullName.getEditableText().toString());
+		paymentDetails.setEmail(email.getEditableText().toString());
+		paymentDetails.setCellPhone(cellPhone.getEditableText().toString());
 		
 		checkedItem = (RadioButton) findViewById(identificationType.getCheckedRadioButtonId());
-		payment.setPayerIdentificationType(checkedItem.getText().toString());
+		paymentDetails.setPayerIdentificationType(checkedItem.getText().toString());
 		
-		payment.setPayerIdentificationNumber(identificationNumber.getEditableText().toString());
-		payment.setStreetAddress(streetAddress.getEditableText().toString());
+		paymentDetails.setPayerIdentificationNumber(identificationNumber.getEditableText().toString());
+		paymentDetails.setStreetAddress(streetAddress.getEditableText().toString());
 		
 		String streeNumberStr = streetNumber.getEditableText().toString().trim();
 		if (streeNumberStr.length() != 0) {
 			int n = Integer.parseInt(streeNumberStr);
-			payment.setStreetNumber(n);
+			paymentDetails.setStreetNumber(n);
 		}
 		
-		payment.setStreetComplement(streetComplement.getEditableText().toString());
-		payment.setNeighborhood(neighborhood.getEditableText().toString());
-		payment.setCity(city.getEditableText().toString());
+		paymentDetails.setStreetComplement(streetComplement.getEditableText().toString());
+		paymentDetails.setNeighborhood(neighborhood.getEditableText().toString());
+		paymentDetails.setCity(city.getEditableText().toString());
 		
-		payment.setState(state.getSelectedItem().toString());
+		paymentDetails.setState(state.getSelectedItem().toString());
 		
-		payment.setZipCode(zipCode.getEditableText().toString());
-		payment.setFixedPhone(fixedPhone.getEditableText().toString());
-		
-		PaymentMgr.getInstance( ).setPaymentDetails(payment);
+		paymentDetails.setZipCode(zipCode.getEditableText().toString());
+		paymentDetails.setFixedPhone(fixedPhone.getEditableText().toString());
+
+		paymentMgr.savePaymentDetails(this);
 	}
 
 	

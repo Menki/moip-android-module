@@ -38,7 +38,6 @@ public class CreditCard extends Activity implements OnClickListener {
 	private EditText installments;
 	private RadioGroup paymentType;
 	private Button nextStep;
-	private PaymentDetails payment;
 	
     /** Called when the activity is first created. */
     @Override
@@ -46,7 +45,6 @@ public class CreditCard extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.credit_card);
         
-        payment = new PaymentDetails(this);
         setViews();
         setListeners();
     }
@@ -55,9 +53,8 @@ public class CreditCard extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		switch(v.getId()){
 		case(R.id.credit_card_next_step):
-			// Set payment object attributes and persist it
+			// Set payment objects and persist them
 			setPayment();
-			payment.save();
 
 			// Go to Payer screen passing to its activity the payment object
 			Intent intent = new Intent(this.getApplicationContext( ), Payer.class);
@@ -93,26 +90,29 @@ public class CreditCard extends Activity implements OnClickListener {
 		final SimpleDateFormat dayMonthAndYear = new SimpleDateFormat("dd/MM/yyyy");
 		RadioButton checkedItem;
 		
-		payment.setBrand(brand.getSelectedItem().toString());
-		payment.setCreditCardNumber(creditCardNumber.getEditableText().toString());
+		PaymentMgr paymentMgr = PaymentMgr.getInstance();
+		PaymentDetails paymentDetails = paymentMgr.getPaymentDetails();
+		
+		paymentDetails.setBrand(brand.getSelectedItem().toString());
+		paymentDetails.setCreditCardNumber(creditCardNumber.getEditableText().toString());
 		
 		try {
-			payment.setExpirationDate(monthAndYear.parse(expirationDate.getText().toString()));
+			paymentDetails.setExpirationDate(monthAndYear.parse(expirationDate.getText().toString()));
 		} catch (ParseException e) {
 			Log.e(TAG, "Error while parsing date from field expiration date.");
 		}
 		
-		payment.setSecureCode(secureCode.getEditableText().toString());
-		payment.setOwnerName(ownerName.getEditableText().toString());
+		paymentDetails.setSecureCode(secureCode.getEditableText().toString());
+		paymentDetails.setOwnerName(ownerName.getEditableText().toString());
 		
 		checkedItem = (RadioButton) findViewById(identificationType.getCheckedRadioButtonId());
-		payment.setOwnerIdentificationType(checkedItem.getText().toString());
+		paymentDetails.setOwnerIdentificationType(checkedItem.getText().toString());
 		
-		payment.setOwnerIdentificationNumber(identificationNumber.getEditableText().toString());
-		payment.setOwnerPhoneNumber(ownerPhoneNumber.getEditableText().toString());
+		paymentDetails.setOwnerIdentificationNumber(identificationNumber.getEditableText().toString());
+		paymentDetails.setOwnerPhoneNumber(ownerPhoneNumber.getEditableText().toString());
 		
 		try {
-			payment.setBornDate(dayMonthAndYear.parse(bornDate.getText().toString()));
+			paymentDetails.setBornDate(dayMonthAndYear.parse(bornDate.getText().toString()));
 		} catch (ParseException e) {
 			Log.e(TAG, "Error while parsing date from field expiration date.");
 		}
@@ -120,12 +120,12 @@ public class CreditCard extends Activity implements OnClickListener {
 		String installmentsStr = installments.getEditableText().toString().trim();
 		if (installmentsStr.length() != 0) {
 			int n = Integer.parseInt(installmentsStr);
-			payment.setInstallments(n);
+			paymentDetails.setInstallments(n);
 		}
 		
 		checkedItem = (RadioButton) findViewById(paymentType.getCheckedRadioButtonId());
-		payment.setOwnerIdentificationType(checkedItem.getText().toString());		
+		paymentDetails.setOwnerIdentificationType(checkedItem.getText().toString());		
 		
-		PaymentMgr.getInstance( ).setPaymentDetails(payment);
+		paymentMgr.savePaymentDetails(this);
 	}
 }

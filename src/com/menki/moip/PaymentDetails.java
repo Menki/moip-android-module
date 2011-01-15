@@ -8,8 +8,6 @@
 
 package com.menki.moip;
 
-//import java.io.Serializable;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -18,7 +16,12 @@ import android.content.Context;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 
-public class PaymentDetails implements Serializable{
+public class PaymentDetails {
+	/**
+	 * This class is a singleton
+	 */
+	private static PaymentDetails _instance = null;
+	
 	/**
 	 * Constants
 	 */
@@ -77,17 +80,35 @@ public class PaymentDetails implements Serializable{
 	private String fixedPhone;
 	private ArrayList<String> changes = new ArrayList<String>();
 	private ArrayList<String> errors = new ArrayList<String>();
-	private Context context;
 	
-	public PaymentDetails(Context ctx) {
-		super();
-		context = ctx;
+	private PaymentDetails() {}
+	
+	/**
+	 * 
+	 * @return _instance The PaymentMgr instance to be used
+	 */
+	public static synchronized PaymentDetails getInstance() 
+	{
+		if(_instance == null) 
+		{
+			_instance = new PaymentDetails();
+		}
+		return _instance;
 	}
+	
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#clone()
+	 */
+	public Object clone() throws CloneNotSupportedException 
+	{
+		throw new CloneNotSupportedException();
+	}	
 		
-	public Boolean save() {
+	public Boolean save(Context context) {
 		if (!isChangesValid()) return false;
 		
-		Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+		Editor editor = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).edit();
 
 		Iterator<String> itr = changes.iterator();
 		while(itr.hasNext()){
@@ -105,6 +126,7 @@ public class PaymentDetails implements Serializable{
 			}
 		}
 		
+		editor.commit();
 		changes.clear();
 		errors.clear();
 		
@@ -165,7 +187,7 @@ public class PaymentDetails implements Serializable{
 	}
 
 	public Boolean isChangesValid() {
-		if(false) errors.add("");
+//		if(false) errors.add("");
 		
 		//TODO: Implement this method, that must check if for any of the changed attributes the new value is valid.
 		
