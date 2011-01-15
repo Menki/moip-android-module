@@ -8,13 +8,17 @@
 
 package com.menki.moip;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 public class PaymentDetails {
 	/**
@@ -25,7 +29,7 @@ public class PaymentDetails {
 	/**
 	 * Constants
 	 */
-	private static final long serialVersionUID = 1L; // Default serial version ID
+	private static final String TAG = "PaymentDetails";
 	private static final String ATTR_BRAND = "brand";
 	private static final String ATTR_CREDIT_CARD = "credit_card";
 	private static final String ATTR_EXP_DATE = "expiration_date";
@@ -103,7 +107,7 @@ public class PaymentDetails {
 	public Object clone() throws CloneNotSupportedException 
 	{
 		throw new CloneNotSupportedException();
-	}	
+	}
 		
 	public Boolean save(Context context) {
 		if (!isChangesValid()) return false;
@@ -112,17 +116,19 @@ public class PaymentDetails {
 
 		Iterator<String> itr = changes.iterator();
 		while(itr.hasNext()){
-			String current = itr.next();
+			String currentAttr = itr.next();
 			
-			if (current.equals(ATTR_EXP_DATE) || current.equals(ATTR_BORN_DATE)){ // current is a date attribute
-				Date date = (Date) getValueOf(current);
-				editor.putString(current, date.toString());
+			if (currentAttr.equals(ATTR_EXP_DATE) || currentAttr.equals(ATTR_BORN_DATE)){ // current is a date attribute
+				Date date = (Date) getValueOf(currentAttr);
+				SimpleDateFormat dateFormat = 
+					(currentAttr.equals(ATTR_EXP_DATE)) ? Constants.MONTH_AND_YEAR : Constants.DAY_MONTH_AND_YEAR;
+				editor.putString(currentAttr, dateFormat.format(date));
 			} 
-			else if (current.equals(ATTR_INSTALLMENTS) || current.equals(ATTR_ST_NUMBER)){ // current is a int attribute
-				editor.putInt(current, (Integer) getValueOf(current));
+			else if (currentAttr.equals(ATTR_INSTALLMENTS) || currentAttr.equals(ATTR_ST_NUMBER)){ // current is a int attribute
+				editor.putInt(currentAttr, (Integer) getValueOf(currentAttr));
 			}
 			else { // current is a string attribute
-				editor.putString(current, (String)getValueOf(current));
+				editor.putString(currentAttr, (String)getValueOf(currentAttr));
 			}
 		}
 		
@@ -131,6 +137,47 @@ public class PaymentDetails {
 		errors.clear();
 		
 		return true;
+	}
+
+	public void restore(Context context) {
+		SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+		
+		this.brand = prefs.getString(ATTR_BRAND, "");
+		this.creditCardNumber = prefs.getString(ATTR_CREDIT_CARD, "");
+		
+		try {
+			this.expirationDate = Constants.MONTH_AND_YEAR.parse(prefs.getString(ATTR_EXP_DATE, ""));
+		} catch (ParseException e) {
+			Log.e(TAG, "Error while parsing date from field expiration date.");
+		}
+		
+		this.secureCode = prefs.getString(ATTR_SECURE_CODE, "");
+		this.ownerName = prefs.getString(ATTR_OWNER_NAME, "");
+		this.ownerIdentificationType = prefs.getString(ATTR_OWNER_ID_TYPE, "");
+		this.ownerIdentificationNumber = prefs.getString(ATTR_OWNER_ID_NUM, "");
+		this.ownerPhoneNumber = prefs.getString(ATTR_OWNER_PHONE_NUM, "");
+
+		try {
+			this.bornDate = Constants.DAY_MONTH_AND_YEAR.parse(prefs.getString(ATTR_BORN_DATE, ""));
+		} catch (ParseException e) {
+			Log.e(TAG, "Error while parsing date from field expiration date.");
+		}
+		
+		this.installments = prefs.getInt(ATTR_INSTALLMENTS, -1);
+		this.paymentType = prefs.getString(ATTR_PAYMENT_TYPE, "");
+		this.fullName = prefs.getString(ATTR_FULL_NAME, "");
+		this.email = prefs.getString(ATTR_EMAIL, "");
+		this.cellPhone = prefs.getString(ATTR_CELL_PHONE, "");
+		this.payerIdentificationType = prefs.getString(ATTR_PAYER_ID_TYPE, "");
+		this.payerIdentificationNumber = prefs.getString(ATTR_PAYER_ID_NUM, "");
+		this.streetAddress = prefs.getString(ATTR_ST_ADDRESS, "");
+		this.streetNumber = prefs.getInt(ATTR_ST_NUMBER, 0);
+		this.streetComplement = prefs.getString(ATTR_ST_COMPLEMENT, "");
+		this.neighborhood = prefs.getString(ATTR_NEIGHBORHOOD, "");
+		this.city = prefs.getString(ATTR_CITY, "");
+		this.state = prefs.getString(ATTR_STATE, "");
+		this.zipCode = prefs.getString(ATTR_ZIP_CODE, "");
+		this.fixedPhone = prefs.getString(ATTR_FIXED_PHONE, "");
 	}
 	
 	private Object getValueOf(String attr) {
@@ -155,7 +202,7 @@ public class PaymentDetails {
 		else if (attr.equals(ATTR_INSTALLMENTS)) 
 			return getInstallments();
 		else if (attr.equals(ATTR_PAYMENT_TYPE)) 
-			return getPayerIdentificationType();
+			return getPaymentType();
 		else if (attr.equals(ATTR_FULL_NAME)) 
 			return getFullName();
 		else if (attr.equals(ATTR_EMAIL)) 
@@ -293,6 +340,7 @@ public class PaymentDetails {
 	public void setPaymentType(String paymentType) {
 		if (!paymentType.equals(getPaymentType())) {
 			changes.add(ATTR_PAYMENT_TYPE);
+			
 			this.paymentType = paymentType;
 		}
 	}

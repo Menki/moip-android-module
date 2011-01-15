@@ -9,7 +9,7 @@
 package com.menki.moip;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -46,6 +46,7 @@ public class CreditCard extends Activity implements OnClickListener {
         setContentView(R.layout.credit_card);
         
         setViews();
+        setDefaultValues();
         setListeners();
     }
 
@@ -80,14 +81,61 @@ public class CreditCard extends Activity implements OnClickListener {
 		nextStep = (Button) findViewById(R.id.credit_card_next_step);
 	}
 	
+	private void setDefaultValues() {
+		RadioButton itemToCheck;
+		PaymentMgr paymentMgr = PaymentMgr.getInstance();
+		paymentMgr.restorePaymentDetails(this);
+		PaymentDetails paymentDetails = paymentMgr.getPaymentDetails(); 
+		
+		
+		for(int i=0; i < brand.getCount(); i++) {
+			if (brand.getItemAtPosition(i).toString().equals(paymentDetails.getBrand())) {
+				brand.setSelection(i);
+				break;
+			}
+		}
+
+		creditCardNumber.setText(paymentDetails.getCreditCardNumber());
+		
+		if (paymentDetails.getExpirationDate() != null)
+			expirationDate.setText(Constants.MONTH_AND_YEAR.format(paymentDetails.getExpirationDate()));
+		
+		secureCode.setText(paymentDetails.getSecureCode());
+		
+		ownerName.setText(paymentDetails.getOwnerName());
+		
+		for(int i=0; i < identificationType.getChildCount(); i++) {
+			itemToCheck = (RadioButton) identificationType.getChildAt(i);
+			if (itemToCheck.getText().toString().equals(paymentDetails.getOwnerIdentificationType())) {
+				itemToCheck.setChecked(true);
+				break;
+			}
+		}
+		
+		identificationNumber.setText(paymentDetails.getOwnerIdentificationNumber());
+
+		ownerPhoneNumber.setText(paymentDetails.getOwnerPhoneNumber());
+		
+		if (paymentDetails.getBornDate() != null)
+			bornDate.setText(Constants.DAY_MONTH_AND_YEAR.format(paymentDetails.getBornDate()));
+		
+		if (paymentDetails.getInstallments() > -1)
+			installments.setText(String.valueOf(paymentDetails.getInstallments()));
+
+		for(int i=0; i < paymentType.getChildCount(); i++) {
+			itemToCheck = (RadioButton) paymentType.getChildAt(i);
+			if (itemToCheck.getText().toString().equals(paymentDetails.getPaymentType())) {
+				itemToCheck.setChecked(true);
+				break;
+			}
+		}
+	}
 
 	private void setListeners() {
 		nextStep.setOnClickListener(this);
 	}
 	
 	private void setPayment() {
-		final SimpleDateFormat monthAndYear = new SimpleDateFormat("MM/yyyy");
-		final SimpleDateFormat dayMonthAndYear = new SimpleDateFormat("dd/MM/yyyy");
 		RadioButton checkedItem;
 		
 		PaymentMgr paymentMgr = PaymentMgr.getInstance();
@@ -97,7 +145,7 @@ public class CreditCard extends Activity implements OnClickListener {
 		paymentDetails.setCreditCardNumber(creditCardNumber.getEditableText().toString());
 		
 		try {
-			paymentDetails.setExpirationDate(monthAndYear.parse(expirationDate.getText().toString()));
+			paymentDetails.setExpirationDate(Constants.MONTH_AND_YEAR.parse(expirationDate.getText().toString()));
 		} catch (ParseException e) {
 			Log.e(TAG, "Error while parsing date from field expiration date.");
 		}
@@ -106,13 +154,14 @@ public class CreditCard extends Activity implements OnClickListener {
 		paymentDetails.setOwnerName(ownerName.getEditableText().toString());
 		
 		checkedItem = (RadioButton) findViewById(identificationType.getCheckedRadioButtonId());
+		Log.d(TAG, checkedItem.getText().toString());
 		paymentDetails.setOwnerIdentificationType(checkedItem.getText().toString());
 		
 		paymentDetails.setOwnerIdentificationNumber(identificationNumber.getEditableText().toString());
 		paymentDetails.setOwnerPhoneNumber(ownerPhoneNumber.getEditableText().toString());
 		
 		try {
-			paymentDetails.setBornDate(dayMonthAndYear.parse(bornDate.getText().toString()));
+			paymentDetails.setBornDate(Constants.DAY_MONTH_AND_YEAR.parse(bornDate.getText().toString()));
 		} catch (ParseException e) {
 			Log.e(TAG, "Error while parsing date from field expiration date.");
 		}
@@ -124,7 +173,8 @@ public class CreditCard extends Activity implements OnClickListener {
 		}
 		
 		checkedItem = (RadioButton) findViewById(paymentType.getCheckedRadioButtonId());
-		paymentDetails.setOwnerIdentificationType(checkedItem.getText().toString());		
+		Log.d(TAG, checkedItem.getText().toString());
+		paymentDetails.setPaymentType(checkedItem.getText().toString());		
 		
 		paymentMgr.savePaymentDetails(this);
 	}

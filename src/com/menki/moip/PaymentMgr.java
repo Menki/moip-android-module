@@ -94,4 +94,7 @@ public class PaymentMgr
 	public void savePaymentDetails(Context context) {
 		paymentDetails.save(context);
 	}
+	public void restorePaymentDetails(Context context) {
+		paymentDetails.restore(context);
+	}
 }

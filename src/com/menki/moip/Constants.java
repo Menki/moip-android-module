@@ -7,16 +7,22 @@
  */
 package com.menki.moip;
 
+import java.text.SimpleDateFormat;
+
 
 public interface Constants 
 {
-	//Define o tipo de pagamento a ser passado para o Botão
+	//Payment types support by the button
 	public static enum PaymentType { NONE, PAGAMENTO_DIRETO }; 
 	
-	//Define o destino da conexão
+	//Connection remote server
 	public static enum RemoteServer { NONE, TEST, PRODUCTION}; 
 	
-	//URLs de conexão
+	//Connectioin URLs
 	public static final String TEST_SERVER = "https://desenvolvedor.moip.com.br/sandbox";
 	public static final String PRODUCTION_SERVER = "https://www.moip.com.br";
+	
+	//Date formats
+	public static final SimpleDateFormat MONTH_AND_YEAR = new SimpleDateFormat("MM/yyyy");
+	public static final SimpleDateFormat DAY_MONTH_AND_YEAR = new SimpleDateFormat("dd/MM/yyyy");
 }
