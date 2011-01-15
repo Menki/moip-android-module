@@ -28,10 +28,7 @@ public class PaymentButton extends Button implements OnClickListener
 {
 	private Context hostActivity = null;
 	private PaymentType type = PaymentType.NONE;
-	private RemoteServer server = RemoteServer.NONE;
-	private String key, token;
 	private Button button = null;
-	private Handler handler = null;
 	
 	public PaymentButton(Context context, int id, String t, String k, 
 									PaymentType pt, RemoteServer s, Handler h) 
@@ -40,12 +37,14 @@ public class PaymentButton extends Button implements OnClickListener
 			
 		hostActivity = context;
 		type = pt;
-		server = s;
-		key = k;
-		token = t;
-		handler = h;
 		
 		button = (Button) ((Activity)context).findViewById(id);
+
+		PaymentMgr mgr = PaymentMgr.getInstance( );
+		mgr.setServer(s);
+		mgr.setKey(k);
+		mgr.setToken(t);
+		mgr.setHandler(h);
 		
 		//testing for a valid button
 		try
@@ -71,10 +70,6 @@ public class PaymentButton extends Button implements OnClickListener
 			case PAGAMENTO_DIRETO:
 				Intent intent = new Intent(hostActivity.getApplicationContext(), CreditCard.class);
 				intent.putExtra("paymentType", this.type);
-				intent.putExtra("server", this.server);
-				intent.putExtra("key", this.key);
-				intent.putExtra("token", this.token);
-				//TODO: how to pass handler? I think we'll need a singleton class :-|
 				hostActivity.startActivity(intent);
 				break;
 			default:

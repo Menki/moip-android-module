@@ -1,6 +1,7 @@
 package com.menki.moip;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,8 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 public class Payer extends Activity implements OnClickListener {
 	private static final String TAG = "PayerActivity";
@@ -50,10 +53,7 @@ public class Payer extends Activity implements OnClickListener {
 			setPayment();
 			payment.save();
 			
-			// Go to Summary screen passing to its activity the payment object
-			Intent intent = new Intent(this.getApplicationContext( ), Payer.class); //TODO: Change Payer.class to the reference to summary activity 
-			intent.putExtra("payment", payment);
-			startActivity(intent);
+			showSummaryDialog( );
 			break;
 		}
 	}
@@ -105,6 +105,50 @@ public class Payer extends Activity implements OnClickListener {
 		payment.setState(state.getSelectedItem().toString());
 		
 		payment.setZipCode(zipCode.getEditableText().toString());
-		payment.setFixedPhone(fixedPhone.getEditableText().toString());
+		payment.setFixPhone(fixedPhone.getEditableText().toString());
+		
+		PaymentMgr.getInstance( ).setPaymentDetails(payment);
 	}
+
+	
+	private void showSummaryDialog( )
+	{
+		//set up dialog
+        Dialog summary = new Dialog(this);
+        summary.setContentView(R.layout.payment_summary);
+        summary.setTitle("Payment Summary");
+        summary.setCancelable(true);
+
+        //set up text
+        TextView summaryTextView = (TextView) summary.findViewById(R.id.SummaryTextView);
+        summaryTextView.setText("SummarySummarySummarySummarySummarySummarySummarySummarySummarySummarySummarySummarySummarySummarySummarySummarySummarySummarySummarySummary");
+        
+        //set up image view
+        ImageView moipImg = (ImageView) summary.findViewById(R.id.SummaryImageView);
+        moipImg.setImageResource(R.drawable.moiplabs);
+        
+        //set up buttons
+        Button returnButton = (Button) summary.findViewById(R.id.ReturnButton);
+        returnButton.setOnClickListener(new OnClickListener() 
+        {
+        	@Override
+        	public void onClick(View v) 
+        	{
+        		
+        	}
+        });
+        
+        Button finishButton = (Button) summary.findViewById(R.id.FinishButton);
+        finishButton.setOnClickListener(new OnClickListener() 
+        {
+        	@Override
+        	public void onClick(View v) 
+        	{
+        		Log.w("MENKI [Payer] ", "finishButton - onClick( ):");
+        	}
+        });
+            
+        summary.show();
+	}
+
 }

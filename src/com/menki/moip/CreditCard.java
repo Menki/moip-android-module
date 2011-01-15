@@ -53,8 +53,9 @@ public class CreditCard extends Activity implements OnClickListener {
 
 			// Go to Payer screen passing to its activity the payment object
 			Intent intent = new Intent(this.getApplicationContext( ), Payer.class);
-			intent.putExtra("payment", payment);
-			startActivity(intent);
+			Bundle b = getIntent( ).getExtras( );
+			intent.putExtra("paymentType", b.getInt("paymentType"));
+			this.startActivity(intent);
 			break;
 		}
 	}
@@ -116,5 +117,7 @@ public class CreditCard extends Activity implements OnClickListener {
 		
 		checkedItem = (RadioButton) findViewById(paymentType.getCheckedRadioButtonId());
 		payment.setOwnerIdentificationType(checkedItem.getText().toString());		
+		
+		PaymentMgr.getInstance( ).setPaymentDetails(payment);
 	}
 }

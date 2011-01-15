@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="wrap_content" android:layout_height="wrap_content">
+
+	<ImageView android:id="@+id/SummaryImageView"
+ 				android:layout_width="wrap_content" 
+ 				android:layout_height="wrap_content"
+ 				android:layout_centerHorizontal="true" />
+ 
+ 	<ScrollView android:id="@+id/SummaryScrollView"
+ 				android:layout_width="wrap_content" 
+ 				android:layout_below="@+id/ImageView01"
+ 				android:layout_height="200px">
+ 				
+ 		<TextView android:text="Payment Summary" 
+ 				android:id="@+id/SummaryTextView"
+ 				android:layout_width="wrap_content" 
+ 				android:layout_height="wrap_content" />
+ 				
+ 	</ScrollView>
+ 	<LinearLayout
+	   	android:layout_gravity="center|bottom"
+	   	android:gravity="center"
+		android:layout_width="fill_parent"
+	   	android:layout_height="wrap_content"
+		android:layout_weight="1"
+		android:layout_below="@id/SummaryScrollView"
+	   	android:orientation="horizontal"
+	   	android:id="@+id/BottomLayout">
+		  	<Button 
+		  		android:layout_height="fill_parent" 
+		    	android:id="@+id/FinishButton" 
+		    	android:text="@string/finishButton" 
+		    	android:layout_width="wrap_content"
+		    	android:layout_weight="1"
+		    	android:textSize="16dip" />
+		  	<Button 
+		    	android:layout_height="fill_parent" 
+		    	android:id="@+id/ReturnButton" 
+		    	android:text="@string/returnButton"
+		    	android:layout_width="wrap_content"
+		    	android:layout_weight="1" 
+		    	android:textSize="16dip" />
+	  </LinearLayout>
+ 			
+</RelativeLayout>
