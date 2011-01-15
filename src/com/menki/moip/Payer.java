@@ -1,3 +1,11 @@
+/**
+ * Menki Mobile Solutions
+ * http://www.menkimobile.com.br
+ * 
+ * @author Augusto Souza
+ *
+ */
+
 package com.menki.moip;
 
 import android.app.Activity;
@@ -32,7 +40,7 @@ public class Payer extends Activity implements OnClickListener {
 	private EditText zipCode;
 	private EditText fixedPhone;
 	private Button nextStep;
-	private Payment payment;
+	private PaymentDetails payment;
 	
     /** Called when the activity is first created. */
     @Override
@@ -40,7 +48,7 @@ public class Payer extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.payer);
         
-        payment = (Payment) this.getIntent( ).getSerializableExtra("payment");
+        payment = (PaymentDetails) this.getIntent( ).getSerializableExtra("payment");
         setViews();
         setListeners();  
     }

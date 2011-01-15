@@ -21,7 +21,7 @@ public class PaymentMgr
 	private RemoteServer server = RemoteServer.NONE;
 	private String key, token;
 	private Handler handler = null;
-	private Payment paymentDetails;
+	private PaymentDetails paymentDetails;
 	
 	public PaymentMgr( ) 
 	{ }
@@ -88,12 +88,12 @@ public class PaymentMgr
 		this.handler = handler;
 	}
 	
-	public Payment getPaymentDetails( ) 
+	public PaymentDetails getPaymentDetails( ) 
 	{
 		return paymentDetails;
 	}
 
-	public void setPaymentDetails(Payment paymentDetails) 
+	public void setPaymentDetails(PaymentDetails paymentDetails) 
 	{
 		this.paymentDetails = paymentDetails;
 	}

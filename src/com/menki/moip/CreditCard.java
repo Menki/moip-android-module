@@ -1,3 +1,11 @@
+/**
+ * Menki Mobile Solutions
+ * http://www.menkimobile.com.br
+ * 
+ * @author Augusto Souza
+ *
+ */
+
 package com.menki.moip;
 
 import java.text.ParseException;
@@ -30,7 +38,7 @@ public class CreditCard extends Activity implements OnClickListener {
 	private EditText installments;
 	private RadioGroup paymentType;
 	private Button nextStep;
-	private Payment payment;
+	private PaymentDetails payment;
 	
     /** Called when the activity is first created. */
     @Override
@@ -38,7 +46,7 @@ public class CreditCard extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.credit_card);
         
-        payment = new Payment(this);
+        payment = new PaymentDetails(this);
         setViews();
         setListeners();
     }

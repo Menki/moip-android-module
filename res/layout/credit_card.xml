@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-
+<!--  
+ * Menki Mobile Solutions
+ * http://www.menkimobile.com.br
+ * 
+ * @author Augusto Souza
+ *
+-->
+ 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android" 
      android:scrollbars="vertical" 
      android:layout_height="fill_parent" 

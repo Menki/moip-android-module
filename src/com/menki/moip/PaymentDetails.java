@@ -1,3 +1,11 @@
+/**
+ * Menki Mobile Solutions
+ * http://www.menkimobile.com.br
+ * 
+ * @author Augusto Souza
+ *
+ */
+
 package com.menki.moip;
 
 //import java.io.Serializable;
@@ -10,7 +18,7 @@ import android.content.Context;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 
-public class Payment implements Serializable{
+public class PaymentDetails implements Serializable{
 	/**
 	 * Constants
 	 */
@@ -71,7 +79,7 @@ public class Payment implements Serializable{
 	private ArrayList<String> errors = new ArrayList<String>();
 	private Context context;
 	
-	public Payment(Context ctx) {
+	public PaymentDetails(Context ctx) {
 		super();
 		context = ctx;
 	}
