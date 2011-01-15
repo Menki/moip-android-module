@@ -9,7 +9,6 @@
 package com.menki.moip;
 
 import java.text.ParseException;
-import java.util.Date;
 
 import android.app.Activity;
 import android.content.Intent;
