@@ -47,6 +47,7 @@ public class Payer extends Activity implements OnClickListener {
         setContentView(R.layout.payer);
         
         setViews();
+        setDefaultValues();
         setListeners();  
     }
 
@@ -77,6 +78,45 @@ public class Payer extends Activity implements OnClickListener {
 		zipCode = (EditText) findViewById(R.id.zip_code);
 		fixedPhone = (EditText) findViewById(R.id.fixed_phone);
 		nextStep = (Button) findViewById(R.id.payer_next_step);		
+	}
+	
+	private void setDefaultValues() {
+		RadioButton itemToCheck;
+		PaymentMgr paymentMgr = PaymentMgr.getInstance();
+		paymentMgr.restorePaymentDetails(this);
+		PaymentDetails paymentDetails = paymentMgr.getPaymentDetails(); 
+		
+		fullName.setText(paymentDetails.getFullName());
+		email.setText(paymentDetails.getEmail());
+		cellPhone.setText(paymentDetails.getCellPhone());
+		
+		for(int i=0; i < identificationType.getChildCount(); i++) {
+			itemToCheck = (RadioButton) identificationType.getChildAt(i);
+			if (itemToCheck.getText().toString().equals(paymentDetails.getPayerIdentificationType())) {
+				itemToCheck.setChecked(true);
+				break;
+			}
+		}
+		
+		identificationNumber.setText(paymentDetails.getPayerIdentificationNumber());
+		streetAddress.setText(paymentDetails.getStreetAddress());
+		
+		if (paymentDetails.getStreetNumber() > -1)
+			streetNumber.setText(String.valueOf(paymentDetails.getStreetNumber()));
+		
+		streetComplement.setText(paymentDetails.getStreetComplement());
+		neighborhood.setText(paymentDetails.getNeighborhood());
+		city.setText(paymentDetails.getCity());
+		
+		for(int i=0; i < state.getCount(); i++) {
+			if (state.getItemAtPosition(i).toString().equals(paymentDetails.getState())) {
+				state.setSelection(i);
+				break;
+			}
+		}
+		
+		zipCode.setText(paymentDetails.getZipCode());
+		fixedPhone.setText(paymentDetails.getFixedPhone());
 	}
 	
 	private void setListeners() {

@@ -171,7 +171,7 @@ public class PaymentDetails {
 		this.payerIdentificationType = prefs.getString(ATTR_PAYER_ID_TYPE, "");
 		this.payerIdentificationNumber = prefs.getString(ATTR_PAYER_ID_NUM, "");
 		this.streetAddress = prefs.getString(ATTR_ST_ADDRESS, "");
-		this.streetNumber = prefs.getInt(ATTR_ST_NUMBER, 0);
+		this.streetNumber = prefs.getInt(ATTR_ST_NUMBER, -1);
 		this.streetComplement = prefs.getString(ATTR_ST_COMPLEMENT, "");
 		this.neighborhood = prefs.getString(ATTR_NEIGHBORHOOD, "");
 		this.city = prefs.getString(ATTR_CITY, "");
