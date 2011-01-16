@@ -85,4 +85,5 @@
 <string name="pagamento_direto_button">Pagamento Direto</string>
 <string name="finishButton">Finalizar Compra</string>
 <string name="returnButton">Voltar</string>
+<string name="paymentSummary">Resumo da compra</string>
 </resources>

@@ -159,31 +159,59 @@ public class Payer extends Activity implements OnClickListener {
 	
 	private void showSummaryDialog( )
 	{
+		StringBuilder builder = new StringBuilder( );
+		String separator1 = new String(" ");
+		String separator2 = new String("\n");
+		builder.append(separator2);
+		PaymentMgr mgr = PaymentMgr.getInstance( );
+		PaymentDetails details = mgr.getPaymentDetails( );
+		
 		//set up dialog
         Dialog summary = new Dialog(this);
         summary.setContentView(R.layout.payment_summary);
-        summary.setTitle("Payment Summary");
+        summary.setTitle(R.string.paymentSummary);
         summary.setCancelable(true);
 
         //set up text
         TextView summaryTextView = (TextView) summary.findViewById(R.id.SummaryTextView);
-        summaryTextView.setText("SummarySummarySummarySummarySummarySummarySummarySummarySummarySummarySummarySummarySummarySummarySummarySummarySummarySummarySummarySummary");
+        builder.append(getString(R.string.full_name));
+        	builder.append(separator1);
+        	builder.append(details.getFullName( ));
+        	builder.append(separator2);
+        	//CPF or RG
+        builder.append(details.getPayerIdentificationType( ));
+    		builder.append(":");
+    		builder.append(separator1);
+        	builder.append(details.getPayerIdentificationNumber( ));
+        	builder.append(separator2);
+        builder.append(getString(R.string.brand));
+        	builder.append(separator1);
+        	builder.append(details.getBrand( ));
+        	builder.append(separator2);
+        builder.append(getString(R.string.credit_card_number));
+        	builder.append(separator1);
+        	builder.append(details.getCreditCardNumber( ));
+        	builder.append(separator2);
+        builder.append(getString(R.string.expiration_date));
+        	builder.append(separator1);
+        	builder.append(details.getExpirationDate( ));
+        	builder.append(separator2);
+        builder.append(getString(R.string.secure_code));
+        	builder.append(separator1);
+        	builder.append(details.getSecureCode( ));
+        	builder.append(separator2);
+        builder.append(getString(R.string.payment_type));
+        	builder.append(separator1);
+        	builder.append(details.getPaymentType( ));
+        	builder.append(separator2);
+             
+        summaryTextView.setText(builder.toString( ));
         
         //set up image view
         ImageView moipImg = (ImageView) summary.findViewById(R.id.SummaryImageView);
         moipImg.setImageResource(R.drawable.moiplabs);
         
-        //set up buttons
-        Button returnButton = (Button) summary.findViewById(R.id.ReturnButton);
-        returnButton.setOnClickListener(new OnClickListener() 
-        {
-        	@Override
-        	public void onClick(View v) 
-        	{
-        		
-        	}
-        });
-        
+        //set up buttom
         Button finishButton = (Button) summary.findViewById(R.id.FinishButton);
         finishButton.setOnClickListener(new OnClickListener() 
         {

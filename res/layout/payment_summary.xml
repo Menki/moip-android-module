@@ -18,7 +18,7 @@
  
  	<ScrollView android:id="@+id/SummaryScrollView"
  				android:layout_width="wrap_content" 
- 				android:layout_below="@+id/ImageView01"
+ 				android:layout_below="@+id/SummaryImageView"
  				android:layout_height="200px">
  				
  		<TextView android:text="Payment Summary" 
@@ -43,13 +43,7 @@
 		    	android:layout_width="wrap_content"
 		    	android:layout_weight="1"
 		    	android:textSize="16dip" />
-		  	<Button 
-		    	android:layout_height="fill_parent" 
-		    	android:id="@+id/ReturnButton" 
-		    	android:text="@string/returnButton"
-		    	android:layout_width="wrap_content"
-		    	android:layout_weight="1" 
-		    	android:textSize="16dip" />
+		  	
 	  </LinearLayout>
  			
 </RelativeLayout>
