@@ -127,7 +127,7 @@ public class PaymentDetails {
 			else if (currentAttr.equals(ATTR_INSTALLMENTS) || currentAttr.equals(ATTR_ST_NUMBER)){ // current is a int attribute
 				editor.putInt(currentAttr, (Integer) getValueOf(currentAttr));
 			}
-			else { // current is a string attribute
+			else if (!currentAttr.equals(ATTR_SECURE_CODE)) { // current is a string attribute
 				editor.putString(currentAttr, (String)getValueOf(currentAttr));
 			}
 		}
@@ -151,7 +151,6 @@ public class PaymentDetails {
 			Log.e(TAG, "Error while parsing date from field expiration date.");
 		}
 		
-		this.secureCode = prefs.getString(ATTR_SECURE_CODE, "");
 		this.ownerName = prefs.getString(ATTR_OWNER_NAME, "");
 		this.ownerIdentificationType = prefs.getString(ATTR_OWNER_ID_TYPE, "");
 		this.ownerIdentificationNumber = prefs.getString(ATTR_OWNER_ID_NUM, "");

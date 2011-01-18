@@ -99,8 +99,6 @@ public class CreditCard extends Activity implements OnClickListener {
 		if (paymentDetails.getExpirationDate() != null)
 			expirationDate.setText(Constants.MONTH_AND_YEAR.format(paymentDetails.getExpirationDate()));
 		
-		secureCode.setText(paymentDetails.getSecureCode());
-		
 		ownerName.setText(paymentDetails.getOwnerName());
 		
 		for(int i=0; i < identificationType.getChildCount(); i++) {
