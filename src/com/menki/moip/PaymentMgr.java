@@ -8,6 +8,8 @@
 
 package com.menki.moip;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.os.Handler;
 
@@ -91,10 +93,13 @@ public class PaymentMgr
 	{
 		return paymentDetails;
 	}
-	public void savePaymentDetails(Context context) {
-		paymentDetails.save(context);
+	public Boolean savePaymentDetails(Context context) {
+		return paymentDetails.save(context);
 	}
 	public void restorePaymentDetails(Context context) {
 		paymentDetails.restore(context);
+	}
+	public ArrayList<String> getErrors(){
+		return paymentDetails.getErrors();
 	}
 }

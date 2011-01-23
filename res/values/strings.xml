@@ -2,6 +2,8 @@
 <resources>
     <string name="hello">Hello World, Payment!</string>
     <string name="app_name">Moip Android Module</string>
+    <string name="attention">Atenção!</string>
+    <string name="back">Retornar</string>
     
     <!-- Strings for credit card screen -->
     <string name="credit_card">Cartão de crédito:</string>

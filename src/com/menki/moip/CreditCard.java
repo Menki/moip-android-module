@@ -9,6 +9,8 @@
 package com.menki.moip;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -55,12 +57,20 @@ public class CreditCard extends Activity implements OnClickListener {
 		case(R.id.credit_card_next_step):
 			// Set payment objects and persist them
 			setPayment();
-
-			// Go to Payer screen passing to its activity the payment object
-			Intent intent = new Intent(this.getApplicationContext( ), Payer.class);
-			Bundle b = getIntent( ).getExtras( );
-			intent.putExtra("paymentType", b.getInt("paymentType"));
-			this.startActivity(intent);
+			ArrayList<String> validationErrors = PaymentMgr.getInstance().getErrors();
+		
+			if (validationErrors.isEmpty()) {
+				// Go to Payer screen passing to its activity the payment object
+				Intent intent = new Intent(this.getApplicationContext( ), Payer.class);
+				Bundle b = getIntent( ).getExtras( );
+				intent.putExtra("paymentType", b.getInt("paymentType"));
+				this.startActivity(intent);
+			} else {
+				//showErrorsDialog(validationErrors);
+				Intent intent = new Intent(this.getApplicationContext( ), ValidationErrors.class);
+				this.startActivity(intent);
+			}
+			
 			break;
 		}
 	}
@@ -151,10 +161,13 @@ public class CreditCard extends Activity implements OnClickListener {
 		paymentDetails.setOwnerName(ownerName.getEditableText().toString());
 		
 		checkedItem = (RadioButton) findViewById(identificationType.getCheckedRadioButtonId());
-		Log.d(TAG, checkedItem.getText().toString());
-		paymentDetails.setOwnerIdentificationType(checkedItem.getText().toString());
+		if (checkedItem != null)
+			paymentDetails.setOwnerIdentificationType(checkedItem.getText().toString());
+		else
+			paymentDetails.setOwnerIdentificationType("");
 		
 		paymentDetails.setOwnerIdentificationNumber(identificationNumber.getEditableText().toString());
+		
 		paymentDetails.setOwnerPhoneNumber(ownerPhoneNumber.getEditableText().toString());
 		
 		try {
@@ -170,9 +183,21 @@ public class CreditCard extends Activity implements OnClickListener {
 		}
 		
 		checkedItem = (RadioButton) findViewById(paymentType.getCheckedRadioButtonId());
-		Log.d(TAG, checkedItem.getText().toString());
-		paymentDetails.setPaymentType(checkedItem.getText().toString());		
+		if (checkedItem != null)
+			paymentDetails.setPaymentType(checkedItem.getText().toString());
+		else
+			paymentDetails.setPaymentType("");
+				
 		
 		paymentMgr.savePaymentDetails(this);
+	}
+	
+	private void showErrorsDialog(ArrayList<String> errors) {
+		Iterator<String> itr = errors.iterator();
+		while(itr.hasNext()){
+			String error = itr.next();
+			
+			Log.e(TAG, error);
+		}
 	}
 }
