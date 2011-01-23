@@ -10,6 +10,7 @@ package com.menki.moip;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +22,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 
 public class Payer extends Activity implements OnClickListener {
 //	private static final String TAG = "PayerActivity";
@@ -218,7 +220,10 @@ public class Payer extends Activity implements OnClickListener {
         	@Override
         	public void onClick(View v) 
         	{
-        		Log.w("MENKI [Payer] ", "finishButton - onClick( ):");
+    			// Go to payment transaction depending on payment type
+    			Intent intent = new Intent(getApplicationContext( ), DirectPaymentTransaction.class);
+    			startActivity(intent);
+    			Log.w("MENKI [Payer] ", "finishButton - onClick( ):");
         	}
         });
             

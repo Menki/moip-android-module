@@ -58,8 +58,6 @@ public class CreditCard extends Activity implements OnClickListener {
 
 			// Go to Payer screen passing to its activity the payment object
 			Intent intent = new Intent(this.getApplicationContext( ), Payer.class);
-			Bundle b = getIntent( ).getExtras( );
-			intent.putExtra("paymentType", b.getInt("paymentType"));
 			this.startActivity(intent);
 			break;
 		}

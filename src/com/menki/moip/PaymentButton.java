@@ -42,6 +42,7 @@ public class PaymentButton extends Button implements OnClickListener
 		mgr.setKey(k);
 		mgr.setToken(t);
 		mgr.setHandler(h);
+		mgr.setType(pt);
 		
 		//testing for a valid button
 		try
@@ -66,7 +67,6 @@ public class PaymentButton extends Button implements OnClickListener
 		{
 			case PAGAMENTO_DIRETO:
 				Intent intent = new Intent(hostActivity.getApplicationContext(), CreditCard.class);
-				intent.putExtra("paymentType", this.type);
 				hostActivity.startActivity(intent);
 				break;
 			default:
