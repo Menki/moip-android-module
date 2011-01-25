@@ -14,6 +14,7 @@ import android.content.Context;
 import android.os.Handler;
 
 import com.menki.moip.Constants.RemoteServer;
+import com.menki.moip.Constants.PaymentType;
 
 
 public class PaymentMgr 
@@ -24,6 +25,7 @@ public class PaymentMgr
 	private String key, token;
 	private Handler handler = null;
 	private PaymentDetails paymentDetails = PaymentDetails.getInstance();
+	private PaymentType type = PaymentType.NONE;
 	
 	private PaymentMgr() {}
 	
@@ -93,8 +95,19 @@ public class PaymentMgr
 	{
 		return paymentDetails;
 	}
-	public Boolean savePaymentDetails(Context context) {
-		return paymentDetails.save(context);
+	
+	public PaymentType getType() 
+	{
+		return type;
+	}
+
+	public void setType(PaymentType type) 
+	{
+		this.type = type;
+	}
+
+	public void savePaymentDetails(Context context) {
+		paymentDetails.save(context);
 	}
 	public void restorePaymentDetails(Context context) {
 		paymentDetails.restore(context);
