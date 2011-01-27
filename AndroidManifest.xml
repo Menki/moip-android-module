@@ -16,5 +16,6 @@
 		<activity android:name=".ValidationErrors" android:label="@string/attention" android:theme="@android:style/Theme.Dialog" android:screenOrientation="portrait"/>
     </application>
 
+<uses-permission android:name="android.permission.INTERNET" />
 
 </manifest> 

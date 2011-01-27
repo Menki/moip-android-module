@@ -15,19 +15,24 @@ import android.os.Handler;
 
 import com.menki.moip.Constants.RemoteServer;
 import com.menki.moip.Constants.PaymentType;
+import com.menki.moip.connection.DataChannel;
+import com.menki.moip.xml.XmlBuilder;
 
 
 public class PaymentMgr 
 {
 	private static PaymentMgr _instance = null;
 
-	private RemoteServer server = RemoteServer.NONE;
-	private String key, token;
+	DataChannel conn = null;
+	
 	private Handler handler = null;
 	private PaymentDetails paymentDetails = PaymentDetails.getInstance();
 	private PaymentType type = PaymentType.NONE;
 	
-	private PaymentMgr() {}
+	private PaymentMgr( ) 
+	{ 
+		conn = DataChannel.getInstance( ); 
+	}
 	
 	/**
 	 * 
@@ -42,7 +47,6 @@ public class PaymentMgr
 		return _instance;
 	}
 	
-	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#clone()
 	 */
@@ -51,34 +55,45 @@ public class PaymentMgr
 		throw new CloneNotSupportedException( );
 	}
 
+	
+	public int performDirectPaymentTransaction( )
+	{
+		XmlBuilder builder = new XmlBuilder( );
+		String msg = builder.getDirectPaymentMessage( );
+		
+		conn.postMessage(type, msg);//TODO: remover type e passar PAGAMENTO_DIRETO
+		
+		return 0;
+	}
+	
 	public RemoteServer getServer( ) 
 	{
-		return server;
+		return conn.getServer( );
 	}
 
 	public void setServer(RemoteServer server) 
 	{
-		this.server = server;
+		conn.setServer(server);
 	}
 
 	public String getKey( ) 
 	{
-		return key;
+		return conn.getKey( );
 	}
 
 	public void setKey(String key) 
 	{
-		this.key = key;
+		conn.setKey(key);
 	}
 
 	public String getToken() 
 	{
-		return token;
+		return conn.getToken( );
 	}
 
 	public void setToken(String token) 
 	{
-		this.token = token;
+		conn.setToken(token);
 	}
 
 	public Handler getHandler( ) 

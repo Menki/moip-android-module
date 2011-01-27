@@ -8,6 +8,8 @@
 
 package com.menki.moip;
 
+import com.menki.moip.Constants.PaymentType;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -220,10 +222,17 @@ public class Payer extends Activity implements OnClickListener {
         	@Override
         	public void onClick(View v) 
         	{
-    			// Go to payment transaction depending on payment type
-    			Intent intent = new Intent(getApplicationContext( ), DirectPaymentTransaction.class);
-    			startActivity(intent);
-    			Log.w("MENKI [Payer] ", "finishButton - onClick( ):");
+    			PaymentMgr mgr = PaymentMgr.getInstance( );
+    			PaymentType type = mgr.getType( );
+    			if(type == PaymentType.PAGAMENTO_DIRETO)
+    			{
+    				int responseCode = mgr.performDirectPaymentTransaction( );
+    				
+    				//TODO: call client handler
+    				
+    			}	
+    			else
+    				Log.e("MENKI [Payer] ", "Undefined Payment Method");
         	}
         });
             
