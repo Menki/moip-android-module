@@ -4,6 +4,8 @@
     <string name="app_name">Moip Android Module</string>
     <string name="attention">Atenção!</string>
     <string name="back">Retornar</string>
+    <string name="insert">Inserir</string>
+    <string name="change">Alterar</string>
     
     <!-- Strings for credit card screen -->
     <string name="credit_card">Cartão de crédito:</string>

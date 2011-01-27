@@ -135,11 +135,20 @@
         android:text="@string/born_date"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
-    <EditText
-        android:id="@+id/born_date"
-        android:inputType="date" 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
+    <LinearLayout 
+	    android:orientation="horizontal" 
+	    android:layout_height="wrap_content" 
+	    android:layout_width="fill_parent">        
+	    <TextView 
+	        android:text=""
+	        android:id="@+id/born_date_textview"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"/>
+	    <Button
+			android:id="@+id/born_date_button" 
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+    </LinearLayout>    
 
     <TextView 
         android:text="@string/installments"

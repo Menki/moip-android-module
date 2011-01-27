@@ -10,22 +10,29 @@ package com.menki.moip;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class CreditCard extends Activity implements OnClickListener {
-	private static final String TAG = "CreditCardActivity";
+	static final String TAG = "CreditCardActivity";
+	static final int BORN_DATE_DIALOG_ID = 0;
 	
 	private Spinner brand;
 	private EditText creditCardNumber;
@@ -35,10 +42,15 @@ public class CreditCard extends Activity implements OnClickListener {
 	private RadioGroup identificationType;
 	private EditText identificationNumber;
 	private EditText ownerPhoneNumber;
-	private EditText bornDate;
+	private TextView bornDateTextview;
+	private Button bornDateButton;
 	private EditText installments;
 	private RadioGroup paymentType;
 	private Button nextStep;
+	
+	private int bornDateYear;
+    private int bornDateMonth;
+    private int bornDateDay;
 	
     /** Called when the activity is first created. */
     @Override
@@ -70,11 +82,58 @@ public class CreditCard extends Activity implements OnClickListener {
 				Intent intent = new Intent(this.getApplicationContext( ), ValidationErrors.class);
 				this.startActivity(intent);
 			}
-			
+			break;
+		case(R.id.born_date_button):
+			showDialog(BORN_DATE_DIALOG_ID);
 			break;
 		}
 	}
 	
+	@Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case BORN_DATE_DIALOG_ID:
+            	return new DatePickerDialog(this,
+            			bornDateSetListener,
+            			bornDateYear, bornDateMonth, bornDateDay);
+        }
+        return null;
+    }
+    
+    @Override
+    protected void onPrepareDialog(int id, Dialog dialog) {
+        switch (id) {
+            case BORN_DATE_DIALOG_ID:
+                ((DatePickerDialog) dialog).updateDate(bornDateYear, bornDateMonth, bornDateDay);
+                break;
+        }
+    }
+	
+	private DatePickerDialog.OnDateSetListener bornDateSetListener =
+        new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            	bornDateYear = year;
+            	bornDateMonth = monthOfYear;
+            	bornDateDay = dayOfMonth;
+                updateDisplay(BORN_DATE_DIALOG_ID);
+            }
+        };
+    
+    private void updateDisplay(int id) {
+    	switch (id) {
+        case BORN_DATE_DIALOG_ID:
+        	bornDateTextview.setText(
+                    new StringBuilder()
+                            // Month is 0 based so add 1
+                            .append(pad(bornDateDay)).append("/")
+                            .append(pad(bornDateMonth + 1)).append("/")
+                            .append(bornDateYear));
+        	bornDateButton.setText(getString(R.string.change));
+        	break;
+    	}
+	}
+    
 	private void setViews() {
 		brand = (Spinner) findViewById(R.id.brand);
 		creditCardNumber = (EditText) findViewById(R.id.credit_card_number);
@@ -84,7 +143,8 @@ public class CreditCard extends Activity implements OnClickListener {
 		identificationType = (RadioGroup) findViewById(R.id.identification_type);
 		identificationNumber = (EditText) findViewById(R.id.identification_number);
 		ownerPhoneNumber = (EditText) findViewById(R.id.owner_phone_number);
-		bornDate = (EditText) findViewById(R.id.born_date);
+		bornDateTextview = (TextView) findViewById(R.id.born_date_textview);
+		bornDateButton = (Button) findViewById(R.id.born_date_button);
 		installments = (EditText) findViewById(R.id.installments);
 		paymentType = (RadioGroup) findViewById(R.id.payment_type);
 		nextStep = (Button) findViewById(R.id.credit_card_next_step);
@@ -95,7 +155,6 @@ public class CreditCard extends Activity implements OnClickListener {
 		PaymentMgr paymentMgr = PaymentMgr.getInstance();
 		paymentMgr.restorePaymentDetails(this);
 		PaymentDetails paymentDetails = paymentMgr.getPaymentDetails(); 
-		
 		
 		for(int i=0; i < brand.getCount(); i++) {
 			if (brand.getItemAtPosition(i).toString().equals(paymentDetails.getBrand())) {
@@ -123,8 +182,12 @@ public class CreditCard extends Activity implements OnClickListener {
 
 		ownerPhoneNumber.setText(paymentDetails.getOwnerPhoneNumber());
 		
-		if (paymentDetails.getBornDate() != null)
-			bornDate.setText(Constants.DAY_MONTH_AND_YEAR.format(paymentDetails.getBornDate()));
+		if (paymentDetails.getBornDate() != null) {
+			bornDateTextview.setText(Constants.DAY_MONTH_AND_YEAR.format(paymentDetails.getBornDate()));
+			bornDateButton.setText(getString(R.string.change));
+		} else {
+			bornDateButton.setText(getString(R.string.insert));
+		}
 		
 		if (paymentDetails.getInstallments() > -1)
 			installments.setText(String.valueOf(paymentDetails.getInstallments()));
@@ -136,9 +199,15 @@ public class CreditCard extends Activity implements OnClickListener {
 				break;
 			}
 		}
+		
+		final Calendar c = Calendar.getInstance();
+		bornDateYear = c.get(Calendar.YEAR);
+		bornDateMonth = c.get(Calendar.MONTH);
+		bornDateDay = c.get(Calendar.DAY_OF_MONTH);
 	}
 
 	private void setListeners() {
+		bornDateButton.setOnClickListener(this);
 		nextStep.setOnClickListener(this);
 	}
 	
@@ -170,11 +239,11 @@ public class CreditCard extends Activity implements OnClickListener {
 		
 		paymentDetails.setOwnerPhoneNumber(ownerPhoneNumber.getEditableText().toString());
 		
-		try {
-			paymentDetails.setBornDate(Constants.DAY_MONTH_AND_YEAR.parse(bornDate.getText().toString()));
-		} catch (ParseException e) {
-			Log.e(TAG, "Error while parsing date from field expiration date.");
-		}
+//		try {
+//			paymentDetails.setBornDate(Constants.DAY_MONTH_AND_YEAR.parse(bornDateTextview.getText().toString()));
+//		} catch (ParseException e) {
+//			Log.e(TAG, "Error while parsing date from field expiration date.");
+//		}
 		
 		String installmentsStr = installments.getEditableText().toString().trim();
 		if (installmentsStr.length() != 0) {
@@ -192,12 +261,10 @@ public class CreditCard extends Activity implements OnClickListener {
 		paymentMgr.savePaymentDetails(this);
 	}
 	
-	private void showErrorsDialog(ArrayList<String> errors) {
-		Iterator<String> itr = errors.iterator();
-		while(itr.hasNext()){
-			String error = itr.next();
-			
-			Log.e(TAG, error);
-		}
-	}
+	private static String pad(int c) {
+        if (c >= 10)
+            return String.valueOf(c);
+        else
+            return "0" + String.valueOf(c);
+    }	
 }
