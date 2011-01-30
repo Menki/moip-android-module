@@ -1,9 +1,31 @@
 /**
- * Menki Mobile Solutions
- * http://www.menkimobile.com.br
+ * Copyright (c) 2011, MENKI MOBILE SOLUTIONS - http://www.menkimobile.com.br
+ * All rights reserved.
  * 
- * @author Augusto Souza
+ * Redistribution and use in source and binary forms, with or without modification, 
+ * are permitted provided that the following conditions are met:
  *
+ * * Redistributions of source code must retain the above copyright notice, 
+ *   this list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright notice, 
+ *   this list of conditions and the following disclaimer in the documentation and/or 
+ *   other materials provided with the distribution.
+ * * Neither the name of the MENKI MOBILE SOLUTIONS nor the names of its contributors 
+ *   may be used to endorse or promote products derived from this software without 
+ *   specific prior written permission.
+ *   
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY 
+ *  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT 
+ *  SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED 
+ *  TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
+ *  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
+ *  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+ *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF 
+ *  SUCH DAMAGE. 
+ *  
+ *  @version 0.0.1
  */
 
 package com.menki.moip;
@@ -13,6 +35,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+
+import com.menki.moip.utils.Constants;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -102,7 +126,6 @@ public class PaymentDetails {
 		}
 		return _instance;
 	}
-
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#clone()
@@ -243,83 +266,83 @@ public class PaymentDetails {
 
 			if (attr.equals(ATTR_CREDIT_CARD)) {
 				if (getCreditCardNumber().length() != 16)
-					errors.add("Número do cartão de crédito deve conter 16 digitos.");
+					errors.add("NÔøΩmero do cartÔøΩo de crÔøΩdito deve conter 16 digitos.");
 			} 
 			else if (attr.equals(ATTR_SECURE_CODE)) {
 				if (getSecureCode().length() != 3)
-					errors.add("Código de segurança deve conter 3 digitos.");
+					errors.add("CÔøΩdigo de seguranÔøΩa deve conter 3 digitos.");
 			} 
 			else if (attr.equals(ATTR_OWNER_NAME)) {
 				if (getOwnerName().length() == 0)
-					errors.add("Nome do portador é requerido.");
+					errors.add("Nome do portador ÔøΩ requerido.");
 			}
 			else if (attr.equals(ATTR_OWNER_ID_TYPE)) {
 				if (getOwnerIdentificationType().length() == 0)
-					errors.add("Tipo de identificação é requerido.");
+					errors.add("Tipo de identificaÔøΩÔøΩo ÔøΩ requerido.");
 			} 
 			else if (attr.equals(ATTR_OWNER_ID_NUM)) {
 				if (getOwnerIdentificationNumber().length() == 0)
-					errors.add("Número do RG ou CPF do portador do cartão é requerido.");
+					errors.add("NÔøΩmero do RG ou CPF do portador do cartÔøΩo ÔøΩ requerido.");
 			}
 			else if (attr.equals(ATTR_OWNER_PHONE_NUM)) {
 				if (getOwnerPhoneNumber().length() == 0)
-					errors.add("Telefone é requerido.");
+					errors.add("Telefone ÔøΩ requerido.");
 			} 
 			else if (attr.equals(ATTR_INSTALLMENTS)) {
 				if (getInstallments() == 0)
-					errors.add("Quantidades de parcelas é requerido.");
+					errors.add("Quantidades de parcelas ÔøΩ requerido.");
 			} 
 			else if (attr.equals(ATTR_PAYMENT_TYPE)) {
 				if (getPaymentType().length() == 0)
-					errors.add("Tipo de pagamento é requerido.");
+					errors.add("Tipo de pagamento ÔøΩ requerido.");
 			}
 			else if (attr.equals(ATTR_FULL_NAME)) {
 				if (getFullName().length() == 0)
-					errors.add("Nome completo é requerido.");
+					errors.add("Nome completo ÔøΩ requerido.");
 			}
 			else if (attr.equals(ATTR_EMAIL)) {
 				if (getEmail().length() == 0)
-					errors.add("Email é requerido.");
+					errors.add("Email ÔøΩ requerido.");
 			}
 			else if (attr.equals(ATTR_CELL_PHONE)) {
 				if (getCellPhone().length() == 0)
-					errors.add("Celular é requerido.");
+					errors.add("Celular ÔøΩ requerido.");
 			} 
 			else if (attr.equals(ATTR_PAYER_ID_TYPE)) {
 				if (getPayerIdentificationType().length() == 0)
-					errors.add("Celular é requerido.");
+					errors.add("Celular ÔøΩ requerido.");
 			} 
 			else if (attr.equals(ATTR_PAYER_ID_NUM)) {
 				if (getPayerIdentificationNumber().length() == 0)
-					errors.add("Número do RG ou CPF do pagador é requerido.");
+					errors.add("NÔøΩmero do RG ou CPF do pagador ÔøΩ requerido.");
 			}
 			else if (attr.equals(ATTR_ST_ADDRESS)) {
 				if (getStreetAddress().length() == 0)
-					errors.add("Endereço é requerido.");
+					errors.add("EndereÔøΩo ÔøΩ requerido.");
 			}
 			else if (attr.equals(ATTR_ST_NUMBER)) {
 				if (getStreetNumber() == 0)
-					errors.add("Número da residência é requerido.");
+					errors.add("NÔøΩmero da residÔøΩncia ÔøΩ requerido.");
 			}
 			else if (attr.equals(ATTR_ST_COMPLEMENT)) {
 				if (getStreetAddress().length() == 0)
-					errors.add("Endereço é requerido.");
+					errors.add("EndereÔøΩo ÔøΩ requerido.");
 			} 
 			else if (attr.equals(ATTR_NEIGHBORHOOD)) {
 				if (getNeighborhood().length() == 0)
-					errors.add("Bairro é requerido.");
+					errors.add("Bairro ÔøΩ requerido.");
 			}
 			else if (attr.equals(ATTR_CITY)) {
 				if (getCity().length() == 0)
-					errors.add("Cidade é requerido.");
+					errors.add("Cidade ÔøΩ requerido.");
 			}
 			else if (attr.equals(ATTR_ZIP_CODE)) {
 				if (getZipCode().length() == 0)
-					errors.add("CEP é requerido.");
+					errors.add("CEP ÔøΩ requerido.");
 			} 
 			else if (attr.equals(ATTR_FIXED_PHONE)) {
 				if (getFixedPhone().length() == 0)
-					errors.add("Telefone fixo é requerido.");
+					errors.add("Telefone fixo ÔøΩ requerido.");
 			} 
 		}
 

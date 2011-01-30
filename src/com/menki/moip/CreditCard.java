@@ -1,9 +1,31 @@
 /**
- * Menki Mobile Solutions
- * http://www.menkimobile.com.br
+ * Copyright (c) 2011, MENKI MOBILE SOLUTIONS - http://www.menkimobile.com.br
+ * All rights reserved.
  * 
- * @author Augusto Souza
+ * Redistribution and use in source and binary forms, with or without modification, 
+ * are permitted provided that the following conditions are met:
  *
+ * * Redistributions of source code must retain the above copyright notice, 
+ *   this list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright notice, 
+ *   this list of conditions and the following disclaimer in the documentation and/or 
+ *   other materials provided with the distribution.
+ * * Neither the name of the MENKI MOBILE SOLUTIONS nor the names of its contributors 
+ *   may be used to endorse or promote products derived from this software without 
+ *   specific prior written permission.
+ *   
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY 
+ *  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
+ *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT 
+ *  SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED 
+ *  TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
+ *  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
+ *  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+ *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF 
+ *  SUCH DAMAGE. 
+ *  
+ *  @version 0.0.1
  */
 
 package com.menki.moip;
@@ -11,12 +33,12 @@ package com.menki.moip;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Iterator;
+
+import com.menki.moip.utils.Constants;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -74,11 +96,11 @@ public class CreditCard extends Activity implements OnClickListener {
 			if (validationErrors.isEmpty()) {
 				// Go to Payer screen passing to its activity the payment object
 				Intent intent = new Intent(this.getApplicationContext( ), Payer.class);
-				this.startActivity(intent);
+				this.startActivityForResult(intent,0);
 			} else {
 				//showErrorsDialog(validationErrors);
 				Intent intent = new Intent(this.getApplicationContext( ), ValidationErrors.class);
-				this.startActivity(intent);
+				this.startActivityForResult(intent,0);
 			}
 			break;
 		case(R.id.born_date_button):
@@ -86,7 +108,30 @@ public class CreditCard extends Activity implements OnClickListener {
 			break;
 		}
 	}
-	
+		
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
+	{
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if (resultCode == Activity.RESULT_CANCELED) 
+		{ /* Back button might have been pressed */ }
+		else
+			switch (requestCode) 
+			{
+				//just one Activity started:
+				case 0: 
+					// retrieve the data from intent (or bundle)
+					String response = data.getStringExtra("response");
+					Intent intent = new Intent( );
+					intent.putExtra("response", response);
+					// sets the result for the calling activity
+					setResult( RESULT_OK, intent);
+					finish( );
+					break;
+			}
+	}
+
 	@Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {

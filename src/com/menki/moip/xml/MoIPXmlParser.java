@@ -28,42 +28,73 @@
  *  @version 0.0.1
  */
 
-package com.menki.moip;
+package com.menki.moip.xml;
 
-import java.util.Iterator;
+import java.io.IOException;
+import java.io.InputStream;
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.TextView;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
-public class ValidationErrors extends Activity implements OnClickListener {
-	private Button ok;
-	private TextView errors;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import android.util.Log;
+
+public class MoIPXmlParser 
+{
+	private String parsedResponse = null;
 	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.validation_errors);
+	public MoIPXmlParser( ){ }
+	
+	public MoIPXmlParser(InputStream msg)
+	{
+		String response = parseDirectPaymentResponse(msg);
+		this.parsedResponse = response;
+	}
+	
+	public String parseDirectPaymentResponse(InputStream msg)
+	{
+		String responseToken = "ERROR";
 		
-		ok = (Button) findViewById(R.id.back);
-		ok.setOnClickListener(this);
-		
-		errors = (TextView) findViewById(R.id.errors);
-		
-		StringBuilder errorsStr = new StringBuilder();
-		Iterator<String> itr = PaymentMgr.getInstance().getErrors().iterator();
-		while(itr.hasNext()){
-			String error = itr.next();
-			errorsStr.append(error + "\n");
+		try
+		{
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			DocumentBuilder db = dbf.newDocumentBuilder();
+			Document doc = db.parse(msg);
+			NodeList nodeList = doc.getElementsByTagName("Token");
+			if(nodeList.item(0) != null)
+				responseToken = nodeList.item(0).getNodeValue( );
+		}
+		catch(ParserConfigurationException pce)
+		{
+			Log.e("MENKI [parseDirectPaymentResponse] ", pce.getMessage());
+			pce.printStackTrace( );
+		}
+		catch(SAXException se)
+		{
+			Log.e("MENKI [parseDirectPaymentResponse] ", se.getMessage());
+			se.printStackTrace( );
+		}
+		catch(IOException ioe)
+		{
+			Log.e("MENKI [parseDirectPaymentResponse] ", ioe.getMessage());
+			ioe.printStackTrace( );
+		}
+		catch(DOMException de)
+		{
+			Log.e("MENKI [parseDirectPaymentResponse] ", de.getMessage());
+			de.printStackTrace( );
 		}
 		
-		errors.setText(errorsStr);
+		return responseToken;
 	}
 
-	public void onClick(View v) {
-		this.finish();
+	public String getParsedResponse() 
+	{
+		return parsedResponse;
 	}
 }

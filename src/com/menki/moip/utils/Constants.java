@@ -28,42 +28,24 @@
  *  @version 0.0.1
  */
 
-package com.menki.moip;
+package com.menki.moip.utils;
 
-import java.util.Iterator;
+import java.text.SimpleDateFormat;
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.TextView;
 
-public class ValidationErrors extends Activity implements OnClickListener {
-	private Button ok;
-	private TextView errors;
+public interface Constants 
+{
+	//Payment types support by the button
+	public static enum PaymentType { NONE, PAGAMENTO_DIRETO }; 
 	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.validation_errors);
-		
-		ok = (Button) findViewById(R.id.back);
-		ok.setOnClickListener(this);
-		
-		errors = (TextView) findViewById(R.id.errors);
-		
-		StringBuilder errorsStr = new StringBuilder();
-		Iterator<String> itr = PaymentMgr.getInstance().getErrors().iterator();
-		while(itr.hasNext()){
-			String error = itr.next();
-			errorsStr.append(error + "\n");
-		}
-		
-		errors.setText(errorsStr);
-	}
-
-	public void onClick(View v) {
-		this.finish();
-	}
+	//Connection remote server
+	public static enum RemoteServer { NONE, TEST, PRODUCTION}; 
+	
+	//Connectioin URLs
+	public static final String TEST_SERVER = "https://desenvolvedor.moip.com.br/sandbox";
+	public static final String PRODUCTION_SERVER = "https://www.moip.com.br";
+	
+	//Date formats
+	public static final SimpleDateFormat MONTH_AND_YEAR = new SimpleDateFormat("MM/yyyy");
+	public static final SimpleDateFormat DAY_MONTH_AND_YEAR = new SimpleDateFormat("dd/MM/yyyy");
 }
