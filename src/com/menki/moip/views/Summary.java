@@ -31,15 +31,21 @@
 package com.menki.moip.views;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.menki.moip.models.PaymentMgr;
+import com.menki.moip.utils.Constants.PaymentType;
 import com.menki.moip.views.R;
 
 public class Summary extends Activity implements OnClickListener {
 	private Button finish;
+	private TextView summaryTextView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +54,28 @@ public class Summary extends Activity implements OnClickListener {
 		
 		finish = (Button) findViewById(R.id.finish_button);
 		finish.setOnClickListener(this);
+		summaryTextView = (TextView) findViewById(R.id.SummaryTextView);
 	}
 
 	public void onClick(View v) {
-		this.finish();
+		switch(v.getId())
+		{
+			case(R.id.finish_button):
+				PaymentMgr mgr = PaymentMgr.getInstance( );
+				
+				PaymentType type = mgr.getType( );
+				if(type == PaymentType.PAGAMENTO_DIRETO)
+				{
+					String response  = mgr.performDirectPaymentTransaction(this);
+					Intent intent = new Intent( );
+					intent.putExtra("response", response);
+					// sets the result for the calling activity
+					setResult( RESULT_OK, intent);
+					finish( );				
+				}	
+				else
+					Log.e("MENKI [Payer] ", "Undefined Payment Method");
+				break;
+		}		
 	}
 }

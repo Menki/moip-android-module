@@ -71,16 +71,7 @@ public abstract class FormActivity extends Activity implements OnClickListener {
         getForm().addView(nextStep);
         
 	}
-//
-//	public void onPause() {  
-//    	if (!setPayment()) {
-//    		Intent intent = new Intent(this.getApplicationContext( ), ValidationErrors.class);
-//			this.startActivityForResult(intent,0);
-//    	}
-//    	
-//    	super.onPause();
-//    }
-//	
+
 	protected void setDefaultValues() {
 		HashMap<Integer, String> payment = PaymentMgr.getInstance().getPaymentDetails();
 		View child;
@@ -108,7 +99,8 @@ public abstract class FormActivity extends Activity implements OnClickListener {
 				fieldsNum++;
 				if (value != null) {
 					RadioButton itemToCheck = (RadioButton) findViewById(Integer.parseInt(value));
-					itemToCheck.setChecked(true);
+					if (itemToCheck != null)
+						itemToCheck.setChecked(true);
 				}
 			}
 			else if (klass == Spinner.class) {
@@ -121,7 +113,7 @@ public abstract class FormActivity extends Activity implements OnClickListener {
 
 	protected Boolean setPayment() {
 		HashMap<Integer, String> payment = PaymentMgr.getInstance().getPaymentDetails();
-		int emptyFieldsCounter = 0;
+		int fieldsWithData = 0;
 		
 		for(int i=0; i < getForm().getChildCount(); i++) {
 			View child = getForm().getChildAt(i);
@@ -140,8 +132,10 @@ public abstract class FormActivity extends Activity implements OnClickListener {
 			} 
 			else if (klass == RadioGroup.class) {
 				RadioButton checkedItem = (RadioButton) findViewById(((RadioGroup) child).getCheckedRadioButtonId());
-				value = ((Integer) checkedItem.getId()).toString();
-				payment.put(child.getId(), value);
+				if (checkedItem != null) {
+					value = ((Integer) checkedItem.getId()).toString();
+					payment.put(child.getId(), value);
+				}
 			}
 			else if (klass == Spinner.class) {
 				value = ((Integer) ((Spinner) child).getSelectedItemPosition()).toString();
@@ -149,10 +143,10 @@ public abstract class FormActivity extends Activity implements OnClickListener {
 			}
 			
 			if ((value != null) && (value.length() > 0))
-				emptyFieldsCounter++;
+				fieldsWithData++;
 		}
 		
-		if (emptyFieldsCounter < fieldsNum)
+		if (fieldsWithData < fieldsNum)
 			return false;
 		else
 			return PaymentMgr.getInstance().savePaymentDetails();

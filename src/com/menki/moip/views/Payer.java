@@ -36,16 +36,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 
 import com.menki.moip.views.R;
 import com.menki.moip.models.PaymentMgr;
 import com.menki.moip.utils.Constants.PaymentType;
 
-public class Payer extends FormActivity implements OnClickListener {
-//	private static final String TAG = "PayerActivity";
-	
+public class Payer extends FormActivity {
 	private Dialog summary;
 	
     /** Called when the activity is first created. */
@@ -53,9 +50,6 @@ public class Payer extends FormActivity implements OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
     	setContentView(R.layout.payer);
     	super.onCreate(savedInstanceState);
-        
-        //nextStep = (Button) findViewById(R.id.payer_next_step);
-        //nextStep.setOnClickListener(this);
     }
 
 	@Override
@@ -84,6 +78,8 @@ public class Payer extends FormActivity implements OnClickListener {
 					Log.e("MENKI [Payer] ", "Undefined Payment Method");
 				break;
 		}
+		
+		super.onClick(v);
 	}
 		
 //	private void showSummaryDialog( )

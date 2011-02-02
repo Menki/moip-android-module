@@ -37,7 +37,6 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
@@ -45,7 +44,7 @@ import android.widget.TextView;
 
 import com.menki.moip.views.R;
 
-public class CreditCard extends FormActivity implements OnClickListener {
+public class CreditCard extends FormActivity {
 	static final String TAG = "CreditCardActivity";
 	static final int BORN_DATE_DIALOG_ID = 0;
 	
@@ -75,6 +74,8 @@ public class CreditCard extends FormActivity implements OnClickListener {
 			showDialog(BORN_DATE_DIALOG_ID);
 			break;
 		}
+		
+		super.onClick(v);
 	}
 		
 	@Override

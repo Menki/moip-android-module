@@ -31,6 +31,7 @@
 package com.menki.moip.views;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -40,7 +41,6 @@ import com.menki.moip.views.R;
 
 public class ValidationErrors extends Activity implements OnClickListener {
 	private Button ok;
-//	private TextView errors;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,19 +49,11 @@ public class ValidationErrors extends Activity implements OnClickListener {
 		
 		ok = (Button) findViewById(R.id.back);
 		ok.setOnClickListener(this);
-		
-//		errors = (TextView) findViewById(R.id.errors);
-		
-//		StringBuilder errorsStr = new StringBuilder();
-//		Iterator<String> itr = PaymentMgr.getInstance().getErrors().iterator();
-//		while(itr.hasNext()){
-//			String error = itr.next();
-//			errorsStr.append(error + "\n");
-//		}
-//		errors.setText(errorsStr);
 	}
 
 	public void onClick(View v) {
-		this.finish();
+		Intent intent = new Intent( );
+		setResult(RESULT_CANCELED, intent);
+		finish();
 	}
 }

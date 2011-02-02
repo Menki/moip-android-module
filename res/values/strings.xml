@@ -80,6 +80,7 @@
     
     <!-- Strings and arrays shared between payer screen and credi card screen-->
     <string name="choose_identification_type">Escolha um tipo de documento:</string>
+    <string name="all_fields_must_be_filled">Por favor, preencha todos os campos</string>
     <string name="rg">RG</string>
     <string name="cpf">CPF</string>
     <string name="identification_type">Tipo de identificação:</string>

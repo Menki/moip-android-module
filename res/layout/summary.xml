@@ -12,19 +12,20 @@
 	android:layout_width="wrap_content" android:layout_height="wrap_content">
 
 	<ImageView android:id="@+id/SummaryImageView"
- 				android:layout_width="wrap_content" 
- 				android:layout_height="wrap_content"
- 				android:layout_centerHorizontal="true" />
- 
- 	<ScrollView android:id="@+id/SummaryScrollView"
- 				android:layout_width="wrap_content" 
- 				android:layout_below="@+id/SummaryImageView"
- 				android:layout_height="200px">
- 				
- 		<TextView android:text="Payment Summary" 
- 				android:id="@+id/SummaryTextView"
- 				android:layout_width="wrap_content" 
- 				android:layout_height="wrap_content" />
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"
+		android:layout_centerHorizontal="true"
+		android:src="@drawable/moiplabs" />
+	
+	<ScrollView android:id="@+id/SummaryScrollView"
+		android:layout_width="wrap_content" 
+		android:layout_below="@+id/SummaryImageView"
+		android:layout_height="200px">
+					
+	<TextView android:id="@+id/SummaryTextView" 
+		android:text="Payment Summary" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" />
  				
  	</ScrollView>
  	<LinearLayout
