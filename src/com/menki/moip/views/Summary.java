@@ -37,7 +37,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.menki.moip.models.PaymentMgr;
 import com.menki.moip.utils.Constants.PaymentType;
@@ -45,7 +44,7 @@ import com.menki.moip.views.R;
 
 public class Summary extends Activity implements OnClickListener {
 	private Button finish;
-	private TextView summaryTextView;
+	//private TextView summaryTextView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +53,7 @@ public class Summary extends Activity implements OnClickListener {
 		
 		finish = (Button) findViewById(R.id.finish_button);
 		finish.setOnClickListener(this);
-		summaryTextView = (TextView) findViewById(R.id.SummaryTextView);
+		//summaryTextView = (TextView) findViewById(R.id.SummaryTextView);
 	}
 
 	public void onClick(View v) {

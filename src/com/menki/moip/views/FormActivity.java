@@ -1,5 +1,6 @@
 package com.menki.moip.views;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.menki.moip.models.PaymentMgr;
@@ -18,12 +19,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 public abstract class FormActivity extends Activity implements OnClickListener {
-	private int fieldsNum = 0;
+	private int requiredFieldsNum = 0;
 	private Button nextStep;
 	
 	protected abstract LinearLayout getForm();
 	
 	protected abstract Class<? extends Activity> nextActivity();
+	
+	protected abstract ArrayList<Integer> nonRequiredFields();
 	
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
@@ -85,18 +88,24 @@ public abstract class FormActivity extends Activity implements OnClickListener {
 			value = payment.get(child.getId());
 			
 			if ((tag != null) && (tag.equals("TEXTVIEW_WITH_DATA") && (klass == LinearLayout.class))) {
-				fieldsNum++;
+				if (!nonRequiredFields().contains(child.getId()))
+					requiredFieldsNum++;
+				
 				TextView textView = (TextView) ((LinearLayout) child).getChildAt(0);
 				if (value != null)
 					textView.setText(value);
 			}
 			else if (klass == EditText.class) {
-				fieldsNum++;
+				if (!nonRequiredFields().contains(child.getId()))
+					requiredFieldsNum++;
+				
 				if (value != null)
 					((EditText) child).setText(value);
 			} 
 			else if (klass == RadioGroup.class) {
-				fieldsNum++;
+				if (!nonRequiredFields().contains(child.getId()))
+					requiredFieldsNum++;
+				
 				if (value != null) {
 					RadioButton itemToCheck = (RadioButton) findViewById(Integer.parseInt(value));
 					if (itemToCheck != null)
@@ -104,7 +113,9 @@ public abstract class FormActivity extends Activity implements OnClickListener {
 				}
 			}
 			else if (klass == Spinner.class) {
-				fieldsNum++;
+				if (!nonRequiredFields().contains(child.getId()))
+					requiredFieldsNum++;
+				
 				if (value != null)
 					((Spinner) child).setSelection(Integer.parseInt(value));
 			}
@@ -142,11 +153,11 @@ public abstract class FormActivity extends Activity implements OnClickListener {
 				payment.put(child.getId(), value);
 			}
 			
-			if ((value != null) && (value.length() > 0))
+			if ((value != null) && (value.length() > 0) && (!nonRequiredFields().contains(child.getId())))
 				fieldsWithData++;
 		}
 		
-		if (fieldsWithData < fieldsNum)
+		if (fieldsWithData < requiredFieldsNum)
 			return false;
 		else
 			return PaymentMgr.getInstance().savePaymentDetails();

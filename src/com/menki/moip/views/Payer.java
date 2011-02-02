@@ -30,6 +30,8 @@
 
 package com.menki.moip.views;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -152,5 +154,12 @@ public class Payer extends FormActivity {
 	@Override
 	protected Class<? extends Activity> nextActivity() {
 		return Summary.class;
+	}
+
+	@Override
+	protected ArrayList<Integer> nonRequiredFields() {
+		ArrayList<Integer> fields = new ArrayList<Integer>();
+		fields.add((Integer) R.id.street_complement);
+		return fields;
 	}
 }

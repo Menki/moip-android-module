@@ -30,6 +30,7 @@
 
 package com.menki.moip.views;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.app.Activity;
@@ -160,5 +161,12 @@ public class CreditCard extends FormActivity {
 	@Override
 	protected Class<? extends Activity> nextActivity() {
 		return Payer.class;
+	}
+
+	@Override
+	protected ArrayList<Integer> nonRequiredFields() {
+		ArrayList<Integer> fields = new ArrayList<Integer>();
+		fields.add((Integer) R.id.installments);
+		return fields;
 	}
 }
