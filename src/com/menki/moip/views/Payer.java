@@ -30,13 +30,13 @@
 
 package com.menki.moip.views;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.menki.moip.views.R;
@@ -46,8 +46,6 @@ import com.menki.moip.utils.Constants.PaymentType;
 public class Payer extends FormActivity implements OnClickListener {
 //	private static final String TAG = "PayerActivity";
 	
-	private Button nextStep;
-
 	private Dialog summary;
 	
     /** Called when the activity is first created. */
@@ -56,8 +54,8 @@ public class Payer extends FormActivity implements OnClickListener {
     	setContentView(R.layout.payer);
     	super.onCreate(savedInstanceState);
         
-        nextStep = (Button) findViewById(R.id.payer_next_step);
-        nextStep.setOnClickListener(this);
+        //nextStep = (Button) findViewById(R.id.payer_next_step);
+        //nextStep.setOnClickListener(this);
     }
 
 	@Override
@@ -65,12 +63,6 @@ public class Payer extends FormActivity implements OnClickListener {
 	{
 		switch(v.getId())
 		{
-			case(R.id.payer_next_step):
-				// Set payment objects and persist them
-//				showSummaryDialog( );
-				Intent intent2 = new Intent(this.getApplicationContext( ), ValidationErrors.class);
-				this.startActivityForResult(intent2,0);
-				break;
 				
 			case(R.id.finish_button):
 				PaymentMgr mgr = PaymentMgr.getInstance( );
@@ -94,8 +86,8 @@ public class Payer extends FormActivity implements OnClickListener {
 		}
 	}
 		
-	private void showSummaryDialog( )
-	{
+//	private void showSummaryDialog( )
+//	{
 //		StringBuilder builder = new StringBuilder( );
 //		String separator1 = new String(" ");
 //		String separator2 = new String("\n");
@@ -153,11 +145,16 @@ public class Payer extends FormActivity implements OnClickListener {
 //        finishButton.setOnClickListener(this); 
 //        
 //        summary.show();
-	}
+//	}
 
 	@Override
 	protected LinearLayout getForm() {
 		LinearLayout form = (LinearLayout) findViewById(R.id.payer_layout);
 		return form;
+	}
+
+	@Override
+	protected Class<? extends Activity> nextActivity() {
+		return Summary.class;
 	}
 }

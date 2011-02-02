@@ -182,7 +182,7 @@
         android:background="#FF909090" 
         android:layout_marginBottom="6dip"
         android:layout_marginTop="6dip"
-        android:layout_width="fill_parent"/>
+        android:layout_width="fill_parent"/><!--
     <Button
          android:layout_gravity="center"
          android:text="@string/next_step"
@@ -191,5 +191,5 @@
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"/>
 
-</LinearLayout>
+--></LinearLayout>
 </ScrollView>

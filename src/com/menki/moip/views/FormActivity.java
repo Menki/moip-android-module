@@ -5,8 +5,11 @@ import java.util.HashMap;
 import com.menki.moip.models.PaymentMgr;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -14,21 +17,70 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public abstract class FormActivity extends Activity {
+public abstract class FormActivity extends Activity implements OnClickListener {
+	private int fieldsNum = 0;
+	private Button nextStep;
+	
+	protected abstract LinearLayout getForm();
+	
+	protected abstract Class<? extends Activity> nextActivity();
+	
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
         
         setDefaultValues();
+        addNextStepButton();
     }
-    
-    public void onPause() {
-    	super.onPause();
-        
-    	setPayment();
-    }
-    
-	protected abstract LinearLayout getForm();
 	
+    @Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
+	{
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if (resultCode == Activity.RESULT_CANCELED) 
+		{ /* Back button might have been pressed */ }
+		else
+			switch (requestCode) 
+			{
+				//just one Activity started:
+				case 0: 
+					// retrieve the data from intent (or bundle)
+					String response = data.getStringExtra("response");
+					Intent intent = new Intent( );
+					intent.putExtra("response", response);
+					// sets the result for the calling activity
+					setResult( RESULT_OK, intent);
+					finish( );
+					break;
+			}
+	}
+	
+	public void onClick(View v) {
+		if (v.equals(nextStep)){
+			Class<? extends Activity> klass = null;
+			klass = (!setPayment()) ? ValidationErrors.class : nextActivity(); 
+	    	Intent intent = new Intent(this.getApplicationContext( ), klass);
+	    	this.startActivityForResult(intent,0);
+		}
+	}
+    
+    private void addNextStepButton() {
+    	nextStep = new Button(this);
+        nextStep.setText(getString(R.string.next_step));
+        nextStep.setOnClickListener(this);
+        getForm().addView(nextStep);
+        
+	}
+//
+//	public void onPause() {  
+//    	if (!setPayment()) {
+//    		Intent intent = new Intent(this.getApplicationContext( ), ValidationErrors.class);
+//			this.startActivityForResult(intent,0);
+//    	}
+//    	
+//    	super.onPause();
+//    }
+//	
 	protected void setDefaultValues() {
 		HashMap<Integer, String> payment = PaymentMgr.getInstance().getPaymentDetails();
 		View child;
@@ -41,50 +93,69 @@ public abstract class FormActivity extends Activity {
 			tag = (String) child.getTag();
 			value = payment.get(child.getId());
 			
-			if (value != null) {
-				if ((tag != null) && (tag.equals("TEXTVIEW_WITH_DATA") && (klass == LinearLayout.class))) {
-					TextView textView = (TextView) ((LinearLayout) child).getChildAt(0);
+			if ((tag != null) && (tag.equals("TEXTVIEW_WITH_DATA") && (klass == LinearLayout.class))) {
+				fieldsNum++;
+				TextView textView = (TextView) ((LinearLayout) child).getChildAt(0);
+				if (value != null)
 					textView.setText(value);
-				}
-				else if (klass == EditText.class) {
+			}
+			else if (klass == EditText.class) {
+				fieldsNum++;
+				if (value != null)
 					((EditText) child).setText(value);
-				} 
-				else if (klass == RadioGroup.class) {
+			} 
+			else if (klass == RadioGroup.class) {
+				fieldsNum++;
+				if (value != null) {
 					RadioButton itemToCheck = (RadioButton) findViewById(Integer.parseInt(value));
 					itemToCheck.setChecked(true);
 				}
-				else if (klass == Spinner.class) {
+			}
+			else if (klass == Spinner.class) {
+				fieldsNum++;
+				if (value != null)
 					((Spinner) child).setSelection(Integer.parseInt(value));
-				}
 			}
 		}
 	}
 
 	protected Boolean setPayment() {
 		HashMap<Integer, String> payment = PaymentMgr.getInstance().getPaymentDetails();
+		int emptyFieldsCounter = 0;
 		
 		for(int i=0; i < getForm().getChildCount(); i++) {
 			View child = getForm().getChildAt(i);
 			Class<? extends View>klass = child.getClass();
-			String tag = (String) child.getTag(); 
+			String tag = (String) child.getTag();
+			String value = null;
 			
 			if ((tag != null) && (tag.equals("TEXTVIEW_WITH_DATA") && (klass == LinearLayout.class))) {
 				TextView textView = (TextView) ((LinearLayout) child).getChildAt(0);
-				payment.put(child.getId(), textView.getText().toString());
+				value = textView.getText().toString();
+				payment.put(child.getId(), value);
 			}
 			else if (klass == EditText.class) {
-				payment.put(child.getId(), ((EditText) child).getEditableText().toString());
+				value = ((EditText) child).getEditableText().toString();
+				payment.put(child.getId(), value);
 			} 
 			else if (klass == RadioGroup.class) {
 				RadioButton checkedItem = (RadioButton) findViewById(((RadioGroup) child).getCheckedRadioButtonId());
-				payment.put(child.getId(), ((Integer) checkedItem.getId()).toString());
+				value = ((Integer) checkedItem.getId()).toString();
+				payment.put(child.getId(), value);
 			}
 			else if (klass == Spinner.class) {
-				payment.put(child.getId(), ((Integer) ((Spinner) child).getSelectedItemPosition()).toString());
+				value = ((Integer) ((Spinner) child).getSelectedItemPosition()).toString();
+				payment.put(child.getId(), value);
 			}
+			
+			if ((value != null) && (value.length() > 0))
+				emptyFieldsCounter++;
 		}
 		
-		return PaymentMgr.getInstance().savePaymentDetails();
+		if (emptyFieldsCounter < fieldsNum)
+			return false;
+		else
+			return PaymentMgr.getInstance().savePaymentDetails();
 	}
 
 }

@@ -38,27 +38,16 @@ import android.widget.Button;
 
 import com.menki.moip.views.R;
 
-public class ValidationErrors extends Activity implements OnClickListener {
-	private Button ok;
-//	private TextView errors;
+public class Summary extends Activity implements OnClickListener {
+	private Button finish;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.validation_errors);
+		setContentView(R.layout.summary);
 		
-		ok = (Button) findViewById(R.id.back);
-		ok.setOnClickListener(this);
-		
-//		errors = (TextView) findViewById(R.id.errors);
-		
-//		StringBuilder errorsStr = new StringBuilder();
-//		Iterator<String> itr = PaymentMgr.getInstance().getErrors().iterator();
-//		while(itr.hasNext()){
-//			String error = itr.next();
-//			errorsStr.append(error + "\n");
-//		}
-//		errors.setText(errorsStr);
+		finish = (Button) findViewById(R.id.finish_button);
+		finish.setOnClickListener(this);
 	}
 
 	public void onClick(View v) {

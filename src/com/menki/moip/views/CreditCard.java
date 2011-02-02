@@ -30,13 +30,11 @@
 
 package com.menki.moip.views;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -53,7 +51,7 @@ public class CreditCard extends FormActivity implements OnClickListener {
 	
 	private TextView bornDateTextview;
 	private Button bornDateButton;
-	private Button nextStep;
+	//private Button nextStep;
 	
 	private int bornDateYear;
     private int bornDateMonth;
@@ -73,48 +71,12 @@ public class CreditCard extends FormActivity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch(v.getId()){
-		case(R.id.credit_card_next_step):
-			ArrayList<String> validationErrors = new ArrayList<String>(); //PaymentMgr.getInstance().getErrors();
-		
-			if (validationErrors.isEmpty()) {
-				// Go to Payer screen passing to its activity the payment object
-				Intent intent = new Intent(this.getApplicationContext( ), Payer.class);
-				this.startActivityForResult(intent,0);
-			} else {
-				Intent intent = new Intent(this.getApplicationContext( ), ValidationErrors.class);
-				this.startActivityForResult(intent,0);
-			}
-			
-			break;
 		case(R.id.born_date_button):
 			showDialog(BORN_DATE_DIALOG_ID);
 			break;
 		}
 	}
 		
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
-	{
-		super.onActivityResult(requestCode, resultCode, data);
-		
-		if (resultCode == Activity.RESULT_CANCELED) 
-		{ /* Back button might have been pressed */ }
-		else
-			switch (requestCode) 
-			{
-				//just one Activity started:
-				case 0: 
-					// retrieve the data from intent (or bundle)
-					String response = data.getStringExtra("response");
-					Intent intent = new Intent( );
-					intent.putExtra("response", response);
-					// sets the result for the calling activity
-					setResult( RESULT_OK, intent);
-					finish( );
-					break;
-			}
-	}
-
 	@Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
@@ -173,12 +135,12 @@ public class CreditCard extends FormActivity implements OnClickListener {
 		
 		bornDateTextview = (TextView) findViewById(R.id.born_date_textview);
 		bornDateButton = (Button) findViewById(R.id.born_date_button);
-		nextStep = (Button) findViewById(R.id.credit_card_next_step);
+		//nextStep = (Button) findViewById(R.id.credit_card_next_step);
 	}
 	
 	private void setListeners() {
 		bornDateButton.setOnClickListener(this);
-		nextStep.setOnClickListener(this);
+		//nextStep.setOnClickListener(this);
 	}
 		
 	private static String pad(int c) {
@@ -192,5 +154,10 @@ public class CreditCard extends FormActivity implements OnClickListener {
 	protected LinearLayout getForm() {
 		LinearLayout form = (LinearLayout) findViewById(R.id.credit_card_layout);
 		return form;
+	}
+
+	@Override
+	protected Class<? extends Activity> nextActivity() {
+		return Payer.class;
 	}
 }
