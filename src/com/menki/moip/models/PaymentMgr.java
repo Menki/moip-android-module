@@ -28,11 +28,15 @@
  *  @version 0.0.1
  */
 
-package com.menki.moip;
+package com.menki.moip.models;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.HashMap;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -49,8 +53,8 @@ import com.menki.moip.utils.Base64;
 import com.menki.moip.utils.Constants;
 import com.menki.moip.utils.Constants.PaymentType;
 import com.menki.moip.utils.Constants.RemoteServer;
-import com.menki.moip.xml.MoIPXmlBuilder;
-import com.menki.moip.xml.MoIPXmlParser;
+import com.menki.moip.utils.MoIPXmlBuilder;
+import com.menki.moip.utils.MoIPXmlParser;
 
 
 public class PaymentMgr 
@@ -59,9 +63,9 @@ public class PaymentMgr
 
 	private RemoteServer server = RemoteServer.NONE;
 	private String key, token;
-	private PaymentDetails paymentDetails = PaymentDetails.getInstance();
 	private PaymentType type = PaymentType.NONE;
 	private Context hostActivity = null;
+	private HashMap<Integer, String> paymentDetails = null;
 	
 	private PaymentMgr( ) 
 	{ }
@@ -70,6 +74,7 @@ public class PaymentMgr
 	 * 
 	 * @return _instance The PaymentMgr instance to be used
 	 */
+	
 	public static synchronized PaymentMgr getInstance( ) 
 	{
 		if(_instance == null) 
@@ -78,6 +83,49 @@ public class PaymentMgr
 		}
 		return _instance;
 	}
+
+	@SuppressWarnings("unchecked")
+	public Boolean readPaymentDetails() {
+		if (hostActivity != null) {
+			try {
+				FileInputStream fis = hostActivity.openFileInput(Constants.PAYMENT_DETAILS_FILENAME);
+				ObjectInputStream ois = new ObjectInputStream(fis);
+				setPaymentDetails((HashMap<Integer, String>) ois.readObject());
+				ois.close();
+				fis.close();
+				
+				return true;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		paymentDetails = new HashMap<Integer, String>();
+		return false;
+	}
+	
+	public Boolean savePaymentDetails() {
+		if (hostActivity != null) {
+			try {
+				FileOutputStream fos = hostActivity.openFileOutput(Constants.PAYMENT_DETAILS_FILENAME, Context.MODE_PRIVATE);
+				ObjectOutputStream oos = new ObjectOutputStream(fos);
+				oos.writeObject(getPaymentDetails());
+				oos.close();
+				fos.close();
+				
+				return true;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return false;
+	}	
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#clone()
@@ -179,11 +227,6 @@ public class PaymentMgr
 		this.token = token;
 	}
 
-	public PaymentDetails getPaymentDetails( ) 
-	{
-		return paymentDetails;
-	}
-	
 	public PaymentType getType() 
 	{
 		return type;
@@ -194,13 +237,11 @@ public class PaymentMgr
 		this.type = type;
 	}
 
-	public void savePaymentDetails(Context context) {
-		paymentDetails.save(context);
+	public void setPaymentDetails(HashMap<Integer, String> paymentDetails) {
+		this.paymentDetails = paymentDetails;
 	}
-	public void restorePaymentDetails(Context context) {
-		paymentDetails.restore(context);
-	}
-	public ArrayList<String> getErrors(){
-		return paymentDetails.getErrors();
+
+	public HashMap<Integer, String> getPaymentDetails() {
+		return paymentDetails;
 	}
 }

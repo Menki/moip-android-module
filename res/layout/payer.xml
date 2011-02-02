@@ -15,6 +15,7 @@
 
 <LinearLayout 
     android:orientation="vertical" 
+    android:id="@+id/payer_layout"
     android:layout_height="fill_parent" 
     android:layout_width="fill_parent">
 
@@ -46,6 +47,7 @@
         android:layout_height="wrap_content"/>
     <EditText
         android:id="@+id/email"
+        android:inputType="textEmailAddress"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
 
@@ -55,7 +57,7 @@
         android:layout_height="wrap_content"/>
     <EditText
         android:id="@+id/cell_phone"
-        android:inputType="date" 
+        android:inputType="number" 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
 
@@ -68,9 +70,11 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
         <RadioButton
+            android:id="@+id/radio_payer_rg"
             android:checked="false"
             android:text="@string/rg" />
         <RadioButton
+            android:id="@+id/radio_payer_cpf"
             android:checked="false"
             android:text="@string/cpf" />
     </RadioGroup>

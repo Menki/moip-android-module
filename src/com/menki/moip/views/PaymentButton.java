@@ -28,10 +28,7 @@
  *  @version 0.0.1
  */
 
-package com.menki.moip;
-
-import com.menki.moip.utils.Constants.PaymentType;
-import com.menki.moip.utils.Constants.RemoteServer;
+package com.menki.moip.views;
 
 import android.app.Activity;
 import android.content.Context;
@@ -40,6 +37,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+
+import com.menki.moip.models.PaymentMgr;
+import com.menki.moip.utils.Constants.PaymentType;
+import com.menki.moip.utils.Constants.RemoteServer;
 
 public class PaymentButton extends Button implements OnClickListener
 {
@@ -63,6 +64,7 @@ public class PaymentButton extends Button implements OnClickListener
 		mgr.setToken(t);
 		mgr.setType(pt);
 		mgr.setHostActivity(context);
+		mgr.readPaymentDetails();
 		
 		//testing for a valid button
 		try

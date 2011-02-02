@@ -28,7 +28,7 @@
  *  @version 0.0.1
  */
 
-package com.menki.moip.xml;
+package com.menki.moip.utils;
 
 import java.io.IOException;
 import java.io.InputStream;

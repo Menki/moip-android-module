@@ -28,7 +28,7 @@
  *  @version 0.0.1
  */
 
-package com.menki.moip;
+package com.menki.moip.models;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -36,13 +36,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 
-import com.menki.moip.utils.Constants;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
+import com.menki.moip.utils.Constants;
 
 public class PaymentDetails {
 	public ArrayList<String> getErrors() {
