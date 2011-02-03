@@ -44,4 +44,8 @@ public interface Config
 	
 	//File used to persist payment details
 	public static final String PAYMENT_DETAILS_FILENAME = "payment_details.bin";
+	
+	//Token and Key
+	public static final String TOKEN = "YOUR TOKEN HERE";
+	public static final String KEY = "YOUR KEY HERE";
 }

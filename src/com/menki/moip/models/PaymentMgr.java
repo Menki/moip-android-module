@@ -152,7 +152,7 @@ public class PaymentMgr
 			else
 				post = new HttpPost(Config.PRODUCTION_SERVER);
 			
-			byte[] auth = (token + ":" + key).getBytes( );
+			byte[] auth = (Config.TOKEN + ":" + Config.KEY).getBytes( );
 			post.addHeader("Authorization", "Basic " + new String(Base64.encodeBytes(auth)));
 			StringEntity entity = new StringEntity(msg.trim( ), "UTF-8");
 			entity.setContentType("application/x-www-formurlencoded");
