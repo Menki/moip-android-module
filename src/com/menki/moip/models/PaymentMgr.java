@@ -50,9 +50,9 @@ import android.content.Context;
 import android.util.Log;
 
 import com.menki.moip.utils.Base64;
-import com.menki.moip.utils.Constants;
-import com.menki.moip.utils.Constants.PaymentType;
-import com.menki.moip.utils.Constants.RemoteServer;
+import com.menki.moip.utils.Config;
+import com.menki.moip.utils.Config.PaymentType;
+import com.menki.moip.utils.Config.RemoteServer;
 import com.menki.moip.utils.MoIPXmlBuilder;
 import com.menki.moip.utils.MoIPXmlParser;
 
@@ -88,7 +88,7 @@ public class PaymentMgr
 	public Boolean readPaymentDetails() {
 		if (hostActivity != null) {
 			try {
-				FileInputStream fis = hostActivity.openFileInput(Constants.PAYMENT_DETAILS_FILENAME);
+				FileInputStream fis = hostActivity.openFileInput(Config.PAYMENT_DETAILS_FILENAME);
 				ObjectInputStream ois = new ObjectInputStream(fis);
 				setPaymentDetails((HashMap<Integer, String>) ois.readObject());
 				ois.close();
@@ -111,7 +111,7 @@ public class PaymentMgr
 	public Boolean savePaymentDetails() {
 		if (hostActivity != null) {
 			try {
-				FileOutputStream fos = hostActivity.openFileOutput(Constants.PAYMENT_DETAILS_FILENAME, Context.MODE_PRIVATE);
+				FileOutputStream fos = hostActivity.openFileOutput(Config.PAYMENT_DETAILS_FILENAME, Context.MODE_PRIVATE);
 				ObjectOutputStream oos = new ObjectOutputStream(fos);
 				oos.writeObject(getPaymentDetails());
 				oos.close();
@@ -148,9 +148,9 @@ public class PaymentMgr
 		 
 			HttpPost post;
 			if(server == RemoteServer.TEST)
-				post = new HttpPost(Constants.TEST_SERVER);
+				post = new HttpPost(Config.TEST_SERVER);
 			else
-				post = new HttpPost(Constants.PRODUCTION_SERVER);
+				post = new HttpPost(Config.PRODUCTION_SERVER);
 			
 			byte[] auth = (token + ":" + key).getBytes( );
 			post.addHeader("Authorization", "Basic " + new String(Base64.encodeBytes(auth)));

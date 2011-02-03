@@ -36,8 +36,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.menki.moip.views.R;
-import com.menki.moip.utils.Constants.PaymentType;
-import com.menki.moip.utils.Constants.RemoteServer;
+import com.menki.moip.utils.Config.PaymentType;
+import com.menki.moip.utils.Config.RemoteServer;
 import com.menki.moip.views.PaymentButton;
 
 public class MoIPTestApp extends Activity

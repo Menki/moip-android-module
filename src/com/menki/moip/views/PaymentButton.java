@@ -39,8 +39,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import com.menki.moip.models.PaymentMgr;
-import com.menki.moip.utils.Constants.PaymentType;
-import com.menki.moip.utils.Constants.RemoteServer;
+import com.menki.moip.utils.Config.PaymentType;
+import com.menki.moip.utils.Config.RemoteServer;
 
 public class PaymentButton extends Button implements OnClickListener
 {

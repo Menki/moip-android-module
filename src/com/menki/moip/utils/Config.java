@@ -30,10 +30,7 @@
 
 package com.menki.moip.utils;
 
-import java.text.SimpleDateFormat;
-
-
-public interface Constants 
+public interface Config 
 {
 	//Payment types support by the button
 	public static enum PaymentType { NONE, PAGAMENTO_DIRETO }; 
@@ -44,10 +41,6 @@ public interface Constants
 	//Connectioin URLs
 	public static final String TEST_SERVER = "https://desenvolvedor.moip.com.br/sandbox";
 	public static final String PRODUCTION_SERVER = "https://www.moip.com.br";
-	
-	//Date formats
-	public static final SimpleDateFormat MONTH_AND_YEAR = new SimpleDateFormat("MM/yyyy");
-	public static final SimpleDateFormat DAY_MONTH_AND_YEAR = new SimpleDateFormat("dd/MM/yyyy");
 	
 	//File used to persist payment details
 	public static final String PAYMENT_DETAILS_FILENAME = "payment_details.bin";

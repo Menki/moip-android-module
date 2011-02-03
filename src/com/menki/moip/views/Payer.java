@@ -42,7 +42,7 @@ import android.widget.LinearLayout;
 
 import com.menki.moip.views.R;
 import com.menki.moip.models.PaymentMgr;
-import com.menki.moip.utils.Constants.PaymentType;
+import com.menki.moip.utils.Config.PaymentType;
 
 public class Payer extends FormActivity {
 	private Dialog summary;
