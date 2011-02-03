@@ -30,6 +30,8 @@
 
 package com.menki.moip.views;
 
+import java.util.HashMap;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -37,14 +39,14 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.menki.moip.models.PaymentMgr;
 import com.menki.moip.utils.Constants.PaymentType;
-import com.menki.moip.views.R;
 
 public class Summary extends Activity implements OnClickListener {
 	private Button finish;
-	//private TextView summaryTextView;
+	private TextView summaryTextView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +55,51 @@ public class Summary extends Activity implements OnClickListener {
 		
 		finish = (Button) findViewById(R.id.finish_button);
 		finish.setOnClickListener(this);
-		//summaryTextView = (TextView) findViewById(R.id.SummaryTextView);
+		
+		summaryTextView = (TextView) findViewById(R.id.SummaryTextView);
+		summaryTextView.setText(summaryString());
+	}
+	
+	private CharSequence summaryString() {
+		HashMap<Integer, String> details = PaymentMgr.getInstance().getPaymentDetails();
+		char separator1 = ' ';
+		char separator2 = '\n';
+		StringBuilder builder = new StringBuilder(separator2);
+		
+		//Set payment type string
+		String paymentType = null;
+		if (details.get(R.id.payer_identification_type).equals(R.id.radio_credit_card_cpf))
+			paymentType = getString(R.string.cpf);
+		else
+			paymentType = getString(R.string.rg);
+		
+		//Set brands array
+		String[] brands = getResources().getStringArray(R.array.brands_array);
+		
+		builder.
+			//Full Name
+			append(getString(R.string.full_name) + separator1).
+			append(details.get(R.id.full_name) + separator2). 
+			//CPF or RG
+			append(paymentType + ':' + separator1).
+			append(details.get(R.id.payer_identification_number) + separator2).
+	      	//Brand
+	      	append(getString(R.string.brand) + separator1).
+	    	append(brands[Integer.parseInt(details.get(R.id.brand))] + separator2).
+	    	//Credit card number
+	    	append(getString(R.string.credit_card_number) + separator1).
+	    	append(details.get(R.id.credit_card_number) + separator2).
+	    	//Expiration date
+	    	append(getString(R.string.expiration_date) + separator1).
+	    	append(details.get(R.id.expiration_date) + separator2).
+	    	//Secure code
+	    	append(getString(R.string.secure_code) + separator1).
+	    	append(details.get(R.id.secure_code) + separator2).
+	    	//Payment type
+	    	append(getString(R.string.payment_type) + separator1).
+	    	append(details.get(R.id.payment_type) + separator2);
+    	
+    	return builder;
 	}
 
 	public void onClick(View v) {

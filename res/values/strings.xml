@@ -89,6 +89,6 @@
 <string name="test_app_title">MoIP for Android - Test App</string>
 <string name="pagamento_direto_button">Pagamento Direto</string>
 <string name="finish_button">Finalizar Compra</string>
-<string name="returnButton">Voltar</string>
-<string name="paymentSummary">Resumo da compra</string>
+<string name="return_button">Voltar</string>
+<string name="payment_summary">Resumo da compra</string>
 </resources>

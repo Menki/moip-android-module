@@ -162,5 +162,4 @@ public abstract class FormActivity extends Activity implements OnClickListener {
 		else
 			return PaymentMgr.getInstance().savePaymentDetails();
 	}
-
 }
