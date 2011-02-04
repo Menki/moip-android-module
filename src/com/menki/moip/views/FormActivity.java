@@ -124,7 +124,7 @@ public abstract class FormActivity extends Activity implements OnClickListener {
 
 	protected Boolean setPayment() {
 		HashMap<Integer, String> payment = PaymentMgr.getInstance().getPaymentDetails();
-		int fieldsWithData = 0;
+		int requiredFieldsWithData = 0;
 		
 		for(int i=0; i < getForm().getChildCount(); i++) {
 			View child = getForm().getChildAt(i);
@@ -154,10 +154,10 @@ public abstract class FormActivity extends Activity implements OnClickListener {
 			}
 			
 			if ((value != null) && (value.length() > 0) && (!nonRequiredFields().contains(child.getId())))
-				fieldsWithData++;
+				requiredFieldsWithData++;
 		}
 		
-		if (fieldsWithData < requiredFieldsNum)
+		if (requiredFieldsWithData < requiredFieldsNum)
 			return false;
 		else
 			return PaymentMgr.getInstance().savePaymentDetails();
