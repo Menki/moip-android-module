@@ -27,7 +27,7 @@
     <!-- Arrays for credit card screen -->
 	<string-array name="brands_array">
 		<item>American Express</item>
-		<item>Master Card</item>
+		<item>Mastercard</item>
 		<item>Visa</item>
 	</string-array>
 

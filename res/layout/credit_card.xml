@@ -138,7 +138,8 @@
         android:text="@string/born_date"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
-    <LinearLayout 
+    <LinearLayout
+        android:id="@+id/born_date_linearlayout" 
 	    android:orientation="horizontal"
 	    android:tag="TEXTVIEW_WITH_DATA" 
 	    android:layout_height="wrap_content" 

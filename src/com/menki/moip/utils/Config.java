@@ -39,13 +39,13 @@ public interface Config
 	public static enum RemoteServer { NONE, TEST, PRODUCTION}; 
 	
 	//Connectioin URLs
-	public static final String TEST_SERVER = "https://desenvolvedor.moip.com.br/sandbox";
+	public static final String TEST_SERVER = "https://desenvolvedor.moip.com.br/sandbox/ws/alpha/EnviarInstrucao/Unica ";
 	public static final String PRODUCTION_SERVER = "https://www.moip.com.br";
 	
 	//File used to persist payment details
 	public static final String PAYMENT_DETAILS_FILENAME = "payment_details.bin";
 	
 	//Token and Key
-	public static final String TOKEN = "YOUR TOKEN HERE";
-	public static final String KEY = "YOUR KEY HERE";
+	public static final String TOKEN = "Seu token aqui";
+	public static final String KEY = "Sua key aqui";
 }
