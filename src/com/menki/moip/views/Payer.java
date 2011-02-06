@@ -33,19 +33,13 @@ package com.menki.moip.views;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.menki.moip.views.R;
-import com.menki.moip.models.PaymentMgr;
-import com.menki.moip.utils.Config.PaymentType;
 
 public class Payer extends FormActivity {
-	private Dialog summary;
 	
     /** Called when the activity is first created. */
     @Override
@@ -57,29 +51,29 @@ public class Payer extends FormActivity {
 	@Override
 	public void onClick(View v) 
 	{
-		switch(v.getId())
-		{
-				
-			case(R.id.finish_button):
-				PaymentMgr mgr = PaymentMgr.getInstance( );
-			
-				if(summary.isShowing( ))
-					summary.dismiss( );
-				
-				PaymentType type = mgr.getType( );
-				if(type == PaymentType.PAGAMENTO_DIRETO)
-				{
-					String response  = mgr.performDirectPaymentTransaction(this);
-					Intent intent = new Intent( );
-					intent.putExtra("response", response);
-					// sets the result for the calling activity
-					setResult( RESULT_OK, intent);
-					finish( );				
-				}	
-				else
-					Log.e("MENKI [Payer] ", "Undefined Payment Method");
-				break;
-		}
+//		switch(v.getId())
+//		{
+//				
+//			case(R.id.finish_button):
+//				PaymentMgr mgr = PaymentMgr.getInstance( );
+//			
+//				if(summary.isShowing( ))
+//					summary.dismiss( );
+//				
+//				PaymentType type = mgr.getType( );
+//				if(type == PaymentType.PAGAMENTO_DIRETO)
+//				{
+//					MoIPResponse response = mgr.performDirectPaymentTransaction(this);
+//					Intent intent = new Intent( );
+//					intent.putExtra("response", response);
+//					// sets the result for the calling activity
+//					setResult( RESULT_OK, intent);
+//					finish( );				
+//				}	
+//				else
+//					Log.e("MENKI [Payer] ", "Undefined Payment Method");
+//				break;
+//		}
 		
 		super.onClick(v);
 	}

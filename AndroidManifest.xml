@@ -10,9 +10,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.menki.moip.test.MoIPTestResult" android:label="@string/app_name" android:screenOrientation="portrait"/>
 
-        <activity android:name=".CreditCard" android:label="@string/app_name" />
-		<activity android:name=".Payer" android:label="@string/app_name" />
+        <activity android:name=".CreditCard" android:label="@string/app_name" android:screenOrientation="portrait"/>
+		<activity android:name=".Payer" android:label="@string/app_name" android:screenOrientation="portrait"/>
 		<activity android:name=".ValidationErrors" android:label="@string/attention" android:theme="@android:style/Theme.Dialog" android:screenOrientation="portrait" android:noHistory="true"/>
 		<activity android:name=".Summary" android:label="@string/payment_summary" android:theme="@android:style/Theme.Dialog" android:screenOrientation="portrait" android:noHistory="true"/>
     </application>

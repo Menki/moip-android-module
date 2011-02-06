@@ -28,24 +28,48 @@
  *  @version 0.0.1
  */
 
-package com.menki.moip.utils;
+package com.menki.moip.test;
 
-public interface Config 
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.TextView;
+
+import com.menki.moip.models.MoIPResponse;
+import com.menki.moip.views.R;
+
+public class MoIPTestResult extends Activity
 {
-	//Payment types support by the button
-	public static enum PaymentType { NONE, PAGAMENTO_DIRETO }; 
-	
-	//Connection remote server
-	public static enum RemoteServer { NONE, TEST, PRODUCTION}; 
-	
-	//Connectioin URLs
-	public static final String TEST_SERVER = "https://desenvolvedor.moip.com.br/sandbox/ws/alpha/EnviarInstrucao/Unica";
-	public static final String PRODUCTION_SERVER = "https://www.moip.com.br/ws/alpha/EnviarInstrucao/Unica";
-	
-	//File used to persist payment details
-	public static final String PAYMENT_DETAILS_FILENAME = "payment_details.bin";
-	
-	//Token and Key
-	public static final String TOKEN = "MO1ZZ2FLJMLBKBYYZGUU49DBVVIBBAG7";
-	public static final String KEY = "T97HIXDZUDECPUDXVIWGP4QND8TYVD8GY3SGXL6Y";
+	/** Called when the activity is first created. */
+    @Override
+	protected void onCreate(Bundle savedInstanceState)
+    {
+		// TODO Auto-generated method stub
+    	 super.onCreate(savedInstanceState);
+         setContentView(R.layout.moiptestresult);
+		
+         ArrayList<String> messageList;
+         StringBuilder builder = new StringBuilder( );
+        	 
+         TextView statusTxtView = (TextView) this.findViewById(R.id.ResultStatusContentTextView);
+         TextView messageTxtView = (TextView) this.findViewById(R.id.ResultMessageContentTextView);
+         
+         MoIPResponse response = (MoIPResponse)this.getIntent( ).getSerializableExtra("response");
+       
+         statusTxtView.setText(response.getResponseStatus( ));
+         
+         messageList = response.getMessagesList( );
+
+         Iterator<String> iterator = messageList.iterator( );
+         while (iterator.hasNext() )
+         {
+        	 builder.append(iterator.next( ));
+        	 builder.append("\n");
+         }
+         messageTxtView.setText(builder.toString( ));
+         
+	}
+
 }

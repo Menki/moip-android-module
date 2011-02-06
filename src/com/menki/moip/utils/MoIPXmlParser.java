@@ -42,21 +42,57 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.menki.moip.models.MoIPResponse;
+
 import android.util.Log;
 
 public class MoIPXmlParser 
 {
-	private String parsedResponse = null;
+	private MoIPResponse responseObj = new MoIPResponse( );;
 	
 	public MoIPXmlParser( ){ }
 	
-	public MoIPXmlParser(InputStream msg)
-	{
-		String response = parseDirectPaymentResponse(msg);
-		this.parsedResponse = response;
-	}
 	
-	public String parseDirectPaymentResponse(InputStream msg)
+   /**
+	* Parse the direct payment transaction response received from the server
+	* Response template:
+	*<pre>
+	* &lt;ns1:EnviarInstrucaoUnicaResponse xmlns:ns1="http://www.moip.com.br/ws/alpha/"&gt;
+	*   &lt;Resposta&gt;
+	*	&lt;ID&gt;000000000000000000&lt;/ID&gt;
+	*	&lt;Status&gt;Falha&lt;/Status&gt;
+	*	&lt;Erro Codigo="XXX"&gt;Message;/Erro&gt;
+	*	&lt;Erro Codigo="XXX"&gt;Message&lt;/Erro&gt;
+	*  &lt;/Resposta&gt;
+	*&lt;/ns1:EnviarInstrucaoUnicaResponse&gt;
+	*
+	*
+	*&lt;ns1:EnviarInstrucaoUnicaResponse xmlns:ns1="https://desenvolvedor.moip.com.br/sandbox/"&gt;
+	* &lt;Resposta&gt;
+	*   &lt;ID&gt;200807272314444710000000000022&lt;/ID&gt;
+	*   &lt;Status&gt;Sucesso&lt;/Status&gt;
+	*   &lt;Token&gt;T2N0L0X8E0S71217U2H3W1T4F4S4G4K731D010V0S0V0S080M010E0Q082X2&lt;/Token&gt;
+	*    &lt;RespostaPagamentoDireto&gt;
+	*      &lt;TotalPago&gt;213.25&lt;/TotalPago&gt;
+	*      &lt;TaxaMoIP&gt;15.19&lt;/TaxaMoIP&gt;
+	*      &lt;Status&gt;EmAnalise&lt;/Status&gt;
+	*      &lt;CodigoMoIP&gt;0000.0006.9922&lt;/CodigoMoIP&gt;
+	*      &lt;Mensagem&gt;Transação com Sucesso&lt;/Mensagem&gt;
+	*      &lt;CodigoAutorizacao&gt;396822&lt;/CodigoAutorizacao&gt;
+	*      &lt;CodigoRetorno0&lt;/CodigoRetorno&gt;
+	*   &lt;/RespostaPagamentoDireto&gt;
+	* &lt;/Resposta&gt;
+	*&lt;/ns1:EnviarInstrucaoUnicaResponse&gt;
+	* </pre>
+    *
+    * @param msg the InputStream received from the server
+    * @return true or false
+    * @throws ParserConfigurationException
+    * @throws IOException
+    * @throws SAXException
+    * @throws DOMException
+	*/
+	public boolean parseDirectPaymentResponse(InputStream msg)
 	{
 		String responseToken = "ERROR";
 		
@@ -65,9 +101,67 @@ public class MoIPXmlParser
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();
 			Document doc = db.parse(msg);
-			NodeList nodeList = doc.getElementsByTagName("Token");
+			NodeList nodeList = doc.getElementsByTagName("Status");
 			if(nodeList.item(0) != null)
-				responseToken = nodeList.item(0).getNodeValue( );
+			{
+				responseToken = nodeList.item(0).getChildNodes( ).item(0).getNodeValue( );
+				if(responseToken.equalsIgnoreCase("Sucesso"))
+				{
+					responseObj.setResponseStatus("Sucesso");
+					nodeList = doc.getElementsByTagName("ID");
+					if(nodeList.item(0) != null)
+						responseObj.setId(nodeList.item(0).getChildNodes( ).item(0).getNodeValue( ));
+					nodeList = doc.getElementsByTagName("Token");
+					if(nodeList.item(0) != null)
+						responseObj.setToken(nodeList.item(0).getChildNodes( ).item(0).getNodeValue( ));
+					nodeList = doc.getElementsByTagName("TotalPago");
+					if(nodeList.item(0) != null)
+						responseObj.setAmount(nodeList.item(0).getChildNodes( ).item(0).getNodeValue( ));
+					nodeList = doc.getElementsByTagName("TaxaMoIP");
+					if(nodeList.item(0) != null)
+						responseObj.setMoIPTax(nodeList.item(0).getChildNodes( ).item(0).getNodeValue( ));
+					nodeList = doc.getElementsByTagName("Status");
+					//assuming second ocurrence of "Status"
+					if(nodeList.item(1) != null)
+						responseObj.setTransactionStatus(nodeList.item(1).getChildNodes( ).item(0).getNodeValue( ));
+					nodeList = doc.getElementsByTagName("CodigoMoIP");
+					if(nodeList.item(0) != null)
+						responseObj.setMoIPCode(nodeList.item(0).getChildNodes( ).item(0).getNodeValue( ));
+					nodeList = doc.getElementsByTagName("CodigoRetorno");
+					if(nodeList.item(0) != null)
+						responseObj.setReturnCode(nodeList.item(0).getChildNodes( ).item(0).getNodeValue( ));
+					nodeList = doc.getElementsByTagName("Mensagem");
+					if(nodeList.item(0) != null)
+						responseObj.setMessage(nodeList.item(0).getChildNodes( ).item(0).getNodeValue( ));
+
+				}
+				else
+				{
+					responseObj.setResponseStatus("Falha");
+					nodeList = doc.getElementsByTagName("Erro");
+					if(nodeList.item(0) != null)
+					{
+						for(int i = 0; i < nodeList.getLength( ); i++)
+							responseObj.setMessage(nodeList.item(i).getChildNodes( ).item(0).getNodeValue( ));
+					}
+						
+						
+				}
+			}
+			else
+				return false;
+		
+//			//Reading as String
+//			BufferedReader rd = new BufferedReader(new InputStreamReader(msg));
+//			String line;
+//			StringBuilder sb =  new StringBuilder( );
+//			while ((line = rd.readLine()) != null)
+//			{	sb.append(line); }
+//			rd.close();
+//			if(sb.length( ) > 0)
+//				responseToken = sb.toString( );
+
+			
 		}
 		catch(ParserConfigurationException pce)
 		{
@@ -90,11 +184,11 @@ public class MoIPXmlParser
 			de.printStackTrace( );
 		}
 		
-		return responseToken;
+		return true;
 	}
 
-	public String getParsedResponse() 
+	public MoIPResponse getParsedResponse( ) 
 	{
-		return parsedResponse;
+		return this.responseObj;
 	}
 }

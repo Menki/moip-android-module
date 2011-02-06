@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!--    
+<!--  
  * Copyright (c) 2011, MENKI MOBILE SOLUTIONS - http://www.menkimobile.com.br
  * All rights reserved.
  * 
@@ -30,44 +29,51 @@
  *  @version 0.0.1
 -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="wrap_content" android:layout_height="wrap_content">
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content">
 
-	<ImageView android:id="@+id/SummaryImageView"
-		android:layout_width="wrap_content" 
-		android:layout_height="wrap_content"
-		android:layout_centerHorizontal="true"
-		android:src="@drawable/moiplabs" />
+	<TextView android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" 
+		android:text="@string/result" 
+		android:id="@+id/ResultTitleTextView" 
+		android:layout_alignParentTop="true" 
+		android:layout_centerHorizontal="true" 
+		android:layout_margin="20dip">
+	</TextView>
 	
-	<ScrollView android:id="@+id/SummaryScrollView"
-		android:layout_width="wrap_content" 
-		android:layout_below="@+id/SummaryImageView"
-		android:layout_height="200px">
-					
-	<TextView android:id="@+id/SummaryTextView" 
-		android:text="Payment Summary" 
-		android:layout_width="wrap_content" 
-		android:layout_height="wrap_content"
-		android:layout_gravity="center" />
- 				
- 	</ScrollView>
- 	<LinearLayout
-	   	android:layout_gravity="center|bottom"
-	   	android:gravity="center"
-		android:layout_width="fill_parent"
-	   	android:layout_height="wrap_content"
-		android:layout_weight="1"
-		android:layout_below="@id/SummaryScrollView"
-	   	android:orientation="horizontal"
-	   	android:id="@+id/BottomLayout">
-		  	<Button 
-		  		android:layout_height="fill_parent" 
-		    	android:id="@+id/finish_button" 
-		    	android:text="@string/finish_button" 
-		    	android:layout_width="wrap_content"
-		    	android:layout_weight="1"
-		    	android:textSize="16dip" />
-		  	
-	  </LinearLayout>
- 			
+	<TextView android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" 
+				android:layout_margin="20dip" 
+				android:text="@string/status" 
+				android:id="@+id/ResultStatusTextView"
+				android:layout_below="@id/ResultTitleTextView">
+	</TextView>
+	
+	<TextView android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" 
+				android:text="StatusContent" 
+				android:id="@+id/ResultStatusContentTextView"
+				android:layout_below="@id/ResultTitleTextView" 
+				android:layout_toRightOf="@id/ResultStatusTextView" 
+				android:layout_marginTop="20dip">
+	</TextView>
+	
+	<TextView android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" 
+				android:layout_margin="20dip" 
+				android:text="@string/return_message" 
+				android:id="@+id/ResultMessageTextView"
+				android:layout_below="@id/ResultStatusTextView">
+	</TextView>
+	
+	<TextView android:layout_width="wrap_content" 
+				android:layout_height="wrap_content"  
+				android:text="MessageContent" 
+				android:id="@+id/ResultMessageContentTextView"
+				android:layout_below="@id/ResultMessageTextView" 
+				android:layout_marginLeft="20dip">
+	</TextView>
+	
 </RelativeLayout>

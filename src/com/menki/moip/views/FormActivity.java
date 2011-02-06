@@ -3,6 +3,7 @@ package com.menki.moip.views;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.menki.moip.models.MoIPResponse;
 import com.menki.moip.models.PaymentMgr;
 
 import android.app.Activity;
@@ -48,7 +49,7 @@ public abstract class FormActivity extends Activity implements OnClickListener {
 				//just one Activity started:
 				case 0: 
 					// retrieve the data from intent (or bundle)
-					String response = data.getStringExtra("response");
+					MoIPResponse response = (MoIPResponse)data.getSerializableExtra("response");
 					Intent intent = new Intent( );
 					intent.putExtra("response", response);
 					// sets the result for the calling activity

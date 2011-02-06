@@ -35,7 +35,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.menki.moip.views.CreditCard;
 import com.menki.moip.views.R;
+import com.menki.moip.models.MoIPResponse;
 import com.menki.moip.utils.Config.PaymentType;
 import com.menki.moip.utils.Config.RemoteServer;
 import com.menki.moip.views.PaymentButton;
@@ -74,10 +76,11 @@ public class MoIPTestApp extends Activity
 			switch (requestCode) 
 			{
 				//just one Activity started:
-				case 0: 
-					//TODO: do something
-					String response = data.getStringExtra("response");
-					Log.i("MyApp", "Payment finished!!!!! - DATA: " + response);
+				case 0:
+					MoIPResponse response = (MoIPResponse)data.getSerializableExtra("response");
+					Intent intent = new Intent(this, MoIPTestResult.class);
+					intent.putExtra("response", response);
+					startActivity(intent);
 					break;
 			}
 	}

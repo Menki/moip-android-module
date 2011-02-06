@@ -45,7 +45,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 
@@ -135,12 +134,12 @@ public class PaymentMgr
 		throw new CloneNotSupportedException( );
 	}
 
-	public String performDirectPaymentTransaction(Context ctx)
+	public MoIPResponse performDirectPaymentTransaction(Context ctx)
 	{
 		MoIPXmlBuilder builder = new MoIPXmlBuilder( );
 		MoIPXmlParser parser = new MoIPXmlParser( );
 		String msg = builder.getDirectPaymentMessage( );
-		String xmlResponse = null;
+		MoIPResponse moipResponse = new MoIPResponse( );
 		
 		try
 		{
@@ -158,20 +157,21 @@ public class PaymentMgr
 			entity.setContentType("application/x-www-formurlencoded");
 			post.setEntity(entity);
 			Log.i("MENKI [PostPaymentMessage] ",  entity.getContent( ).toString( ));
-	
-			ProgressDialog dialog = ProgressDialog.show(ctx,"Progress dialogue sample ", 
-														"ceveni.com please wait....",	
-														true);
 			  
 			HttpResponse response = client.execute(post);
-
-			dialog.dismiss( );
 			
 			InputStream in = response.getEntity().getContent( ); 
 			if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK)
-				xmlResponse = "Error";
+			{ 
+				//TODO: handle server erros
+				moipResponse.setResponseStatus("Server error");
+				
+			}
 			else
-				xmlResponse = parser.parseDirectPaymentResponse(in);
+				if(parser.parseDirectPaymentResponse(in))
+					moipResponse = parser.getParsedResponse( );
+				else
+					Log.e("[MENKI]","[performDirectPaymentTransaction] - Error parsing response");
 			
 		}
 		catch (ClientProtocolException e) 
@@ -183,8 +183,14 @@ public class PaymentMgr
 		{
 			Log.e("MENKI [performDirectPaymentTransaction] ", e.getMessage());
 			e.printStackTrace();
-		}				
-		return xmlResponse;	 
+		}	
+		catch (IllegalArgumentException e)
+		{
+			Log.e("MENKI [performDirectPaymentTransaction] ", e.getMessage( ));
+			e.printStackTrace( );
+		}
+
+		return moipResponse;	 
 	}
 
 	public Context getHostActivity( ) 

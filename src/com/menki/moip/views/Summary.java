@@ -33,6 +33,8 @@ package com.menki.moip.views;
 import java.util.HashMap;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,6 +43,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.menki.moip.models.MoIPResponse;
 import com.menki.moip.models.PaymentMgr;
 import com.menki.moip.utils.Config.PaymentType;
 
@@ -111,7 +114,9 @@ public class Summary extends Activity implements OnClickListener {
 				PaymentType type = mgr.getType( );
 				if(type == PaymentType.PAGAMENTO_DIRETO)
 				{
-					String response  = mgr.performDirectPaymentTransaction(this);
+					//showDialog(0);
+					MoIPResponse response  = mgr.performDirectPaymentTransaction(this);
+					//dismissDialog(0);
 					Intent intent = new Intent( );
 					intent.putExtra("response", response);
 					// sets the result for the calling activity
@@ -123,4 +128,21 @@ public class Summary extends Activity implements OnClickListener {
 				break;
 		}		
 	}
+	
+//	/**
+//	 * ProgressDialog
+//	 */
+//	@Override
+//	protected Dialog onCreateDialog(int id) 
+//	{
+//        Dialog dialog = new ProgressDialog(this);
+//	    switch(id) 
+//	    {
+//		    case 0:
+//		        ((ProgressDialog) dialog).setMessage("Loading, please wait...");
+//		        break;
+//	    }
+//	    return dialog;
+//	}
+
 }

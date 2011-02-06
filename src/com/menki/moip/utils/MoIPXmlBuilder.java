@@ -30,7 +30,6 @@
 
 package com.menki.moip.utils;
 
-import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
 
@@ -179,7 +178,7 @@ public class MoIPXmlBuilder
 	        				serializer.endTag("", TAG_VALOR);
 	        			serializer.endTag("", TAG_VALORES);
 	        			serializer.startTag("", TAG_IDPROPRIO);
-	        				serializer.text("dir_card_2");
+	        				serializer.text("dir_card_6"); //TODO: check meaning
 	        			serializer.endTag("", TAG_IDPROPRIO);
 	        			serializer.startTag("", TAG_PAGAMENTODIRETO);
 	        				serializer.startTag("", TAG_FORMA);
@@ -232,7 +231,7 @@ public class MoIPXmlBuilder
 	        					serializer.text(details.get(R.id.full_name));
 	        				serializer.endTag("", TAG_NOME);
 	        				serializer.startTag("", TAG_LOGINMOIP);
-	        					serializer.text("LOGINMOIP");
+	        					serializer.text("LOGINMOIP");   //TODO
 	        				serializer.endTag("", TAG_LOGINMOIP);
 	        				serializer.startTag("", TAG_EMAIL);
 	        					serializer.text(details.get(R.id.email));
