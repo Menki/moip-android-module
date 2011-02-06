@@ -46,6 +46,6 @@ public interface Config
 	public static final String PAYMENT_DETAILS_FILENAME = "payment_details.bin";
 	
 	//Token and Key
-	public static final String TOKEN = "MO1ZZ2FLJMLBKBYYZGUU49DBVVIBBAG7";
-	public static final String KEY = "T97HIXDZUDECPUDXVIWGP4QND8TYVD8GY3SGXL6Y";
+	public static final String TOKEN = "Insira seu token";
+	public static final String KEY = "Insira sua key";
 }
