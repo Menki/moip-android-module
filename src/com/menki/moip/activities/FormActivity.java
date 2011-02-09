@@ -16,8 +16,8 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.menki.moip.models.MoIPResponse;
 import com.menki.moip.models.PaymentMgr;
+import com.menki.moip.utils.MoIPResponse;
 
 public abstract class FormActivity extends Activity implements OnClickListener {
 	private int requiredFieldsNum = 0;

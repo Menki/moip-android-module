@@ -52,9 +52,10 @@ import com.menki.moip.utils.Base64;
 import com.menki.moip.utils.Config;
 import com.menki.moip.utils.Config.PaymentType;
 import com.menki.moip.utils.Config.RemoteServer;
+import com.menki.moip.utils.MoIPResponse;
 import com.menki.moip.utils.MoIPXmlBuilder;
 import com.menki.moip.utils.MoIPXmlParser;
-
+import com.menki.moip.activities.R;
 
 public class PaymentMgr 
 {
@@ -108,11 +109,15 @@ public class PaymentMgr
 	}
 	
 	public Boolean savePaymentDetails() {
+		HashMap<Integer, String> clone = (HashMap<Integer, String>) getPaymentDetails().clone();
+		
+		clone.remove(R.id.secure_code); // Secure code must never be persisted.
+		
 		if (hostActivity != null) {
 			try {
 				FileOutputStream fos = hostActivity.openFileOutput(Config.PAYMENT_DETAILS_FILENAME, Context.MODE_PRIVATE);
 				ObjectOutputStream oos = new ObjectOutputStream(fos);
-				oos.writeObject(getPaymentDetails());
+				oos.writeObject(clone);
 				oos.close();
 				fos.close();
 				

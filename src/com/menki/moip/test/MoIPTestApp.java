@@ -35,7 +35,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.menki.moip.activities.PaymentButton;
-import com.menki.moip.models.MoIPResponse;
+import com.menki.moip.utils.MoIPResponse;
 import com.menki.moip.utils.Config.PaymentType;
 import com.menki.moip.utils.Config.RemoteServer;
 import com.menki.moip.activities.R;

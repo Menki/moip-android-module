@@ -41,8 +41,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.menki.moip.models.MoIPResponse;
 import com.menki.moip.models.PaymentMgr;
+import com.menki.moip.utils.MoIPResponse;
 import com.menki.moip.utils.Config.PaymentType;
 
 public class Summary extends Activity implements OnClickListener {

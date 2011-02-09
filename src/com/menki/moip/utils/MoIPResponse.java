@@ -28,7 +28,7 @@
  *  @version 0.0.1
  */
 
-package com.menki.moip.models;
+package com.menki.moip.utils;
 
 import java.io.Serializable;
 import java.util.ArrayList;

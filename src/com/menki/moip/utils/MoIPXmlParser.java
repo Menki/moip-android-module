@@ -44,7 +44,6 @@ import org.xml.sax.SAXException;
 
 import android.util.Log;
 
-import com.menki.moip.models.MoIPResponse;
 
 public class MoIPXmlParser 
 {
