@@ -86,6 +86,9 @@ public class Summary extends Activity implements OnClickListener {
 		String[] brands = getResources().getStringArray(R.array.brands_array);
 		
 		builder.
+			// Value
+			append(getString(R.string.value) + separator1).
+			append(String.valueOf(PaymentMgr.getInstance().getValue()) + separator2).
 			//Full Name
 			append(getString(R.string.full_name) + separator1).
 			append(details.get(R.id.full_name) + separator2). 
