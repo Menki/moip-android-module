@@ -28,7 +28,7 @@
  *  @version 0.0.1
  */
 
-package com.menki.moip.views;
+package com.menki.moip.activities;
 
 import android.app.Activity;
 import android.content.Context;
@@ -48,8 +48,7 @@ public class PaymentButton extends Button implements OnClickListener
 	private PaymentType type = PaymentType.NONE;
 	private Button button = null;
 	
-	public PaymentButton(Context context, int id, String t, String k, 
-						 PaymentType pt, RemoteServer s) 
+	public PaymentButton(Context context, int id, PaymentType pt, RemoteServer s, float v) 
 	{
 		super(context);
 			
@@ -60,9 +59,8 @@ public class PaymentButton extends Button implements OnClickListener
 
 		PaymentMgr mgr = PaymentMgr.getInstance( );
 		mgr.setServer(s);
-		mgr.setKey(k);
-		mgr.setToken(t);
 		mgr.setType(pt);
+		mgr.setValue(v);
 		mgr.setHostActivity(context);
 		mgr.readPaymentDetails();
 		

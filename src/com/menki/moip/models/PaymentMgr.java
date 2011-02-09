@@ -61,8 +61,8 @@ public class PaymentMgr
 	private static PaymentMgr _instance = null;
 
 	private RemoteServer server = RemoteServer.NONE;
-	private String key, token;
 	private PaymentType type = PaymentType.NONE;
+	private float value;
 	private Context hostActivity = null;
 	private HashMap<Integer, String> paymentDetails = null;
 	
@@ -213,26 +213,6 @@ public class PaymentMgr
 		this.server = server;
 	}
 
-	public String getKey( ) 
-	{
-		return this.key;
-	}
-
-	public void setKey(String key) 
-	{
-		this.key = key;
-	}
-
-	public String getToken() 
-	{
-		return this.token;
-	}
-
-	public void setToken(String token) 
-	{
-		this.token = token;
-	}
-
 	public PaymentType getType() 
 	{
 		return type;
@@ -249,5 +229,13 @@ public class PaymentMgr
 
 	public HashMap<Integer, String> getPaymentDetails() {
 		return paymentDetails;
+	}
+
+	public void setValue(float value) {
+		this.value = value;
+	}
+
+	public float getValue() {
+		return value;
 	}
 }

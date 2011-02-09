@@ -33,14 +33,12 @@ package com.menki.moip.test;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
-import com.menki.moip.views.CreditCard;
-import com.menki.moip.views.R;
+import com.menki.moip.activities.PaymentButton;
 import com.menki.moip.models.MoIPResponse;
 import com.menki.moip.utils.Config.PaymentType;
 import com.menki.moip.utils.Config.RemoteServer;
-import com.menki.moip.views.PaymentButton;
+import com.menki.moip.activities.R;
 
 public class MoIPTestApp extends Activity
 {
@@ -60,8 +58,8 @@ public class MoIPTestApp extends Activity
         /* Creating object from PaymentButton class
            PaymentButton object will be bound to the resource id referenced
            unused parameters must be set to null */
-        PaymentButton payButton = new PaymentButton(this, R.id.PaymentButton, token, key,
-        									PaymentType.PAGAMENTO_DIRETO, RemoteServer.TEST);
+        float value = (float) 13.33;
+        PaymentButton payButton = new PaymentButton(this, R.id.PaymentButton, PaymentType.PAGAMENTO_DIRETO, RemoteServer.TEST, value);
     }
    
         

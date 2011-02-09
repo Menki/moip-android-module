@@ -42,9 +42,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.menki.moip.models.MoIPResponse;
-
 import android.util.Log;
+
+import com.menki.moip.models.MoIPResponse;
 
 public class MoIPXmlParser 
 {

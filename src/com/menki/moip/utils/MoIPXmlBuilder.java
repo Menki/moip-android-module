@@ -39,8 +39,7 @@ import android.util.Log;
 import android.util.Xml;
 
 import com.menki.moip.models.PaymentMgr;
-import com.menki.moip.views.R;
-
+import com.menki.moip.activities.R;
 
 public class MoIPXmlBuilder 
 {

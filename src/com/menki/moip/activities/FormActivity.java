@@ -1,10 +1,7 @@
-package com.menki.moip.views;
+package com.menki.moip.activities;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import com.menki.moip.models.MoIPResponse;
-import com.menki.moip.models.PaymentMgr;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -19,9 +16,13 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.menki.moip.models.MoIPResponse;
+import com.menki.moip.models.PaymentMgr;
+
 public abstract class FormActivity extends Activity implements OnClickListener {
 	private int requiredFieldsNum = 0;
 	private Button nextStep;
+	private TextView value;
 	
 	protected abstract LinearLayout getForm();
 	
@@ -34,9 +35,10 @@ public abstract class FormActivity extends Activity implements OnClickListener {
         
         setDefaultValues();
         addNextStepButton();
+        setValueText();
     }
 	
-    @Override
+	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
 	{
 		super.onActivityResult(requestCode, resultCode, data);
@@ -75,6 +77,12 @@ public abstract class FormActivity extends Activity implements OnClickListener {
         getForm().addView(nextStep);
         
 	}
+
+    private void setValueText() {
+    	value = (TextView) findViewById(R.id.value);
+    	value.setText(value.getText() + " " + PaymentMgr.getInstance().getValue());
+	}
+    
 
 	protected void setDefaultValues() {
 		HashMap<Integer, String> payment = PaymentMgr.getInstance().getPaymentDetails();
@@ -132,7 +140,7 @@ public abstract class FormActivity extends Activity implements OnClickListener {
 			Class<? extends View>klass = child.getClass();
 			String tag = (String) child.getTag();
 			String value = null;
-			
+
 			if ((tag != null) && (tag.equals("TEXTVIEW_WITH_DATA") && (klass == LinearLayout.class))) {
 				TextView textView = (TextView) ((LinearLayout) child).getChildAt(0);
 				value = textView.getText().toString();

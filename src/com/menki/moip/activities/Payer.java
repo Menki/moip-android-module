@@ -28,7 +28,7 @@
  *  @version 0.0.1
  */
 
-package com.menki.moip.views;
+package com.menki.moip.activities;
 
 import java.util.ArrayList;
 
@@ -36,8 +36,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
-
-import com.menki.moip.views.R;
 
 public class Payer extends FormActivity {
 	

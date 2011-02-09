@@ -28,13 +28,11 @@
  *  @version 0.0.1
  */
 
-package com.menki.moip.views;
+package com.menki.moip.activities;
 
 import java.util.HashMap;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;

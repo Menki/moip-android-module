@@ -28,7 +28,7 @@
  *  @version 0.0.1
  */
 
-package com.menki.moip.views;
+package com.menki.moip.activities;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -42,8 +42,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.menki.moip.views.R;
 
 public class CreditCard extends FormActivity {
 	static final String TAG = "CreditCardActivity";
