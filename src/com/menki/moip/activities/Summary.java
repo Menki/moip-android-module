@@ -67,12 +67,20 @@ public class Summary extends Activity implements OnClickListener {
 		char separator2 = '\n';
 		StringBuilder builder = new StringBuilder(separator2);
 		
+		//Set identification type string
+		String idType = null;
+		if (details.get(R.id.payer_identification_type).equals(R.id.radio_credit_card_cpf))
+			idType = getString(R.string.cpf);
+		else
+			idType = getString(R.string.rg);
+		
 		//Set payment type string
 		String paymentType = null;
-		if (details.get(R.id.payer_identification_type).equals(R.id.radio_credit_card_cpf))
-			paymentType = getString(R.string.cpf);
+		if (details.get(R.id.payment_type).equals(R.id.radio_cash_payment))
+			paymentType = getString(R.string.cash_payment);
 		else
-			paymentType = getString(R.string.rg);
+			paymentType = getString(R.string.installment_payment);
+		
 		
 		//Set brands array
 		String[] brands = getResources().getStringArray(R.array.brands_array);
@@ -82,7 +90,7 @@ public class Summary extends Activity implements OnClickListener {
 			append(getString(R.string.full_name) + separator1).
 			append(details.get(R.id.full_name) + separator2). 
 			//CPF or RG
-			append(paymentType + ':' + separator1).
+			append(idType + ':' + separator1).
 			append(details.get(R.id.payer_identification_number) + separator2).
 	      	//Brand
 	      	append(getString(R.string.brand) + separator1).
@@ -98,7 +106,7 @@ public class Summary extends Activity implements OnClickListener {
 	    	append(details.get(R.id.secure_code) + separator2).
 	    	//Payment type
 	    	append(getString(R.string.payment_type) + separator1).
-	    	append(details.get(R.id.payment_type) + separator2);
+	    	append(paymentType + separator2);
     	
     	return builder;
 	}
