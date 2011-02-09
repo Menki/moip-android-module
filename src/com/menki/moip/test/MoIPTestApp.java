@@ -49,12 +49,6 @@ public class MoIPTestApp extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.moiptestapp);
         
-        
-        //TODO: retrieve token and key from file
-        //key and token for authentication on MoIP server
-        String token = "XXXXXXXXXXXXXXXXXX";
-        String key = "XXXXXXXXXXXXXXXXXX";        
-        
         /* Creating object from PaymentButton class
            PaymentButton object will be bound to the resource id referenced
            unused parameters must be set to null */

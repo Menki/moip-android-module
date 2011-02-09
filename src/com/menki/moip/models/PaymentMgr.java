@@ -109,6 +109,7 @@ public class PaymentMgr
 	}
 	
 	public Boolean savePaymentDetails() {
+		@SuppressWarnings("unchecked")
 		HashMap<Integer, String> clone = (HashMap<Integer, String>) getPaymentDetails().clone();
 		
 		clone.remove(R.id.secure_code); // Secure code must never be persisted.
