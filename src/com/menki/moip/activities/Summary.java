@@ -69,14 +69,14 @@ public class Summary extends Activity implements OnClickListener {
 		
 		//Set identification type string
 		String idType = null;
-		if (details.get(R.id.payer_identification_type).equals(R.id.radio_credit_card_cpf))
-			idType = getString(R.string.cpf);
-		else
+		if (details.get(R.id.payer_identification_type).equals(String.valueOf(R.id.radio_payer_rg)))
 			idType = getString(R.string.rg);
+		else
+			idType = getString(R.string.cpf);
 		
 		//Set payment type string
 		String paymentType = null;
-		if (details.get(R.id.payment_type).equals(R.id.radio_cash_payment))
+		if (details.get(R.id.payment_type).equals(String.valueOf(R.id.radio_cash_payment)))
 			paymentType = getString(R.string.cash_payment);
 		else
 			paymentType = getString(R.string.installment_payment);
