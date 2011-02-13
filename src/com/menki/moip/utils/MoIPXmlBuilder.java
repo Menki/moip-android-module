@@ -191,7 +191,7 @@ public class MoIPXmlBuilder
 	        						serializer.text(details.get(R.id.credit_card_number));
 	        					serializer.endTag("", TAG_NUMERO);
 	        					serializer.startTag("", TAG_EXPIRACAO);
-	        						serializer.text(details.get(R.id.expiration_date));
+	        						serializer.text(details.get(R.id.expiration_date_linearlayout));
 	        					serializer.endTag("", TAG_EXPIRACAO);
 	        					serializer.startTag("", TAG_CODIGOSEGURANCA);
 	        						serializer.text(details.get(R.id.secure_code));

@@ -103,7 +103,7 @@ public class Summary extends Activity implements OnClickListener {
 	    	append(details.get(R.id.credit_card_number) + separator2).
 	    	//Expiration date
 	    	append(getString(R.string.expiration_date) + separator1).
-	    	append(details.get(R.id.expiration_date) + separator2).
+	    	append(details.get(R.id.expiration_date_linearlayout) + separator2).
 	    	//Secure code
 	    	append(getString(R.string.secure_code) + separator1).
 	    	append(details.get(R.id.secure_code) + separator2).

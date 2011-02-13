@@ -46,14 +46,19 @@ import android.widget.TextView;
 public class CreditCard extends FormActivity {
 	static final String TAG = "CreditCardActivity";
 	static final int BORN_DATE_DIALOG_ID = 0;
+	static final int EXPIRATION_DATE_DIALOG_ID = 1;
 	
 	private TextView bornDateTextview;
 	private Button bornDateButton;
-	//private Button nextStep;
-	
 	private int bornDateYear;
     private int bornDateMonth;
     private int bornDateDay;
+
+    private TextView expirationDateTextview;
+	private Button expirationDateButton;
+    private int expirationDateYear;
+    private int expirationDateMonth;
+    private int expirationDateDay;
 	
     /** Called when the activity is first created. */
     @Override
@@ -72,6 +77,9 @@ public class CreditCard extends FormActivity {
 		case(R.id.born_date_button):
 			showDialog(BORN_DATE_DIALOG_ID);
 			break;
+		case(R.id.expiration_date_button):
+			showDialog(EXPIRATION_DATE_DIALOG_ID);
+			break;			
 		}
 		
 		super.onClick(v);
@@ -80,10 +88,14 @@ public class CreditCard extends FormActivity {
 	@Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
-            case BORN_DATE_DIALOG_ID:
-            	return new DatePickerDialog(this,
-            			bornDateSetListener,
-            			bornDateYear, bornDateMonth, bornDateDay);
+        case BORN_DATE_DIALOG_ID:
+        	return new DatePickerDialog(this,
+        			bornDateSetListener,
+        			bornDateYear, bornDateMonth, bornDateDay);
+        case EXPIRATION_DATE_DIALOG_ID:
+        	return new DatePickerDialog(this,
+        			expirationDateSetListener,
+        			expirationDateYear, expirationDateMonth, expirationDateDay);        	
         }
         return null;
     }
@@ -91,9 +103,12 @@ public class CreditCard extends FormActivity {
     @Override
     protected void onPrepareDialog(int id, Dialog dialog) {
         switch (id) {
-            case BORN_DATE_DIALOG_ID:
-                ((DatePickerDialog) dialog).updateDate(bornDateYear, bornDateMonth, bornDateDay);
-                break;
+        case BORN_DATE_DIALOG_ID:
+            ((DatePickerDialog) dialog).updateDate(bornDateYear, bornDateMonth, bornDateDay);
+            break;
+        case EXPIRATION_DATE_DIALOG_ID:
+            ((DatePickerDialog) dialog).updateDate(expirationDateYear, expirationDateMonth, expirationDateDay);
+            break;            
         }
     }
 	
@@ -107,7 +122,18 @@ public class CreditCard extends FormActivity {
                 updateDisplay(BORN_DATE_DIALOG_ID);
             }
         };
-    
+
+	private DatePickerDialog.OnDateSetListener expirationDateSetListener =
+        new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            	expirationDateYear = year;
+            	expirationDateMonth = monthOfYear;
+            	expirationDateDay = dayOfMonth;
+                updateDisplay(EXPIRATION_DATE_DIALOG_ID);
+            }
+        };
+        
     private void updateDisplay(int id) {
     	switch (id) {
         case BORN_DATE_DIALOG_ID:
@@ -118,6 +144,13 @@ public class CreditCard extends FormActivity {
                             .append(pad(bornDateMonth + 1)).append("/")
                             .append(bornDateYear));
         	break;
+        case EXPIRATION_DATE_DIALOG_ID:
+        	expirationDateTextview.setText(
+                    new StringBuilder()
+                            // Month is 0 based so add 1
+                            .append(pad(bornDateMonth + 1)).append("/")
+                            .append(bornDateYear-2000));
+        	break;        	
     	}
     	updateDateButtons();
 	}
@@ -125,22 +158,30 @@ public class CreditCard extends FormActivity {
     private void updateDateButtons() {
 		if (bornDateTextview.getText().length() > 0)
 			bornDateButton.setText(getString(R.string.change));
+		
+		if (expirationDateTextview.getText().length() > 0)
+			expirationDateButton.setText(getString(R.string.change));
 	}
     
 	private void setViews() {
 		final Calendar c = Calendar.getInstance();
+		
 		bornDateYear = c.get(Calendar.YEAR);
 		bornDateMonth = c.get(Calendar.MONTH);
 		bornDateDay = c.get(Calendar.DAY_OF_MONTH);
-		
 		bornDateTextview = (TextView) findViewById(R.id.born_date_textview);
 		bornDateButton = (Button) findViewById(R.id.born_date_button);
-		//nextStep = (Button) findViewById(R.id.credit_card_next_step);
+		
+		expirationDateYear = c.get(Calendar.YEAR);
+		expirationDateMonth = c.get(Calendar.MONTH);
+		expirationDateDay = c.get(Calendar.DAY_OF_MONTH);
+		expirationDateTextview = (TextView) findViewById(R.id.expiration_date_textview);
+		expirationDateButton = (Button) findViewById(R.id.expiration_date_button);
 	}
 	
 	private void setListeners() {
 		bornDateButton.setOnClickListener(this);
-		//nextStep.setOnClickListener(this);
+		expirationDateButton.setOnClickListener(this);
 	}
 		
 	private static String pad(int c) {
