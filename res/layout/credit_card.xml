@@ -211,16 +211,6 @@
     </LinearLayout>  
 
     <TextView 
-        android:text="@string/installments"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
-    <EditText
-        android:id="@+id/installments"
-        android:inputType="number" 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
-
-    <TextView 
         android:text="@string/payment_type"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
@@ -237,6 +227,17 @@
             android:checked="false"
             android:text="@string/installment_payment" />
     </RadioGroup>
+
+    <TextView
+        android:id="@+id/installments_textview" 
+        android:text="@string/installments"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/installments"
+        android:inputType="number" 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
 
     <View
         android:layout_height="4dip"

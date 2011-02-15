@@ -40,13 +40,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 public class CreditCard extends FormActivity {
 	static final String TAG = "CreditCardActivity";
 	static final int BORN_DATE_DIALOG_ID = 0;
 	static final int EXPIRATION_DATE_DIALOG_ID = 1;
+	
+	private RadioButton installmentRadio;
+	private RadioButton cashRadio;
+	private TextView installmentsTextView;
+	private EditText installmentsEditText;
 	
 	private TextView bornDateTextview;
 	private Button bornDateButton;
@@ -68,6 +75,7 @@ public class CreditCard extends FormActivity {
         
         setViews();
         updateDateButtons();
+        updateInstallmentsInput();
         setListeners();
     }
 
@@ -79,7 +87,11 @@ public class CreditCard extends FormActivity {
 			break;
 		case(R.id.expiration_date_button):
 			showDialog(EXPIRATION_DATE_DIALOG_ID);
-			break;			
+			break;
+		case(R.id.radio_cash_payment):
+		case(R.id.radio_installment_payment):
+			updateInstallmentsInput();	
+			break;							
 		}
 		
 		super.onClick(v);
@@ -163,6 +175,18 @@ public class CreditCard extends FormActivity {
 			expirationDateButton.setText(getString(R.string.change));
 	}
     
+	private void updateInstallmentsInput() {
+		if (installmentRadio.isChecked()) {
+			// show installments text view and edit text
+			installmentsTextView.setVisibility(View.VISIBLE);
+			installmentsEditText.setVisibility(View.VISIBLE);
+		} else {
+			// hide installments text view and edit text
+			installmentsTextView.setVisibility(View.GONE);
+			installmentsEditText.setVisibility(View.GONE);			
+		}
+	}
+    
 	private void setViews() {
 		final Calendar c = Calendar.getInstance();
 		
@@ -177,11 +201,18 @@ public class CreditCard extends FormActivity {
 		expirationDateDay = c.get(Calendar.DAY_OF_MONTH);
 		expirationDateTextview = (TextView) findViewById(R.id.expiration_date_textview);
 		expirationDateButton = (Button) findViewById(R.id.expiration_date_button);
+		
+		installmentRadio = (RadioButton) findViewById(R.id.radio_installment_payment);
+		cashRadio = (RadioButton) findViewById(R.id.radio_cash_payment);
+		installmentsTextView = (TextView) findViewById(R.id.installments_textview);
+		installmentsEditText = (EditText) findViewById(R.id.installments);
 	}
 	
 	private void setListeners() {
 		bornDateButton.setOnClickListener(this);
 		expirationDateButton.setOnClickListener(this);
+		installmentRadio.setOnClickListener(this);
+		cashRadio.setOnClickListener(this);
 	}
 		
 	private static String pad(int c) {
