@@ -31,10 +31,13 @@
 package com.menki.moip.utils;
 
 import java.io.StringWriter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
 import org.xmlpull.v1.XmlSerializer;
 
+import android.text.format.Time;
 import android.util.Log;
 import android.util.Xml;
 
@@ -176,9 +179,6 @@ public class MoIPXmlBuilder
 	        					serializer.text("213.25"); //TODO: getAmount
 	        				serializer.endTag("", TAG_VALOR);
 	        			serializer.endTag("", TAG_VALORES);
-	        			serializer.startTag("", TAG_IDPROPRIO);
-	        				serializer.text("dir_card_6"); //TODO: check meaning
-	        			serializer.endTag("", TAG_IDPROPRIO);
 	        			serializer.startTag("", TAG_PAGAMENTODIRETO);
 	        				serializer.startTag("", TAG_FORMA);
 	        					serializer.text("CartaoCredito");
@@ -276,6 +276,12 @@ public class MoIPXmlBuilder
 							serializer.endTag("", TAG_ENDERECOCOBRANCA);
 	        			serializer.endTag("", TAG_PAGADOR);
 		        	serializer.endTag("", TAG_INSTRUCAOUNICA);
+		        	
+	        	Time now = new Time();
+	        	String hash = MoIPXmlBuilder.md5(serializer.toString() + now.toString());
+				serializer.startTag("", TAG_IDPROPRIO);
+					serializer.text(hash); //TODO: check meaning
+				serializer.endTag("", TAG_IDPROPRIO);		        	
 	        serializer.endTag("", TAG_ENVIARINSTRUCAO);
 	        serializer.endDocument();
 	        
@@ -289,6 +295,31 @@ public class MoIPXmlBuilder
 	    }
 	    
 		return writer.toString();
+	}
+	
+	
+	public static final String md5(final String s) {
+	    try {
+	        // Create MD5 Hash
+	        MessageDigest digest = java.security.MessageDigest
+	                .getInstance("MD5");
+	        digest.update(s.getBytes());
+	        byte messageDigest[] = digest.digest();
+	 
+	        // Create Hex String
+	        StringBuffer hexString = new StringBuffer();
+	        for (int i = 0; i < messageDigest.length; i++) {
+	            String h = Integer.toHexString(0xFF & messageDigest[i]);
+	            while (h.length() < 2)
+	                h = "0" + h;
+	            hexString.append(h);
+	        }
+	        return hexString.toString();
+	 
+	    } catch (NoSuchAlgorithmException e) {
+	        e.printStackTrace();
+	    }
+	    return "";
 	}
 	
 	//TODO: implement getXXXXPaymentMessage( )
