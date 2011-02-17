@@ -31,10 +31,14 @@
 package com.menki.moip.activities;
 
 import java.util.HashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -48,11 +52,24 @@ import com.menki.moip.utils.Config.PaymentType;
 public class Summary extends Activity implements OnClickListener {
 	private Button finish;
 	private TextView summaryTextView;
+	private ProgressDialog dialog;
+	private Handler guiThread;
+	private ExecutorService requestThread;
+	private Runnable updateTask;
+	private Runnable moipTask;
+	private MoIPResponse response;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.summary);
+		
+		dialog = new ProgressDialog(this);
+		dialog.setMessage("Please wait while loading...");
+		dialog.setIndeterminate(true);
+		dialog.setCancelable(true);
+		
+		initThreading();
 		
 		finish = (Button) findViewById(R.id.finish_button);
 		finish.setOnClickListener(this);
@@ -61,6 +78,44 @@ public class Summary extends Activity implements OnClickListener {
 		summaryTextView.setText(summaryString());
 	}
 	
+	private void initThreading() {
+		guiThread = new Handler();
+		requestThread = Executors.newSingleThreadExecutor();
+		
+		// this task will start the progress dialog, perform the request to moip server and dismiss the dialog.
+		updateTask = new Runnable() {
+			@Override
+			public void run() {
+				moipTask = new Runnable() {
+					@Override
+					public void run() {
+						guiThread.post(new Runnable() {
+							@Override
+							public void run() {
+								dialog.show();
+							}
+						});
+						
+						response = PaymentMgr.getInstance().performDirectPaymentTransaction();
+						
+						guiThread.post(new Runnable() {
+							@Override
+							public void run() {
+								dialog.hide();
+								Intent intent = new Intent( );
+								intent.putExtra("response", response);
+								setResult( RESULT_OK, intent);
+								finish();
+							}
+						});
+					} 
+				};
+				
+				requestThread.submit(moipTask);
+			} 
+		};
+	}
+
 	private CharSequence summaryString() {
 		HashMap<Integer, String> details = PaymentMgr.getInstance().getPaymentDetails();
 		char separator1 = ' ';
@@ -119,39 +174,20 @@ public class Summary extends Activity implements OnClickListener {
 		{
 			case(R.id.finish_button):
 				PaymentMgr mgr = PaymentMgr.getInstance( );
-				
 				PaymentType type = mgr.getType( );
-				if(type == PaymentType.PAGAMENTO_DIRETO)
-				{
-					//showDialog(0);
-					MoIPResponse response  = mgr.performDirectPaymentTransaction(this);
-					//dismissDialog(0);
-					Intent intent = new Intent( );
-					intent.putExtra("response", response);
-					// sets the result for the calling activity
-					setResult( RESULT_OK, intent);
-					finish( );				
-				}	
+				if(type == PaymentType.PAGAMENTO_DIRETO) {
+					guiThread.post(updateTask);
+				}
 				else
 					Log.e("MENKI [Payer] ", "Undefined Payment Method");
 				break;
 		}		
 	}
 	
-//	/**
-//	 * ProgressDialog
-//	 */
-//	@Override
-//	protected Dialog onCreateDialog(int id) 
-//	{
-//        Dialog dialog = new ProgressDialog(this);
-//	    switch(id) 
-//	    {
-//		    case 0:
-//		        ((ProgressDialog) dialog).setMessage("Loading, please wait...");
-//		        break;
-//	    }
-//	    return dialog;
-//	}
-
+	@Override
+	protected void onDestroy() {
+		// Terminate extra threads here
+		requestThread.shutdownNow();
+		super.onDestroy();
+	}
 }

@@ -140,7 +140,7 @@ public class PaymentMgr
 		throw new CloneNotSupportedException( );
 	}
 
-	public MoIPResponse performDirectPaymentTransaction(Context ctx)
+	public MoIPResponse performDirectPaymentTransaction()
 	{
 		MoIPXmlBuilder builder = new MoIPXmlBuilder( );
 		MoIPXmlParser parser = new MoIPXmlParser( );
