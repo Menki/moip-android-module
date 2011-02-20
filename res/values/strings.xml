@@ -125,4 +125,6 @@
 	<string name="result">Resultado da Transação</string>
 	<string name="status">Status: </string>
 	<string name="return_message">Mensagem de retorno: </string>
+	<string name="transaction_status">Status da Transação: </string>
+	<string name="waiting_server">Executando transação. Aguarde...</string>
 </resources>

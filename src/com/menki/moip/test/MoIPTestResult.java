@@ -55,10 +55,16 @@ public class MoIPTestResult extends Activity
         	 
          TextView statusTxtView = (TextView) this.findViewById(R.id.ResultStatusContentTextView);
          TextView messageTxtView = (TextView) this.findViewById(R.id.ResultMessageContentTextView);
+         TextView transactionTxtView = (TextView) this.findViewById(R.id.TransactionStatusContentTextView);
          
          MoIPResponse response = (MoIPResponse)this.getIntent( ).getSerializableExtra("response");
        
          statusTxtView.setText(response.getResponseStatus( ));
+         
+         if(response.getTransactionStatus() != null)
+        	 transactionTxtView.setText(response.getTransactionStatus( ));
+         else 
+        	 transactionTxtView.setText("Transacao nao efetuada.");
          
          messageList = response.getMessagesList( );
 

@@ -34,7 +34,6 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.LinearLayout;
 
 public class Payer extends FormActivity {
@@ -45,36 +44,6 @@ public class Payer extends FormActivity {
     	setContentView(R.layout.payer);
     	super.onCreate(savedInstanceState);
     }
-
-	@Override
-	public void onClick(View v) 
-	{
-//		switch(v.getId())
-//		{
-//				
-//			case(R.id.finish_button):
-//				PaymentMgr mgr = PaymentMgr.getInstance( );
-//			
-//				if(summary.isShowing( ))
-//					summary.dismiss( );
-//				
-//				PaymentType type = mgr.getType( );
-//				if(type == PaymentType.PAGAMENTO_DIRETO)
-//				{
-//					MoIPResponse response = mgr.performDirectPaymentTransaction(this);
-//					Intent intent = new Intent( );
-//					intent.putExtra("response", response);
-//					// sets the result for the calling activity
-//					setResult( RESULT_OK, intent);
-//					finish( );				
-//				}	
-//				else
-//					Log.e("MENKI [Payer] ", "Undefined Payment Method");
-//				break;
-//		}
-		
-		super.onClick(v);
-	}
 		
 	@Override
 	protected LinearLayout getForm() {

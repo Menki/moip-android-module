@@ -65,7 +65,7 @@ public class Summary extends Activity implements OnClickListener {
 		setContentView(R.layout.summary);
 		
 		dialog = new ProgressDialog(this);
-		dialog.setMessage("Please wait while loading...");
+		dialog.setMessage(getString(R.string.waiting_server));
 		dialog.setIndeterminate(true);
 		dialog.setCancelable(true);
 		
@@ -124,10 +124,10 @@ public class Summary extends Activity implements OnClickListener {
 		
 		//Set identification type string
 		String idType = null;
-		if (details.get(R.id.payer_identification_type).equals(String.valueOf(R.id.radio_payer_rg)))
-			idType = getString(R.string.rg);
-		else
+		if (details.get(R.id.identification_type).equalsIgnoreCase(String.valueOf(R.id.radio_credit_card_cpf)))
 			idType = getString(R.string.cpf);
+		else
+			idType = getString(R.string.rg);
 		
 		//Set payment type string
 		String paymentType = null;
@@ -145,11 +145,11 @@ public class Summary extends Activity implements OnClickListener {
 			append(getString(R.string.value) + separator1).
 			append(String.valueOf(PaymentMgr.getInstance().getValue()) + separator2).
 			//Full Name
-			append(getString(R.string.full_name) + separator1).
-			append(details.get(R.id.full_name) + separator2). 
+			append(getString(R.string.owner_name) + separator1).
+			append(details.get(R.id.owner_name) + separator2). 
 			//CPF or RG
 			append(idType + ':' + separator1).
-			append(details.get(R.id.payer_identification_number) + separator2).
+			append(details.get(R.id.identification_number) + separator2).
 	      	//Brand
 	      	append(getString(R.string.brand) + separator1).
 	    	append(brands[Integer.parseInt(details.get(R.id.brand))] + separator2).
@@ -165,6 +165,12 @@ public class Summary extends Activity implements OnClickListener {
 	    	//Payment type
 	    	append(getString(R.string.payment_type) + separator1).
 	    	append(paymentType + separator2);
+		
+			if (details.get(R.id.payment_type).equalsIgnoreCase(String.valueOf(R.id.radio_installment_payment)))
+			{
+				builder.append(getString(R.string.installments) + separator1).
+		    	append( details.get(R.id.installments) + separator2);
+			}
     	
     	return builder;
 	}

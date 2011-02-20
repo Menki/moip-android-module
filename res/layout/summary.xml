@@ -42,7 +42,7 @@
 	<ScrollView android:id="@+id/SummaryScrollView"
 		android:layout_width="wrap_content" 
 		android:layout_below="@+id/SummaryImageView"
-		android:layout_height="200px">
+		android:layout_height="wrap_content">
 					
 	<TextView android:id="@+id/SummaryTextView" 
 		android:text="Payment Summary" 

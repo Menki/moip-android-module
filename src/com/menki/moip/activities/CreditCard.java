@@ -160,8 +160,8 @@ public class CreditCard extends FormActivity {
         	expirationDateTextview.setText(
                     new StringBuilder()
                             // Month is 0 based so add 1
-                            .append(pad(bornDateMonth + 1)).append("/")
-                            .append(bornDateYear-2000));
+                            .append(pad(expirationDateMonth + 1)).append("/")
+                            .append(expirationDateYear-2000));
         	break;        	
     	}
     	updateDateButtons();

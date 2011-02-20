@@ -63,17 +63,40 @@
 	<TextView android:layout_width="wrap_content" 
 				android:layout_height="wrap_content" 
 				android:layout_margin="20dip" 
-				android:text="@string/return_message" 
-				android:id="@+id/ResultMessageTextView"
+				android:text="@string/transaction_status" 
+				android:id="@+id/TransactionStatusTextView"
 				android:layout_below="@id/ResultStatusTextView">
 	</TextView>
 	
 	<TextView android:layout_width="wrap_content" 
 				android:layout_height="wrap_content"  
-				android:text="MessageContent" 
-				android:id="@+id/ResultMessageContentTextView"
-				android:layout_below="@id/ResultMessageTextView" 
-				android:layout_marginLeft="20dip">
+				android:id="@+id/TransactionStatusContentTextView"
+				android:layout_below="@id/ResultStatusTextView" 
+				android:layout_toRightOf="@id/TransactionStatusTextView" 
+				android:layout_marginTop="20dip">
 	</TextView>
+	
+	<TextView android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" 
+				android:layout_margin="20dip" 
+				android:text="@string/return_message" 
+				android:id="@+id/ResultMessageTextView"
+				android:layout_below="@id/TransactionStatusTextView">
+	</TextView>
+	
+	<ScrollView android:id="@+id/ResultScrollView"
+		android:layout_width="wrap_content" 
+		android:layout_below="@+id/ResultMessageTextView"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="20dip">
+	
+		<TextView android:layout_width="wrap_content" 
+					android:layout_height="wrap_content"  
+					android:text="MessageContent" 
+					android:id="@+id/ResultMessageContentTextView" 
+					>
+		</TextView>
+		
+	</ScrollView>
 	
 </RelativeLayout>

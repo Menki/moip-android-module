@@ -72,10 +72,10 @@ public class MoIPXmlBuilder
 	private static final String TAG_PARCELAS = "Parcelas";
 	private static final String TAG_RECEBIMENTO = "Recebimento";
 	private static final String TAG_PAGADOR = "Pagador";
-	private static final String TAG_LOGINMOIP = "LoginMoIP";
+	//private static final String TAG_LOGINMOIP = "LoginMoIP";
 	private static final String TAG_EMAIL = "Email";
 	private static final String TAG_TELEFONECELULAR = "TelefoneCelular";
-	private static final String TAG_APELIDO = "Apelido";
+	//private static final String TAG_APELIDO = "Apelido";
 	private static final String TAG_ENDERECOCOBRANCA = "EnderecoCobranca";
 	private static final String TAG_LOGRADOURO = "Logradouro";
 	private static final String TAG_COMPLEMENTO = "Complemento";
@@ -153,11 +153,11 @@ public class MoIPXmlBuilder
 		String brand = brands[Integer.parseInt(details.get(R.id.brand))].replaceAll("\\s+", "");
 		
 		//Set payment type string
-		String ownerPaymentType = null;
-		if (details.get(R.id.payer_identification_type).equals(R.id.radio_payer_cpf))
-			ownerPaymentType = mgr.getHostActivity().getString(R.string.cpf);
+		String ownerIdType = null;
+		if (details.get(R.id.identification_type).equalsIgnoreCase(String.valueOf(R.id.radio_credit_card_cpf)))
+			ownerIdType = mgr.getHostActivity().getString(R.string.cpf);
 		else
-			ownerPaymentType = mgr.getHostActivity().getString(R.string.rg);
+			ownerIdType = mgr.getHostActivity().getString(R.string.rg);
 		
 		//Set state
 		String[] states = mgr.getHostActivity().getResources().getStringArray(R.array.state_array);
@@ -176,7 +176,7 @@ public class MoIPXmlBuilder
 	        			serializer.startTag("", TAG_VALORES);
 	        				serializer.startTag("", TAG_VALOR);
 	        				serializer.attribute("", ATTR_MOEDA, "BRL");
-	        					serializer.text("213.25"); //TODO: getAmount
+	        					serializer.text(String.valueOf(mgr.getValue( )));
 	        				serializer.endTag("", TAG_VALOR);
 	        			serializer.endTag("", TAG_VALORES);
 	        			serializer.startTag("", TAG_PAGAMENTODIRETO);
@@ -201,56 +201,58 @@ public class MoIPXmlBuilder
 	        							serializer.text(details.get(R.id.owner_name));
 	        						serializer.endTag("", TAG_NOME);
 	        						serializer.startTag("", TAG_IDENTIDADE);
-	        						serializer.attribute("", ATTR_TIPO, ownerPaymentType);
-	        							serializer.text(details.get(R.id.payer_identification_number));
+	        						serializer.attribute("", ATTR_TIPO, ownerIdType);
+	        							serializer.text(details.get(R.id.identification_number));
 	        						serializer.endTag("", TAG_IDENTIDADE);
 	        						serializer.startTag("", TAG_TELEFONE);
-	        							serializer.text(details.get(R.id.owner_phone_number));
+	        							serializer.text(details.get(R.id.cell_phone));
 	        						serializer.endTag("", TAG_TELEFONE);
 	        						serializer.startTag("", TAG_DATANASCIMENTO);
-	        							serializer.text(details.get(R.id.born_date_linearlayout));//TODO: 
+	        							serializer.text(details.get(R.id.born_date_linearlayout)); 
 	        						serializer.endTag("", TAG_DATANASCIMENTO);
 	        					serializer.endTag("", TAG_PORTADOR);
 	        				serializer.endTag("", TAG_CARTAOCREDITO);
 	        				serializer.startTag("", TAG_PARCELAMENTO);
 	        					serializer.startTag("", TAG_PARCELAS);
-	        						serializer.text(details.get(R.id.installments));
+	        						if (details.get(R.id.payment_type).equalsIgnoreCase(String.valueOf(R.id.radio_installment_payment)))
+	        							serializer.text(details.get(R.id.installments));
+	        						else
+	        							serializer.text("1");
 	        					serializer.endTag("", TAG_PARCELAS);
 	        					serializer.startTag("", TAG_RECEBIMENTO);
 	        						String receb = "AVista";
-	        						Integer installments = Integer.parseInt(details.get(R.id.installments));
-	        						if(installments > 0)
-	        							receb = "APrazo"; //TODO
+	        						if (details.get(R.id.payment_type).equalsIgnoreCase(String.valueOf(R.id.radio_installment_payment)))
+	        							receb = "APrazo";
 	        						serializer.text(receb);
 	        					serializer.endTag("", TAG_RECEBIMENTO);
 	        				serializer.endTag("", TAG_PARCELAMENTO);
 	        			serializer.endTag("", TAG_PAGAMENTODIRETO);
 	        			serializer.startTag("", TAG_PAGADOR);
 	        				serializer.startTag("", TAG_NOME);
-	        					serializer.text(details.get(R.id.full_name));
+	        					serializer.text(details.get(R.id.owner_name));
 	        				serializer.endTag("", TAG_NOME);
-	        				serializer.startTag("", TAG_LOGINMOIP);
-	        					serializer.text("LOGINMOIP");   //TODO
-	        				serializer.endTag("", TAG_LOGINMOIP);
-	        				serializer.startTag("", TAG_EMAIL);
-	        					serializer.text(details.get(R.id.email));
-	        				serializer.endTag("", TAG_EMAIL);
+	        				//serializer.startTag("", TAG_LOGINMOIP);
+	        					//serializer.text("LOGINMOIP");
+	        				//serializer.endTag("", TAG_LOGINMOIP);
+	        				//serializer.startTag("", TAG_EMAIL);
+	        					//serializer.text(details.get(R.id.email));
+	        				//serializer.endTag("", TAG_EMAIL);
 	        				serializer.startTag("", TAG_TELEFONECELULAR);
 	        					serializer.text(details.get(R.id.cell_phone));
 	        				serializer.endTag("", TAG_TELEFONECELULAR);
-	        				serializer.startTag("", TAG_APELIDO);
-        						serializer.text("APELIDO");
-        					serializer.endTag("", TAG_APELIDO);
+	        				//serializer.startTag("", TAG_APELIDO);
+        						//serializer.text("APELIDO");
+        					//serializer.endTag("", TAG_APELIDO);
 	        				serializer.startTag("", TAG_IDENTIDADE);
-        						serializer.text(details.get(R.id.payer_identification_number));
+        						serializer.text(details.get(R.id.identification_number));
         					serializer.endTag("", TAG_IDENTIDADE);
         					serializer.startTag("", TAG_ENDERECOCOBRANCA);
         						serializer.startTag("", TAG_LOGRADOURO);
         							serializer.text(details.get(R.id.street_address));
         						serializer.endTag("", TAG_LOGRADOURO);
         						serializer.startTag("", TAG_NUMERO);
-        							Integer nro = Integer.parseInt(details.get(R.id.street_number));
-    								serializer.text(nro.toString( ));
+        							//Integer nro = Integer.parseInt(details.get(R.id.street_number));
+    								serializer.text(details.get(R.id.street_number)/*nro.toString( )*/);
     							serializer.endTag("", TAG_NUMERO);
     							serializer.startTag("", TAG_COMPLEMENTO);
 									serializer.text(details.get(R.id.street_complement));
@@ -271,7 +273,7 @@ public class MoIPXmlBuilder
 									serializer.text(details.get(R.id.zip_code));
 								serializer.endTag("", TAG_CEP);
 								serializer.startTag("", TAG_TELEFONEFIXO);
-									serializer.text(details.get(R.id.owner_phone_number));
+									serializer.text(details.get(R.id.fixed_phone));
 								serializer.endTag("", TAG_TELEFONEFIXO);
 							serializer.endTag("", TAG_ENDERECOCOBRANCA);
 	        			serializer.endTag("", TAG_PAGADOR);
