@@ -219,10 +219,11 @@ public class MoIPXmlBuilder
 	        						else
 	        							serializer.text("1");
 	        					serializer.endTag("", TAG_PARCELAS);
+	        					//RECEBIMENTO refers to the seller, not the customer
 	        					serializer.startTag("", TAG_RECEBIMENTO);
 	        						String receb = "AVista";
-	        						if (details.get(R.id.payment_type).equalsIgnoreCase(String.valueOf(R.id.radio_installment_payment)))
-	        							receb = "APrazo";
+	        						//if (details.get(R.id.payment_type).equalsIgnoreCase(String.valueOf(R.id.radio_installment_payment)))
+	        							//receb = "APrazo";
 	        						serializer.text(receb);
 	        					serializer.endTag("", TAG_RECEBIMENTO);
 	        				serializer.endTag("", TAG_PARCELAMENTO);
@@ -234,9 +235,9 @@ public class MoIPXmlBuilder
 	        				//serializer.startTag("", TAG_LOGINMOIP);
 	        					//serializer.text("LOGINMOIP");
 	        				//serializer.endTag("", TAG_LOGINMOIP);
-	        				//serializer.startTag("", TAG_EMAIL);
-	        					//serializer.text(details.get(R.id.email));
-	        				//serializer.endTag("", TAG_EMAIL);
+	        				serializer.startTag("", TAG_EMAIL);
+	        					serializer.cdsect("xxxxx@email.com"/*details.get(R.id.email)*/);
+	        				serializer.endTag("", TAG_EMAIL);
 	        				serializer.startTag("", TAG_TELEFONECELULAR);
 	        					serializer.text(details.get(R.id.cell_phone));
 	        				serializer.endTag("", TAG_TELEFONECELULAR);
@@ -278,7 +279,7 @@ public class MoIPXmlBuilder
 							serializer.endTag("", TAG_ENDERECOCOBRANCA);
 	        			serializer.endTag("", TAG_PAGADOR);
 		        	serializer.endTag("", TAG_INSTRUCAOUNICA);
-		        	
+
 	        	Time now = new Time();
 	        	String hash = MoIPXmlBuilder.md5(serializer.toString() + now.toString());
 				serializer.startTag("", TAG_IDPROPRIO);
