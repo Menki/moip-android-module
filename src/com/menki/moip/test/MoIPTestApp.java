@@ -33,14 +33,19 @@ package com.menki.moip.test;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.menki.moip.activities.PaymentButton;
+import com.menki.moip.paymentmethods.OnPaymentListener;
+import com.menki.moip.paymentmethods.PagamentoDireto;
+import com.menki.moip.paymentmethods.PagamentoDireto.OwnerIdType;
 import com.menki.moip.utils.MoIPResponse;
 import com.menki.moip.utils.Config.PaymentType;
 import com.menki.moip.utils.Config.RemoteServer;
 import com.menki.moip.activities.R;
 
-public class MoIPTestApp extends Activity
+public class MoIPTestApp extends Activity implements OnPaymentListener
 {
     /** Called when the activity is first created. */
     @Override
@@ -49,31 +54,52 @@ public class MoIPTestApp extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.moiptestapp);
         
-        /* Creating object from PaymentButton class
-           PaymentButton object will be bound to the resource id referenced
-           unused parameters must be set to null */
-        float value = (float) 13.33;
-        PaymentButton payButton = new PaymentButton(this, R.id.PaymentButton, PaymentType.PAGAMENTO_DIRETO, RemoteServer.TEST, value);
+        PagamentoDireto pagDir = new PagamentoDireto();        
+        pagDir.setOnPaymentListener(this);
+        
+        pagDir.setAddressComplement("x");
+        pagDir.setBrand("Visa");
+        pagDir.setCity("Sucupira");
+        pagDir.setCountry("BRA");
+        pagDir.setCreditCardNumber("3456789012345640");
+        pagDir.setExpirationDate("08/11");
+        pagDir.setInstallmentsQuantity("2");
+        pagDir.setNeighborhood("Vila Vintem");
+        pagDir.setOwnerBirthDate("01/01/1983");
+        pagDir.setOwnerIdNumber("111.111.111-11");
+        pagDir.setOwnerIdType(OwnerIdType.CPF);
+        pagDir.setOwnerName("Lindolfo Pires");
+        pagDir.setOwnerPhoneNumber("(11)1111-1111");
+        pagDir.setSecureCode("1010");
+        pagDir.setServerType(RemoteServer.TEST);
+        pagDir.setState("AC");
+        pagDir.setStreetAddress("Avenida Brasil");
+        pagDir.setStreetNumberAddress("100");
+        pagDir.setValue("213.25");
+        pagDir.setZipCode("10100-100");
+                
+        pagDir.pay();
+               
+        PaymentButton payButton = new PaymentButton(this, R.id.PaymentButton, pagDir);
     }
    
         
-    @Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
-    {
-		super.onActivityResult(requestCode, resultCode, data);
-		
-		if (resultCode == Activity.RESULT_CANCELED) 
-		{ /* Back button might have been pressed*/ }
-		else
-			switch (requestCode) 
-			{
-				//just one Activity started:
-				case 0:
-					MoIPResponse response = (MoIPResponse)data.getSerializableExtra("response");
-					Intent intent = new Intent(this, MoIPTestResult.class);
-					intent.putExtra("response", response);
-					startActivity(intent);
-					break;
-			}
+
+	@Override
+	public void onPaymentFail(MoIPResponse response) 
+	{
+		Log.i("MoIP", "Falhou!");
+		Toast.makeText(this, "Pagamento mal sucedido!", Toast.LENGTH_LONG).show();
 	}
+
+
+	@Override
+	public void onPaymentSuccess(MoIPResponse response) 
+	{
+		Log.i("MoIP", "Funcionou!");
+		Toast.makeText(this, "Pagamento bem sucedido!", Toast.LENGTH_LONG).show();
+	}
+
+
+
 }
