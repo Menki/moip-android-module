@@ -33,7 +33,6 @@ package com.menki.moip.utils;
 import java.io.StringWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
 
 import org.xmlpull.v1.XmlSerializer;
 
@@ -41,8 +40,9 @@ import android.text.format.Time;
 import android.util.Log;
 import android.util.Xml;
 
-import com.menki.moip.models.PaymentMgr;
-import com.menki.moip.activities.R;
+//import com.menki.moip.models.PaymentMgr;
+import com.menki.moip.paymentmethods.PagamentoDireto;
+import com.menki.moip.paymentmethods.PagamentoDireto.OwnerIdType;
 
 public class MoIPXmlBuilder 
 {
@@ -142,27 +142,24 @@ public class MoIPXmlBuilder
 	 *	     </Pagador>
 	 *	  </InstrucaoUnica>
 	 *	  </EnviarInstrucao>
+	 * @param pagamentoDireto 
 	 */
-	public String getDirectPaymentMessage( )
+	public String getDirectPaymentMessage(PagamentoDireto pagamentoDireto)
 	{
         XmlSerializer serializer = Xml.newSerializer();
 		StringWriter writer = new StringWriter();
-		PaymentMgr mgr = PaymentMgr.getInstance();
-		HashMap<Integer, String> details = mgr.getPaymentDetails();
-		String[] brands = mgr.getHostActivity().getResources().getStringArray(R.array.brands_array);
-		String brand = brands[Integer.parseInt(details.get(R.id.brand))].replaceAll("\\s+", "");
 		
 		//Set payment type string
 		String ownerIdType = null;
-		if (details.get(R.id.identification_type).equalsIgnoreCase(String.valueOf(R.id.radio_credit_card_cpf)))
-			ownerIdType = mgr.getHostActivity().getString(R.string.cpf);
+		if (pagamentoDireto.getOwnerIdType() == OwnerIdType.CPF)
+		{
+			ownerIdType = "CPF";
+		}
 		else
-			ownerIdType = mgr.getHostActivity().getString(R.string.rg);
-		
-		//Set state
-		String[] states = mgr.getHostActivity().getResources().getStringArray(R.array.state_array);
-		String state = states[Integer.parseInt(details.get(R.id.state))];
-		
+		{
+			ownerIdType = "RG";
+		}
+			
 	    try 
 	    {
 	        serializer.setOutput(writer);
@@ -176,7 +173,7 @@ public class MoIPXmlBuilder
 	        			serializer.startTag("", TAG_VALORES);
 	        				serializer.startTag("", TAG_VALOR);
 	        				serializer.attribute("", ATTR_MOEDA, "BRL");
-	        					serializer.text(String.valueOf(mgr.getValue( )));
+	        					serializer.text(pagamentoDireto.getValue());
 	        				serializer.endTag("", TAG_VALOR);
 	        			serializer.endTag("", TAG_VALORES);
 	        			serializer.startTag("", TAG_PAGAMENTODIRETO);
@@ -184,40 +181,37 @@ public class MoIPXmlBuilder
 	        					serializer.text("CartaoCredito");
 	        				serializer.endTag("", TAG_FORMA);
 	        				serializer.startTag("", TAG_INSTITUICAO);
-	        					serializer.text(brand);
+	        					serializer.text(pagamentoDireto.getBrand());
 	        				serializer.endTag("", TAG_INSTITUICAO);
 	        				serializer.startTag("", TAG_CARTAOCREDITO);
 	        					serializer.startTag("", TAG_NUMERO);
-	        						serializer.text(details.get(R.id.credit_card_number));
+	        						serializer.text(pagamentoDireto.getCreditCardNumber());
 	        					serializer.endTag("", TAG_NUMERO);
 	        					serializer.startTag("", TAG_EXPIRACAO);
-	        						serializer.text(details.get(R.id.expiration_date_linearlayout));
+	        						serializer.text(pagamentoDireto.getExpirationDate());
 	        					serializer.endTag("", TAG_EXPIRACAO);
 	        					serializer.startTag("", TAG_CODIGOSEGURANCA);
-	        						serializer.text(details.get(R.id.secure_code));
+	        						serializer.text(pagamentoDireto.getSecureCode());
 	        					serializer.endTag("", TAG_CODIGOSEGURANCA);
 	        					serializer.startTag("", TAG_PORTADOR);
 	        						serializer.startTag("", TAG_NOME);
-	        							serializer.text(details.get(R.id.owner_name));
+	        							serializer.text(pagamentoDireto.getOwnerName());
 	        						serializer.endTag("", TAG_NOME);
 	        						serializer.startTag("", TAG_IDENTIDADE);
 	        						serializer.attribute("", ATTR_TIPO, ownerIdType);
-	        							serializer.text(details.get(R.id.identification_number));
+	        							serializer.text(pagamentoDireto.getOwnerIdNumber());
 	        						serializer.endTag("", TAG_IDENTIDADE);
 	        						serializer.startTag("", TAG_TELEFONE);
-	        							serializer.text(details.get(R.id.cell_phone));
+	        							serializer.text(pagamentoDireto.getOwnerPhoneNumber());
 	        						serializer.endTag("", TAG_TELEFONE);
 	        						serializer.startTag("", TAG_DATANASCIMENTO);
-	        							serializer.text(details.get(R.id.born_date_linearlayout)); 
+	        							serializer.text(pagamentoDireto.getOwnerBirthDate()); 
 	        						serializer.endTag("", TAG_DATANASCIMENTO);
 	        					serializer.endTag("", TAG_PORTADOR);
 	        				serializer.endTag("", TAG_CARTAOCREDITO);
 	        				serializer.startTag("", TAG_PARCELAMENTO);
 	        					serializer.startTag("", TAG_PARCELAS);
-	        						if (details.get(R.id.payment_type).equalsIgnoreCase(String.valueOf(R.id.radio_installment_payment)))
-	        							serializer.text(details.get(R.id.installments));
-	        						else
-	        							serializer.text("1");
+	        							serializer.text(pagamentoDireto.getInstallmentsQuantity());
 	        					serializer.endTag("", TAG_PARCELAS);
 	        					//RECEBIMENTO refers to the seller, not the customer
 	        					serializer.startTag("", TAG_RECEBIMENTO);
@@ -230,7 +224,7 @@ public class MoIPXmlBuilder
 	        			serializer.endTag("", TAG_PAGAMENTODIRETO);
 	        			serializer.startTag("", TAG_PAGADOR);
 	        				serializer.startTag("", TAG_NOME);
-	        					serializer.text(details.get(R.id.owner_name));
+	        					serializer.text(pagamentoDireto.getOwnerName());
 	        				serializer.endTag("", TAG_NOME);
 	        				//serializer.startTag("", TAG_LOGINMOIP);
 	        					//serializer.text("LOGINMOIP");
@@ -239,42 +233,42 @@ public class MoIPXmlBuilder
 	        					serializer.cdsect("xxxxx@email.com"/*details.get(R.id.email)*/);
 	        				serializer.endTag("", TAG_EMAIL);
 	        				serializer.startTag("", TAG_TELEFONECELULAR);
-	        					serializer.text(details.get(R.id.cell_phone));
+	        					serializer.text(pagamentoDireto.getOwnerPhoneNumber());
 	        				serializer.endTag("", TAG_TELEFONECELULAR);
 	        				//serializer.startTag("", TAG_APELIDO);
         						//serializer.text("APELIDO");
         					//serializer.endTag("", TAG_APELIDO);
 	        				serializer.startTag("", TAG_IDENTIDADE);
-        						serializer.text(details.get(R.id.identification_number));
+        						serializer.text(pagamentoDireto.getOwnerIdNumber());
         					serializer.endTag("", TAG_IDENTIDADE);
         					serializer.startTag("", TAG_ENDERECOCOBRANCA);
         						serializer.startTag("", TAG_LOGRADOURO);
-        							serializer.text(details.get(R.id.street_address));
+        							serializer.text(pagamentoDireto.getStreetAddress());
         						serializer.endTag("", TAG_LOGRADOURO);
         						serializer.startTag("", TAG_NUMERO);
         							//Integer nro = Integer.parseInt(details.get(R.id.street_number));
-    								serializer.text(details.get(R.id.street_number)/*nro.toString( )*/);
+    								serializer.text(pagamentoDireto.getStreetNumberAddress()/*nro.toString( )*/);
     							serializer.endTag("", TAG_NUMERO);
     							serializer.startTag("", TAG_COMPLEMENTO);
-									serializer.text(details.get(R.id.street_complement));
+									serializer.text(pagamentoDireto.getAddressComplement());
 								serializer.endTag("", TAG_COMPLEMENTO);
 								serializer.startTag("", TAG_BAIRRO);
-									serializer.text(details.get(R.id.neighborhood));
+									serializer.text(pagamentoDireto.getNeighborhood());
 								serializer.endTag("", TAG_BAIRRO);
 								serializer.startTag("", TAG_CIDADE);
-									serializer.text(details.get(R.id.city));
+									serializer.text(pagamentoDireto.getCity());
 								serializer.endTag("", TAG_CIDADE);
 								serializer.startTag("", TAG_ESTADO);
-									serializer.text(state);
+									serializer.text(pagamentoDireto.getState());
 								serializer.endTag("", TAG_ESTADO);
 								serializer.startTag("", TAG_PAIS);
-									serializer.text("BRA"); //TODO:
+									serializer.text("BRA"); //pagamentoDireto.getCountry()
 								serializer.endTag("", TAG_PAIS);
 								serializer.startTag("", TAG_CEP);
-									serializer.text(details.get(R.id.zip_code));
+									serializer.text(pagamentoDireto.getZipCode());
 								serializer.endTag("", TAG_CEP);
 								serializer.startTag("", TAG_TELEFONEFIXO);
-									serializer.text(details.get(R.id.fixed_phone));
+									serializer.text(pagamentoDireto.getOwnerPhoneNumber());
 								serializer.endTag("", TAG_TELEFONEFIXO);
 							serializer.endTag("", TAG_ENDERECOCOBRANCA);
 	        			serializer.endTag("", TAG_PAGADOR);
