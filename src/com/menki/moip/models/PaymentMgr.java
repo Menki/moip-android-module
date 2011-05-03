@@ -48,6 +48,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.content.Context;
 import android.util.Log;
 
+import com.menki.moip.paymentmethods.PagamentoDireto;
 import com.menki.moip.utils.Base64;
 import com.menki.moip.utils.Config;
 import com.menki.moip.utils.Config.PaymentType;
@@ -144,7 +145,8 @@ public class PaymentMgr
 	{
 		MoIPXmlBuilder builder = new MoIPXmlBuilder( );
 		MoIPXmlParser parser = new MoIPXmlParser( );
-		String msg = builder.getDirectPaymentMessage( );
+		//The following line must be changed now with refactoring. To be done...
+		String msg = builder.getDirectPaymentMessage(new PagamentoDireto());
 		MoIPResponse moipResponse = new MoIPResponse( );
 		
 		try
