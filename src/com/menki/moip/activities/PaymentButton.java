@@ -39,6 +39,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import com.menki.moip.models.PaymentMgr;
+import com.menki.moip.paymentmethods.PagamentoDireto;
 import com.menki.moip.utils.Config.PaymentType;
 import com.menki.moip.utils.Config.RemoteServer;
 
@@ -47,22 +48,19 @@ public class PaymentButton extends Button implements OnClickListener
 	private Context hostActivity = null;
 	private PaymentType type = PaymentType.NONE;
 	private Button button = null;
+	private PagamentoDireto pagamentoDireto;
 	
-	public PaymentButton(Context context, int id, PaymentType pt, RemoteServer s, float v) 
+	public PaymentButton(Context context, int id, PagamentoDireto pagamentoDireto) 
 	{
 		super(context);
+		
+		this.pagamentoDireto = pagamentoDireto;
 			
 		hostActivity = context;
-		type = pt;
+		type = PaymentType.PAGAMENTO_DIRETO;
 		
 		button = (Button) ((Activity)context).findViewById(id);
 
-		PaymentMgr mgr = PaymentMgr.getInstance( );
-		mgr.setServer(s);
-		mgr.setType(pt);
-		mgr.setValue(v);
-		mgr.setHostActivity(context);
-		mgr.readPaymentDetails();
 		
 		//testing for a valid button
 		try
@@ -82,8 +80,11 @@ public class PaymentButton extends Button implements OnClickListener
 		//calling Payment form depending on PaymentType
 		switch(this.type)
 		{
-			case PAGAMENTO_DIRETO:
+			case PAGAMENTO_DIRETO:				
 				Intent intent = new Intent(hostActivity, CreditCard.class);
+				
+				intent.putExtra("PagamentoDireto", this.pagamentoDireto);
+				
 				((Activity)hostActivity).startActivityForResult(intent, 0);
 				break;
 			default:
