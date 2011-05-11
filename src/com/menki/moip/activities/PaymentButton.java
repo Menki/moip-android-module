@@ -38,10 +38,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-import com.menki.moip.models.PaymentMgr;
 import com.menki.moip.paymentmethods.PagamentoDireto;
 import com.menki.moip.utils.Config.PaymentType;
-import com.menki.moip.utils.Config.RemoteServer;
 
 public class PaymentButton extends Button implements OnClickListener
 {
@@ -81,11 +79,11 @@ public class PaymentButton extends Button implements OnClickListener
 		switch(this.type)
 		{
 			case PAGAMENTO_DIRETO:				
-				Intent intent = new Intent(hostActivity, CreditCard.class);
+				Intent intent = new Intent(hostActivity, PaymentInfo.class);
 				
 				intent.putExtra("PagamentoDireto", this.pagamentoDireto);
 				
-				((Activity)hostActivity).startActivityForResult(intent, 0);
+				((Activity)hostActivity).startActivity(intent);
 				break;
 			default:
 				Log.w("MENKI [PaymentButton] ", " onClick( ): Undefined payment type");
