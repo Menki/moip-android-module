@@ -39,6 +39,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -46,6 +47,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.menki.moip.models.PaymentMgr;
+import com.menki.moip.paymentmethods.PagamentoDireto;
 import com.menki.moip.utils.MoIPResponse;
 import com.menki.moip.utils.Config.PaymentType;
 
@@ -58,11 +60,14 @@ public class Summary extends Activity implements OnClickListener {
 	private Runnable updateTask;
 	private Runnable moipTask;
 	private MoIPResponse response;
+	private PagamentoDireto pagamentoDireto;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.summary);
+		
+		this.pagamentoDireto = getIntent().getParcelableExtra("PagamentoDireto");
 		
 		dialog = new ProgressDialog(this);
 		dialog.setMessage(getString(R.string.waiting_server));
@@ -75,7 +80,7 @@ public class Summary extends Activity implements OnClickListener {
 		finish.setOnClickListener(this);
 		
 		summaryTextView = (TextView) findViewById(R.id.SummaryTextView);
-		summaryTextView.setText(summaryString());
+		//summaryTextView.setText(summaryString());
 	}
 	
 	private void initThreading() {
