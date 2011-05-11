@@ -33,7 +33,6 @@ package com.menki.moip.paymentmethods;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Serializable;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -42,6 +41,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.menki.moip.utils.Base64;
@@ -51,11 +52,13 @@ import com.menki.moip.utils.MoIPXmlBuilder;
 import com.menki.moip.utils.MoIPXmlParser;
 import com.menki.moip.utils.Config.RemoteServer;
 
-public class PagamentoDireto implements Serializable
+public class PagamentoDireto implements Parcelable
 {
+	
 	public static enum OwnerIdType {CPF, RG};
 	
 	private MoIPResponse response;
+	private OnPaymentListener listener;
 	
 	private RemoteServer serverType;
 	
@@ -107,7 +110,59 @@ public class PagamentoDireto implements Serializable
 		this.zipCode = null;		
 	}
 
-	private OnPaymentListener listener;
+	public PagamentoDireto(Parcel in) 
+	{					
+		this.listener = null;
+		this.response = new MoIPResponse();
+		
+		int server = in.readInt(); 
+		
+		if (server == RemoteServer.NONE.ordinal())
+		{
+			this.serverType = RemoteServer.NONE;	
+		}
+		else if (server == RemoteServer.PRODUCTION.ordinal())
+		{
+			this.serverType = RemoteServer.PRODUCTION;
+		}
+		else
+		{
+			this.serverType = RemoteServer.TEST;
+		}
+				
+		this.value = in.readString();	
+		this.brand = in.readString(); 
+		this.creditCardNumber = in.readString(); 	
+		this.expirationDate = in.readString();	
+		this.secureCode = in.readString();
+		this.ownerName = in.readString();
+				
+		int owner = in.readInt(); 
+		
+		if (owner == OwnerIdType.CPF.ordinal())
+		{
+			this.ownerIdType = OwnerIdType.CPF;	
+		}
+		else
+		{
+			this.ownerIdType = OwnerIdType.RG;
+		}
+		
+		
+		this.ownerIdNumber = in.readString();
+		this.ownerPhoneNumber = in.readString();
+		this.ownerBirthDate = in.readString();
+		this.installmentsQuantity = in.readString();
+		this.streetAddress = in.readString();
+		this.streetNumberAddress = in.readString();
+		this.addressComplement = in.readString();
+		this.neighborhood = in.readString();
+		this.city = in.readString();
+		this.state = in.readString();
+		this.country = in.readString();
+		this.zipCode = in.readString();
+	}
+
 	
 	public void setOnPaymentListener(OnPaymentListener listener)
 	{
@@ -364,4 +419,56 @@ public class PagamentoDireto implements Serializable
 	public void setOwnerIdType(OwnerIdType ownerIdType) {
 		this.ownerIdType = ownerIdType;
 	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel source, int arg1) 
+	{
+		
+
+		//private MoIPResponse response;
+		//private OnPaymentListener listener;		
+		
+		source.writeInt(this.serverType.ordinal());		
+		source.writeString(this.value);	
+		source.writeString(this.brand); 
+		source.writeString(this.creditCardNumber); 	
+		source.writeString(this.expirationDate);	
+		source.writeString(this.secureCode);
+		source.writeString(this.ownerName);
+		source.writeInt(this.ownerIdType.ordinal());
+		source.writeString(this.ownerIdNumber);
+		source.writeString(this.ownerPhoneNumber);
+		source.writeString(this.ownerBirthDate);
+		source.writeString(this.installmentsQuantity);
+		source.writeString(this.streetAddress);
+		source.writeString(this.streetNumberAddress);
+		source.writeString(this.addressComplement);
+		source.writeString(this.neighborhood);
+		source.writeString(this.city);
+		source.writeString(this.state);
+		source.writeString(this.country);
+		source.writeString(this.zipCode);
+		
+		
+
+			
+	}
+	
+	public static final Parcelable.Creator<PagamentoDireto> CREATOR	= new Parcelable.Creator<PagamentoDireto>() 
+	{
+		public PagamentoDireto createFromParcel(Parcel in) {
+			return new PagamentoDireto(in);
+		}
+
+		public PagamentoDireto[] newArray(int size) {
+			return new PagamentoDireto[size];
+		}
+	};
+	
+	
 }
