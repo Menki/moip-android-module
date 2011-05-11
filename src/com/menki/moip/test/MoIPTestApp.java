@@ -78,7 +78,7 @@ public class MoIPTestApp extends Activity implements OnPaymentListener
         pagDir.setValue("213.25");
         pagDir.setZipCode("10100-100");
                 
-        pagDir.pay();
+        //pagDir.pay();
                
         PaymentButton payButton = new PaymentButton(this, R.id.PaymentButton, pagDir);
     }
