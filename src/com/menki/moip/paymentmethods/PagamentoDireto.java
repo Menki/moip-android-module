@@ -33,6 +33,7 @@ package com.menki.moip.paymentmethods;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -52,13 +53,18 @@ import com.menki.moip.utils.MoIPXmlBuilder;
 import com.menki.moip.utils.MoIPXmlParser;
 import com.menki.moip.utils.Config.RemoteServer;
 
-public class PagamentoDireto implements Parcelable
+public class PagamentoDireto implements /*Serializable*/ Parcelable
 {
 	
+	/**
+	 * 
+	 */
+//	private static final long serialVersionUID = -1435309736184833378L;
+
 	public static enum OwnerIdType {CPF, RG};
 	
 	private MoIPResponse response;
-	private OnPaymentListener listener;
+	private static OnPaymentListener listener;
 	
 	private RemoteServer serverType;
 	
@@ -112,7 +118,7 @@ public class PagamentoDireto implements Parcelable
 
 	public PagamentoDireto(Parcel in) 
 	{					
-		this.listener = null;
+		this.listener = this.getListener();
 		this.response = new MoIPResponse();
 		
 		int server = in.readInt(); 
@@ -162,11 +168,16 @@ public class PagamentoDireto implements Parcelable
 		this.country = in.readString();
 		this.zipCode = in.readString();
 	}
-
 	
+
 	public void setOnPaymentListener(OnPaymentListener listener)
 	{
-		this.listener = listener;
+		PagamentoDireto.listener = listener;
+	}
+	
+	public OnPaymentListener getOnPaymentListener()
+	{
+		return PagamentoDireto.listener;
 	}
 	
 	public void pay()
