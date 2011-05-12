@@ -30,13 +30,11 @@
 
 package com.menki.moip.activities;
 
-import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -46,10 +44,10 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.menki.moip.models.PaymentMgr;
 import com.menki.moip.paymentmethods.PagamentoDireto;
+import com.menki.moip.paymentmethods.PagamentoDireto.OwnerIdType;
 import com.menki.moip.utils.MoIPResponse;
-import com.menki.moip.utils.Config.PaymentType;
+
 
 public class Summary extends Activity implements OnClickListener {
 	private Button finish;
@@ -59,7 +57,6 @@ public class Summary extends Activity implements OnClickListener {
 	private ExecutorService requestThread;
 	private Runnable updateTask;
 	private Runnable moipTask;
-	private MoIPResponse response;
 	private PagamentoDireto pagamentoDireto;
 	
 	@Override
@@ -68,6 +65,7 @@ public class Summary extends Activity implements OnClickListener {
 		setContentView(R.layout.summary);
 		
 		this.pagamentoDireto = getIntent().getParcelableExtra("PagamentoDireto");
+//		this.pagamentoDireto = (PagamentoDireto) getIntent().getSerializableExtra("PagamentoDireto");
 		
 		dialog = new ProgressDialog(this);
 		dialog.setMessage(getString(R.string.waiting_server));
@@ -80,7 +78,7 @@ public class Summary extends Activity implements OnClickListener {
 		finish.setOnClickListener(this);
 		
 		summaryTextView = (TextView) findViewById(R.id.SummaryTextView);
-		//summaryTextView.setText(summaryString());
+		summaryTextView.setText(summaryString());
 	}
 	
 	private void initThreading() {
@@ -101,15 +99,15 @@ public class Summary extends Activity implements OnClickListener {
 							}
 						});
 						
-						response = PaymentMgr.getInstance().performDirectPaymentTransaction();
+						pagamentoDireto.pay();
 						
 						guiThread.post(new Runnable() {
 							@Override
 							public void run() {
 								dialog.hide();
-								Intent intent = new Intent( );
-								intent.putExtra("response", response);
-								setResult( RESULT_OK, intent);
+//								Intent intent = new Intent( );
+//								intent.putExtra("response", response);
+//								setResult( RESULT_OK, intent);
 								finish();
 							}
 						});
@@ -121,60 +119,65 @@ public class Summary extends Activity implements OnClickListener {
 		};
 	}
 
-	private CharSequence summaryString() {
-		HashMap<Integer, String> details = PaymentMgr.getInstance().getPaymentDetails();
+	private CharSequence summaryString() 
+	{
 		char separator1 = ' ';
 		char separator2 = '\n';
 		StringBuilder builder = new StringBuilder(separator2);
 		
 		//Set identification type string
-		String idType = null;
-		if (details.get(R.id.identification_type).equalsIgnoreCase(String.valueOf(R.id.radio_credit_card_cpf)))
+		String idType = null;		
+		if (this.pagamentoDireto.getOwnerIdType().equals(OwnerIdType.CPF))
+		{
 			idType = getString(R.string.cpf);
+		}
 		else
+		{
 			idType = getString(R.string.rg);
+		}
 		
 		//Set payment type string
 		String paymentType = null;
-		if (details.get(R.id.payment_type).equals(String.valueOf(R.id.radio_cash_payment)))
+		if (Integer.parseInt(this.pagamentoDireto.getInstallmentsQuantity()) == 1)
+		{
 			paymentType = getString(R.string.cash_payment);
+		}
 		else
+		{
 			paymentType = getString(R.string.installment_payment);
+		}
 		
-		
-		//Set brands array
-		String[] brands = getResources().getStringArray(R.array.brands_array);
 		
 		builder.
 			// Value
 			append(getString(R.string.value) + separator1).
-			append(String.valueOf(PaymentMgr.getInstance().getValue()) + separator2).
+			append(String.valueOf(this.pagamentoDireto.getValue()) + separator2).
 			//Full Name
 			append(getString(R.string.owner_name) + separator1).
-			append(details.get(R.id.owner_name) + separator2). 
+			append(this.pagamentoDireto.getOwnerName() + separator2). 
 			//CPF or RG
 			append(idType + ':' + separator1).
-			append(details.get(R.id.identification_number) + separator2).
+			append(this.pagamentoDireto.getOwnerIdNumber() + separator2).
 	      	//Brand
 	      	append(getString(R.string.brand) + separator1).
-	    	append(brands[Integer.parseInt(details.get(R.id.brand))] + separator2).
+	    	append(this.pagamentoDireto.getBrand() + separator2).
 	    	//Credit card number
 	    	append(getString(R.string.credit_card_number) + separator1).
-	    	append(details.get(R.id.credit_card_number) + separator2).
+	    	append(this.pagamentoDireto.getCreditCardNumber() + separator2).
 	    	//Expiration date
 	    	append(getString(R.string.expiration_date) + separator1).
-	    	append(details.get(R.id.expiration_date_linearlayout) + separator2).
+	    	append(this.pagamentoDireto.getExpirationDate() + separator2).
 	    	//Secure code
 	    	append(getString(R.string.secure_code) + separator1).
-	    	append(details.get(R.id.secure_code) + separator2).
+	    	append(this.pagamentoDireto.getSecureCode() + separator2).
 	    	//Payment type
 	    	append(getString(R.string.payment_type) + separator1).
 	    	append(paymentType + separator2);
 		
-			if (details.get(R.id.payment_type).equalsIgnoreCase(String.valueOf(R.id.radio_installment_payment)))
+			if (Integer.parseInt(this.pagamentoDireto.getInstallmentsQuantity()) > 1)
 			{
 				builder.append(getString(R.string.installments) + separator1).
-		    	append( details.get(R.id.installments) + separator2);
+		    	append(this.pagamentoDireto.getInstallmentsQuantity() + separator2);
 			}
     	
     	return builder;
@@ -184,13 +187,7 @@ public class Summary extends Activity implements OnClickListener {
 		switch(v.getId())
 		{
 			case(R.id.finish_button):
-				PaymentMgr mgr = PaymentMgr.getInstance( );
-				PaymentType type = mgr.getType( );
-				if(type == PaymentType.PAGAMENTO_DIRETO) {
-					guiThread.post(updateTask);
-				}
-				else
-					Log.e("MENKI [Payer] ", "Undefined Payment Method");
+				guiThread.post(updateTask);
 				break;
 		}		
 	}
