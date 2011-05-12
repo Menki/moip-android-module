@@ -214,8 +214,7 @@
         android:layout_height="wrap_content">
         <RadioButton
             android:id="@+id/radio_cash_payment"
-            android:checked="false"
-            android:text="@string/cash_payment" />
+            android:text="@string/cash_payment" android:checked="true"/>
         <RadioButton
             android:id="@+id/radio_installment_payment"
             android:checked="false"
