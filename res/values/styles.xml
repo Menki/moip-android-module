@@ -5,9 +5,10 @@
     </style>
     
     <style name="Theme.backmoip" parent="android:Theme">
-        <item name="android:windowBackground">@drawable/backmoip</item>
+        <item name="android:windowBackground">@color/background</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/light_blue</item>
+        <item name="android:textSize">18sp</item>
     </style>
     
 </resources>

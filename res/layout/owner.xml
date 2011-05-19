@@ -8,13 +8,12 @@
         android:padding="10dip">
     <TextView
         android:text="@string/credit_card_owner"
-        android:textSize="18px"
         android:layout_marginBottom="6dip" 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
     <View
         android:layout_height="4dip"
-        android:background="#FF909090" 
+        android:background="@color/dark_blue"
         android:layout_marginBottom="6dip"
         android:layout_width="fill_parent" />
 
@@ -35,15 +34,19 @@
     <RadioGroup
         android:id="@+id/identification_type"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="5dip" >
         <RadioButton
             android:id="@+id/radio_credit_card_rg"
             android:checked="false"
-            android:text="@string/rg" />
+            android:text="@string/rg" 
+            android:textColor="@color/light_blue" />
         <RadioButton
             android:id="@+id/radio_credit_card_cpf"
             android:checked="false"
-            android:text="@string/cpf" />
+            android:text="@string/cpf" 
+            android:textColor="@color/light_blue" />
     </RadioGroup>
 
     <TextView 
@@ -60,15 +63,10 @@
         android:text="@string/born_date"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>       
-    <TextView 
-        android:id="@+id/born_date_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    <Button
-        android:id="@+id/born_date_button"
-        android:text="@string/insert" 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <DatePicker 
+        android:id="@+id/born_date"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"/>
 
     <TextView 
         android:text="@string/payment_type"
@@ -77,14 +75,19 @@
     <RadioGroup
         android:id="@+id/payment_type"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="5dip">
         <RadioButton
             android:id="@+id/radio_cash_payment"
-            android:text="@string/cash_payment" android:checked="true"/>
+            android:text="@string/cash_payment" 
+            android:checked="true"
+            android:textColor="@color/light_blue"/>
         <RadioButton
             android:id="@+id/radio_installment_payment"
             android:checked="false"
-            android:text="@string/installment_payment" />
+            android:text="@string/installment_payment" 
+            android:textColor="@color/light_blue" />
     </RadioGroup>
 
     <TextView
@@ -98,11 +101,5 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
 
-    <View
-        android:layout_height="4dip"
-        android:background="#FF909090" 
-        android:layout_marginBottom="6dip"
-        android:layout_marginTop="6dip"
-        android:layout_width="fill_parent"/>
 </LinearLayout>
 </merge>

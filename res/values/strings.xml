@@ -39,11 +39,12 @@
     <string name="value">Valor:</string>
     
     <!-- Strings for credit card screen -->
-    <string name="credit_card">Cartão de crédito:</string>
+    <string name="credit_card">Cartão de crédito</string>
     <string name="choose_brand">Escolha uma bandeira</string>
     <string name="brand">Bandeira:</string>
     <string name="credit_card_number">Número:</string>
     <string name="expiration_date">Expiração:</string>
+    <string name="expiration_date_hint">Ex.: mm/aa</string>
     <string name="secure_code">Código de segurança:</string>
     <string name="credit_card_owner">Portador</string>
     <string name="owner_name">Nome:</string>

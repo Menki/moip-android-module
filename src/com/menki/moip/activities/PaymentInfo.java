@@ -29,79 +29,58 @@
  */
 package com.menki.moip.activities;
 
-import java.util.ArrayList;
+import java.lang.reflect.Field;
 import java.util.Calendar;
-
-import com.menki.moip.paymentmethods.PagamentoDireto;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.menki.moip.paymentmethods.PagamentoDireto;
+
 public class PaymentInfo extends Activity implements OnClickListener {
-	
+
 	static final int BORN_DATE_DIALOG_ID = 0;
 	static final int EXPIRATION_DATE_DIALOG_ID = 1;
-	
+
 	private LinearLayout creditCard;
 	private LinearLayout owner;
 	private LinearLayout payer;
 	private LinearLayout address;
-	private LinearLayout visible;
+	private LinearLayout visible = null;
+
+	private DatePicker expirationDate;
 	
 	private TextView value;
-	
+
 	private RadioButton installmentRadio;
 	private RadioButton cashRadio;
 	private TextView installmentsTextView;
 	private EditText installmentsEditText;
-	
-	private TextView bornDateTextview;
-	private Button bornDateButton;
-	private int bornDateYear;
-    private int bornDateMonth;
-    private int bornDateDay;
 
-    private TextView expirationDateTextview;
-	private Button expirationDateButton;
-    private int expirationDateYear;
-    private int expirationDateMonth;
-    private int expirationDateDay;
-	
-    private Button nextStepButton;
-    
-    private PagamentoDireto pagamentoDireto;
-    
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-    	setContentView(R.layout.paymentinfo);
-    	super.onCreate(savedInstanceState);
-    	
+	private Button nextStepButton;
+
+	private PagamentoDireto pagamentoDireto;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		setContentView(R.layout.paymentinfo);
+		super.onCreate(savedInstanceState);
+
 		final Calendar c = Calendar.getInstance();
-		
-		bornDateYear = c.get(Calendar.YEAR);
-		bornDateMonth = c.get(Calendar.MONTH);
-		bornDateDay = c.get(Calendar.DAY_OF_MONTH);
-//		bornDateTextview = (TextView) findViewById(R.id.born_date_textview);
-//		bornDateButton = (Button) findViewById(R.id.born_date_button);
-		
-		expirationDateYear = c.get(Calendar.YEAR);
-		expirationDateMonth = c.get(Calendar.MONTH);
-		expirationDateDay = c.get(Calendar.DAY_OF_MONTH);
-		
-		expirationDateTextview = (TextView) findViewById(R.id.expiration_date_textview);
-		expirationDateButton = (Button) findViewById(R.id.expiration_date_button);
+
+		expirationDate = (DatePicker) findViewById(R.id.expiration_date);
+		hideDayPicker(expirationDate);
 		
 		creditCard = (LinearLayout) findViewById(R.id.credit_card);
 		owner = (LinearLayout) findViewById(R.id.owner);
@@ -109,31 +88,46 @@ public class PaymentInfo extends Activity implements OnClickListener {
 		address = (LinearLayout) findViewById(R.id.address);
 
 		setCurrentLinearLayout(creditCard);
-		
-//		installmentRadio = (RadioButton) findViewById(R.id.radio_installment_payment);
-//		cashRadio = (RadioButton) findViewById(R.id.radio_cash_payment);
-//		installmentsTextView = (TextView) findViewById(R.id.installments_textview);
-//		installmentsEditText = (EditText) findViewById(R.id.installments);
-//		
-//		this.nextStepButton = (Button)findViewById(R.id.button_next);
-//    	this.nextStepButton.setOnClickListener(this);    	
-    	
-    	pagamentoDireto = getIntent().getParcelableExtra("PagamentoDireto");
-    	pagamentoDireto = (PagamentoDireto) getIntent().getSerializableExtra("PagamentoDireto");
 
-    	value = (TextView)findViewById(R.id.value);
-//    	value.setText(value.getText() + " " + pagamentoDireto.getValue());
-    	
-    	nextStepButton = (Button)findViewById(R.id.next);
-    	nextStepButton.setOnClickListener(this);
-    }
+		pagamentoDireto = getIntent().getParcelableExtra("PagamentoDireto");
+		pagamentoDireto = (PagamentoDireto) getIntent().getSerializableExtra("PagamentoDireto");
+
+		value = (TextView)findViewById(R.id.value);
+		//value.setText(value.getText() + " " + pagamentoDireto.getValue());
+
+		nextStepButton = (Button)findViewById(R.id.next);
+		nextStepButton.setOnClickListener(this);
+	}
+
+	private void hideDayPicker(DatePicker datePicker) {
+		
+		try {
+			Field f[] = datePicker.getClass().getDeclaredFields();
+			
+			for (Field field : f) {
+				if (field.getName().equals("mDayPicker")) {
+					field.setAccessible(true);
+					Object dayPicker = new Object();
+					dayPicker = field.get(datePicker);
+					((View) dayPicker).setVisibility(View.GONE);
+				}
+			}
+		} catch (SecurityException e) {
+			Log.d("ERROR", e.getMessage());
+		} 
+		catch (IllegalArgumentException e) {
+			Log.d("ERROR", e.getMessage());
+		} catch (IllegalAccessException e) {
+			Log.d("ERROR", e.getMessage());
+		} 
+	}
 
 	private void setCurrentLinearLayout(LinearLayout current) {
 		creditCard.setVisibility(View.GONE);
 		owner.setVisibility(View.GONE);
 		payer.setVisibility(View.GONE);
 		address.setVisibility(View.GONE);
-		
+
 		current.setVisibility(View.VISIBLE);
 		visible = current;
 	}
@@ -156,21 +150,10 @@ public class PaymentInfo extends Activity implements OnClickListener {
 				startActivity(intent);
 			}
 		break;
-
-//		case(R.id.born_date_button):
-//			showDialog(BORN_DATE_DIALOG_ID);
-//		break;
-//		case(R.id.expiration_date_button):
-//			showDialog(EXPIRATION_DATE_DIALOG_ID);
-//		break;
-//		case(R.id.radio_cash_payment):
-//		case(R.id.radio_installment_payment):
-//			updateInstallmentsInput();	
-//		break;
 		}
-		
+
 	}
-	
+
 	/**
 	 * Key back 
 	 * */
@@ -189,10 +172,10 @@ public class PaymentInfo extends Activity implements OnClickListener {
 				return true;
 			}		
 		}
-		
+
 		return super.onKeyDown(keyCode, event);
 	}
-	
+
 	private void updateInstallmentsInput() {
 		if (installmentRadio.isChecked()) {
 			// show installments text view and edit text
@@ -204,12 +187,12 @@ public class PaymentInfo extends Activity implements OnClickListener {
 			installmentsEditText.setVisibility(View.GONE);			
 		}
 	}
-	
+
 	private void populatePagamentoDireto() {
 		if (this.cashRadio.isChecked()) 
 			this.pagamentoDireto.setInstallmentsQuantity("1");
 		else 
 			this.pagamentoDireto.setInstallmentsQuantity(this.installmentsEditText.getText().toString());
-		
+
 	}
 }

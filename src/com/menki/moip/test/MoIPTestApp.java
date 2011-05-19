@@ -31,19 +31,17 @@
 package com.menki.moip.test;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.menki.moip.activities.PaymentButton;
+import com.menki.moip.activities.R;
 import com.menki.moip.paymentmethods.OnPaymentListener;
 import com.menki.moip.paymentmethods.PagamentoDireto;
 import com.menki.moip.paymentmethods.PagamentoDireto.OwnerIdType;
-import com.menki.moip.utils.MoIPResponse;
-import com.menki.moip.utils.Config.PaymentType;
 import com.menki.moip.utils.Config.RemoteServer;
-import com.menki.moip.activities.R;
+import com.menki.moip.utils.MoIPResponse;
 
 public class MoIPTestApp extends Activity implements OnPaymentListener
 {

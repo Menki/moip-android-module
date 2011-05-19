@@ -439,11 +439,6 @@ public class PagamentoDireto implements /*Serializable*/ Parcelable
 	@Override
 	public void writeToParcel(Parcel source, int arg1) 
 	{
-		
-
-		//private MoIPResponse response;
-		//private OnPaymentListener listener;		
-		
 		source.writeInt(this.serverType.ordinal());		
 		source.writeString(this.value);	
 		source.writeString(this.brand); 
@@ -464,10 +459,6 @@ public class PagamentoDireto implements /*Serializable*/ Parcelable
 		source.writeString(this.state);
 		source.writeString(this.country);
 		source.writeString(this.zipCode);
-		
-		
-
-			
 	}
 	
 	public static final Parcelable.Creator<PagamentoDireto> CREATOR	= new Parcelable.Creator<PagamentoDireto>() 

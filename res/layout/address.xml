@@ -6,93 +6,94 @@
         android:layout_height="fill_parent"
         android:orientation="vertical"
         android:padding="10dip">
-    <TextView
-        android:text="@string/address"
-        android:textSize="18px"
-        android:paddingBottom="6dip"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
-    <View
-        android:layout_height="4dip"
-        android:background="#FF909090" 
-        android:layout_marginBottom="6dip"
-        android:layout_width="fill_parent"/>
-
-    <TextView 
-        android:text="@string/street_address" 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
-    <EditText
-        android:id="@+id/street_address"
-        android:inputType="text" 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
-
-    <TextView 
-        android:text="@string/street_number" 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
-    <EditText
-        android:id="@+id/street_number"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
-
-    <TextView 
-        android:text="@string/street_complement" 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
-    <EditText
-        android:id="@+id/street_complement"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
-
-    <TextView 
-        android:text="@string/neighborhood" 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
-    <EditText
-        android:id="@+id/neighborhood"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
-
-    <TextView 
-        android:text="@string/city" 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
-    <EditText
-        android:id="@+id/city"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
-            
-    <TextView 
-        android:text="@string/state" 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
-    <Spinner 
-        android:id="@+id/state"
-        android:prompt="@string/choose_state"
-        android:layout_column="2"
-        android:entries="@array/state_array" 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
-
-    <TextView 
-        android:text="@string/zip_code" 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
-    <EditText
-        android:id="@+id/zip_code"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
-
-    <TextView 
-        android:text="@string/fixed_phone" 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
-    <EditText
-        android:id="@+id/fixed_phone"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
+        
+	    <TextView
+	        android:text="@string/address"
+	        android:textSize="18px"
+	        android:paddingBottom="6dip"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+	    <View
+	        android:layout_height="4dip"
+	        android:background="@color/dark_blue"
+	        android:layout_marginBottom="6dip"
+	        android:layout_width="fill_parent"/>
+	
+	    <TextView 
+	        android:text="@string/street_address" 
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+	    <EditText
+	        android:id="@+id/street_address"
+	        android:inputType="text" 
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+	
+	    <TextView 
+	        android:text="@string/street_number" 
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+	    <EditText
+	        android:id="@+id/street_number"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+	
+	    <TextView 
+	        android:text="@string/street_complement" 
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+	    <EditText
+	        android:id="@+id/street_complement"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+	
+	    <TextView 
+	        android:text="@string/neighborhood" 
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+	    <EditText
+	        android:id="@+id/neighborhood"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+	
+	    <TextView 
+	        android:text="@string/city" 
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+	    <EditText
+	        android:id="@+id/city"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+	            
+	    <TextView 
+	        android:text="@string/state" 
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+	    <Spinner 
+	        android:id="@+id/state"
+	        android:prompt="@string/choose_state"
+	        android:layout_column="2"
+	        android:entries="@array/state_array" 
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+	
+	    <TextView 
+	        android:text="@string/zip_code" 
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+	    <EditText
+	        android:id="@+id/zip_code"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+	
+	    <TextView 
+	        android:text="@string/fixed_phone" 
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+	    <EditText
+	        android:id="@+id/fixed_phone"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
 
     </LinearLayout>
 </merge>
