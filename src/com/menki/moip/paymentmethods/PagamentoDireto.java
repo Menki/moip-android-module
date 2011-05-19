@@ -53,7 +53,7 @@ import com.menki.moip.utils.MoIPXmlBuilder;
 import com.menki.moip.utils.MoIPXmlParser;
 import com.menki.moip.utils.Config.RemoteServer;
 
-public class PagamentoDireto implements /*Serializable*/ Parcelable
+public class PagamentoDireto implements Parcelable
 {
 	
 	/**

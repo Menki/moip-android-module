@@ -90,10 +90,10 @@ public class PaymentInfo extends Activity implements OnClickListener {
 		setCurrentLinearLayout(creditCard);
 
 		pagamentoDireto = getIntent().getParcelableExtra("PagamentoDireto");
-		pagamentoDireto = (PagamentoDireto) getIntent().getSerializableExtra("PagamentoDireto");
+		pagamentoDireto = (PagamentoDireto) getIntent().getParcelableExtra("PagamentoDireto");
 
 		value = (TextView)findViewById(R.id.value);
-		//value.setText(value.getText() + " " + pagamentoDireto.getValue());
+		value.setText(value.getText() + " " + pagamentoDireto.getValue());
 
 		nextStepButton = (Button)findViewById(R.id.next);
 		nextStepButton.setOnClickListener(this);
