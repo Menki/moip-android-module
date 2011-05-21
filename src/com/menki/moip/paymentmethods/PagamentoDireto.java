@@ -33,7 +33,6 @@ package com.menki.moip.paymentmethods;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Serializable;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -48,20 +47,20 @@ import android.util.Log;
 
 import com.menki.moip.utils.Base64;
 import com.menki.moip.utils.Config;
+import com.menki.moip.utils.Config.RemoteServer;
 import com.menki.moip.utils.MoIPResponse;
 import com.menki.moip.utils.MoIPXmlBuilder;
 import com.menki.moip.utils.MoIPXmlParser;
-import com.menki.moip.utils.Config.RemoteServer;
 
 public class PagamentoDireto implements Parcelable
 {
-	
 	/**
 	 * 
 	 */
 //	private static final long serialVersionUID = -1435309736184833378L;
 
 	public static enum OwnerIdType {CPF, RG};
+	public static enum PaymentType {AVISTA, PRAZO};
 	
 	private MoIPResponse response;
 	private static OnPaymentListener listener;
@@ -78,7 +77,10 @@ public class PagamentoDireto implements Parcelable
 	private String ownerIdNumber;
 	private String ownerPhoneNumber;
 	private String ownerBirthDate;
+	private PaymentType paymentType; //Determines if payment type is AVISTA or PRAZO.
 	private String installmentsQuantity;
+	private String email;
+	private String cellPhone;
 	private String streetAddress;
 	private String streetNumberAddress;
 	private String addressComplement;
@@ -87,6 +89,7 @@ public class PagamentoDireto implements Parcelable
 	private String state;
 	private String country;
 	private String zipCode;
+	private String fixedPhone;
 
 	public PagamentoDireto() 
 	{
@@ -105,7 +108,10 @@ public class PagamentoDireto implements Parcelable
 		this.ownerIdNumber = null;
 		this.ownerPhoneNumber = null;
 		this.ownerBirthDate = null;
+		this.paymentType = null;
 		this.installmentsQuantity = null;
+		this.email = null;
+		this.cellPhone = null;
 		this.streetAddress = null;
 		this.streetNumberAddress = null;
 		this.addressComplement = null;
@@ -113,7 +119,8 @@ public class PagamentoDireto implements Parcelable
 		this.city = null;
 		this.state = null;
 		this.country = null;
-		this.zipCode = null;		
+		this.zipCode = null;
+		this.fixedPhone = null;
 	}
 
 	public PagamentoDireto(Parcel in) 
@@ -335,6 +342,21 @@ public class PagamentoDireto implements Parcelable
 		this.ownerBirthDate = ownerBirthDate;
 	}
 
+	public PaymentType getPaymentType() {
+		return paymentType;
+	}
+
+	public void setPaymentType(PaymentType paymentType) {
+		this.paymentType = paymentType;
+	}
+	
+	public void setPaymentType(String paymentType) {
+		if (paymentType.equals("PARCELADO")) 
+			this.paymentType = PaymentType.PRAZO;
+		else
+			this.paymentType = PaymentType.AVISTA;
+	}
+	
 	public String getInstallmentsQuantity() {
 		return installmentsQuantity;
 	}
@@ -342,7 +364,23 @@ public class PagamentoDireto implements Parcelable
 	public void setInstallmentsQuantity(String installmentsQuantity) {
 		this.installmentsQuantity = installmentsQuantity;
 	}
+	
+	public String getEmail() {
+		return email;
+	}
 
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getCellPhone() {
+		return cellPhone;
+	}
+
+	public void setCellPhone(String cellPhone) {
+		this.cellPhone = cellPhone;
+	}
+	
 	public String getStreetAddress() {
 		return streetAddress;
 	}
@@ -398,7 +436,15 @@ public class PagamentoDireto implements Parcelable
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
 	}
+	
+	public String getFixedPhone() {
+		return fixedPhone;
+	}
 
+	public void setFixedPhone(String fixedPhone) {
+		this.fixedPhone = fixedPhone;
+	}
+	
 	public OnPaymentListener getListener() {
 		return listener;
 	}
@@ -427,6 +473,13 @@ public class PagamentoDireto implements Parcelable
 		return ownerIdType;
 	}
 
+	public void setOwnerIdType(String ownerIdType) {
+		if (ownerIdType.equals("CPF")) 
+			this.ownerIdType = OwnerIdType.CPF;
+		else
+			this.ownerIdType = OwnerIdType.RG;
+	}
+	
 	public void setOwnerIdType(OwnerIdType ownerIdType) {
 		this.ownerIdType = ownerIdType;
 	}

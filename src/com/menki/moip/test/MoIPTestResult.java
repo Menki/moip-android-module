@@ -37,8 +37,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.menki.moip.utils.MoIPResponse;
 import com.menki.moip.activities.R;
+import com.menki.moip.utils.MoIPResponse;
 
 public class MoIPTestResult extends Activity
 {

@@ -40,7 +40,6 @@ import android.text.format.Time;
 import android.util.Log;
 import android.util.Xml;
 
-//import com.menki.moip.models.PaymentMgr;
 import com.menki.moip.paymentmethods.PagamentoDireto;
 import com.menki.moip.paymentmethods.PagamentoDireto.OwnerIdType;
 

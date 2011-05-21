@@ -30,7 +30,6 @@
 package com.menki.moip.activities;
 
 import java.lang.reflect.Field;
-import java.util.Calendar;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -44,14 +43,13 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.menki.moip.paymentmethods.PagamentoDireto;
 
 public class PaymentInfo extends Activity implements OnClickListener {
-
-	static final int BORN_DATE_DIALOG_ID = 0;
-	static final int EXPIRATION_DATE_DIALOG_ID = 1;
 
 	private LinearLayout creditCard;
 	private LinearLayout owner;
@@ -59,14 +57,27 @@ public class PaymentInfo extends Activity implements OnClickListener {
 	private LinearLayout address;
 	private LinearLayout visible = null;
 
-	private DatePicker expirationDate;
-	
 	private TextView value;
-
-	private RadioButton installmentRadio;
-	private RadioButton cashRadio;
-	private TextView installmentsTextView;
-	private EditText installmentsEditText;
+	private Spinner brand;
+	private EditText creditCardNumber;
+	private DatePicker expirationDate;
+	private EditText secureCode;
+	private EditText name;
+	private RadioGroup identificationType;
+	private EditText identificationNumber;
+	private DatePicker bornDate;
+	private RadioGroup paymentType;
+	private EditText installments;
+	private EditText email;
+	private EditText cellPhone;
+	private EditText street;
+	private EditText streetNumber;
+	private EditText complement;
+	private EditText neighborhood;
+	private EditText city;
+	private Spinner state;
+	private EditText zipCode;
+	private EditText phone;
 
 	private Button nextStepButton;
 
@@ -74,36 +85,51 @@ public class PaymentInfo extends Activity implements OnClickListener {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		setContentView(R.layout.paymentinfo);
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.paymentinfo);
 
-		final Calendar c = Calendar.getInstance();
-
-		expirationDate = (DatePicker) findViewById(R.id.expiration_date);
-		hideDayPicker(expirationDate);
-		
 		creditCard = (LinearLayout) findViewById(R.id.credit_card);
 		owner = (LinearLayout) findViewById(R.id.owner);
 		payer = (LinearLayout) findViewById(R.id.payer);
 		address = (LinearLayout) findViewById(R.id.address);
+		brand = (Spinner) findViewById(R.id.brand);
+		creditCardNumber = (EditText) findViewById(R.id.credit_card_number);
+		expirationDate = (DatePicker) findViewById(R.id.expiration_date);
+		secureCode = (EditText) findViewById(R.id.secure_code);
+		name = (EditText) findViewById(R.id.owner_name);
+		identificationType = (RadioGroup) findViewById(R.id.identification_type);
+		identificationNumber = (EditText) findViewById(R.id.identification_number);
+		bornDate = (DatePicker) findViewById(R.id.born_date);
+		paymentType = (RadioGroup) findViewById(R.id.payment_type);
+		installments = (EditText) findViewById(R.id.installments);
+		email = (EditText) findViewById(R.id.email);
+		cellPhone = (EditText) findViewById(R.id.cell_phone);
+		street = (EditText) findViewById(R.id.street_address);
+		streetNumber = (EditText) findViewById(R.id.street_number);
+		complement = (EditText) findViewById(R.id.street_complement);
+		neighborhood = (EditText) findViewById(R.id.neighborhood);
+		city = (EditText) findViewById(R.id.city);
+		state = (Spinner) findViewById(R.id.state);
+		zipCode = (EditText) findViewById(R.id.zip_code);
+		phone = (EditText) findViewById(R.id.fixed_phone);
+		nextStepButton = (Button) findViewById(R.id.next);
 
+		hideDayPicker(expirationDate);
 		setCurrentLinearLayout(creditCard);
 
 		pagamentoDireto = getIntent().getParcelableExtra("PagamentoDireto");
 		pagamentoDireto = (PagamentoDireto) getIntent().getParcelableExtra("PagamentoDireto");
 
-		value = (TextView)findViewById(R.id.value);
+		value = (TextView) findViewById(R.id.value);
 		value.setText(value.getText() + " " + pagamentoDireto.getValue());
 
-		nextStepButton = (Button)findViewById(R.id.next);
 		nextStepButton.setOnClickListener(this);
 	}
 
 	private void hideDayPicker(DatePicker datePicker) {
-		
 		try {
 			Field f[] = datePicker.getClass().getDeclaredFields();
-			
+
 			for (Field field : f) {
 				if (field.getName().equals("mDayPicker")) {
 					field.setAccessible(true);
@@ -143,8 +169,8 @@ public class PaymentInfo extends Activity implements OnClickListener {
 				setCurrentLinearLayout(payer);
 			else if (visible.equals(payer))
 				setCurrentLinearLayout(address);
-			else if (visible.equals(payer)) {
-				this.populatePagamentoDireto();
+			else if (visible.equals(address)) {
+				populatePagamentoDireto();
 				Intent intent = new Intent(this,Summary.class);
 				intent.putExtra("PagamentoDireto", this.pagamentoDireto);
 				startActivity(intent);
@@ -155,7 +181,7 @@ public class PaymentInfo extends Activity implements OnClickListener {
 	}
 
 	/**
-	 * Key back 
+	 * Back key 
 	 * */
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -176,23 +202,44 @@ public class PaymentInfo extends Activity implements OnClickListener {
 		return super.onKeyDown(keyCode, event);
 	}
 
-	private void updateInstallmentsInput() {
-		if (installmentRadio.isChecked()) {
-			// show installments text view and edit text
-			installmentsTextView.setVisibility(View.VISIBLE);
-			installmentsEditText.setVisibility(View.VISIBLE);
-		} else {
-			// hide installments text view and edit text
-			installmentsTextView.setVisibility(View.GONE);
-			installmentsEditText.setVisibility(View.GONE);			
-		}
+	private void populatePagamentoDireto() {
+		RadioButton checked = null;
+		
+		pagamentoDireto.setBrand(brand.getSelectedItem().toString());
+		pagamentoDireto.setCreditCardNumber(creditCardNumber.getText().toString());
+		pagamentoDireto.setExpirationDate(pad((Integer) expirationDate.getMonth()) + "/" +
+				((Integer) expirationDate.getYear()).toString());
+		pagamentoDireto.setSecureCode(secureCode.getText().toString());
+		pagamentoDireto.setOwnerName(name.getText().toString());
+		
+		checked = (RadioButton) findViewById(identificationType.getCheckedRadioButtonId());
+		pagamentoDireto.setOwnerIdType(checked.getText().toString());
+		
+		pagamentoDireto.setOwnerIdNumber(identificationNumber.getText().toString());
+		pagamentoDireto.setOwnerBirthDate(pad((Integer) bornDate.getDayOfMonth()) + "/" +
+				pad((Integer) bornDate.getMonth()) + ((Integer) bornDate.getYear()).toString());
+		
+		checked = (RadioButton) findViewById(paymentType.getCheckedRadioButtonId());
+		pagamentoDireto.setPaymentType(checked.getText().toString());
+		
+		pagamentoDireto.setInstallmentsQuantity(installments.getText().toString());
+		pagamentoDireto.setEmail(email.getText().toString());
+		pagamentoDireto.setCellPhone(cellPhone.getText().toString());
+		pagamentoDireto.setStreetAddress(street.getText().toString());
+		pagamentoDireto.setStreetNumberAddress(streetNumber.getText().toString());
+		pagamentoDireto.setAddressComplement(complement.getText().toString());
+		pagamentoDireto.setNeighborhood(neighborhood.getText().toString());
+		pagamentoDireto.setCity(city.getText().toString());
+		pagamentoDireto.setState(state.getSelectedItem().toString());
+		pagamentoDireto.setZipCode(zipCode.getText().toString());
+		pagamentoDireto.setFixedPhone(phone.getText().toString());
+		
 	}
 
-	private void populatePagamentoDireto() {
-		if (this.cashRadio.isChecked()) 
-			this.pagamentoDireto.setInstallmentsQuantity("1");
+	private String pad(Integer i) {
+		if (i < 10)
+			return "0" + i.toString();
 		else 
-			this.pagamentoDireto.setInstallmentsQuantity(this.installmentsEditText.getText().toString());
-
+			return i.toString();
 	}
 }

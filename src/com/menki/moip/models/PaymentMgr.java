@@ -48,6 +48,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.content.Context;
 import android.util.Log;
 
+import com.menki.moip.activities.R;
 import com.menki.moip.paymentmethods.PagamentoDireto;
 import com.menki.moip.utils.Base64;
 import com.menki.moip.utils.Config;
@@ -56,7 +57,6 @@ import com.menki.moip.utils.Config.RemoteServer;
 import com.menki.moip.utils.MoIPResponse;
 import com.menki.moip.utils.MoIPXmlBuilder;
 import com.menki.moip.utils.MoIPXmlParser;
-import com.menki.moip.activities.R;
 
 public class PaymentMgr 
 {

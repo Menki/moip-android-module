@@ -37,8 +37,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -46,7 +44,6 @@ import android.widget.TextView;
 
 import com.menki.moip.paymentmethods.PagamentoDireto;
 import com.menki.moip.paymentmethods.PagamentoDireto.OwnerIdType;
-import com.menki.moip.utils.MoIPResponse;
 
 
 public class Summary extends Activity implements OnClickListener {
