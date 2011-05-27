@@ -86,6 +86,7 @@ public class MoIPTestApp extends Activity implements OnPaymentListener
 	@Override
 	public void onPaymentFail(MoIPResponse response) 
 	{
+		
 		Log.i("MoIP", "Falhou!");
 		Toast.makeText(this, "Pagamento mal sucedido!", Toast.LENGTH_LONG).show();
 	}

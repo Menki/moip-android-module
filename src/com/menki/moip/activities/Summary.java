@@ -30,13 +30,10 @@
 
 package com.menki.moip.activities;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -45,75 +42,63 @@ import android.widget.TextView;
 import com.menki.moip.paymentmethods.PagamentoDireto;
 import com.menki.moip.paymentmethods.PagamentoDireto.OwnerIdType;
 
-
 public class Summary extends Activity implements OnClickListener {
 	private Button finish;
 	private TextView summaryTextView;
 	private ProgressDialog dialog;
-	private Handler guiThread;
-	private ExecutorService requestThread;
-	private Runnable updateTask;
-	private Runnable moipTask;
 	private PagamentoDireto pagamentoDireto;
+	private PayTask payTask;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.summary);
 		
-		this.pagamentoDireto = getIntent().getParcelableExtra("PagamentoDireto");
-//		this.pagamentoDireto = (PagamentoDireto) getIntent().getSerializableExtra("PagamentoDireto");
+		pagamentoDireto = getIntent().getParcelableExtra("PagamentoDireto");
 		
 		dialog = new ProgressDialog(this);
 		dialog.setMessage(getString(R.string.waiting_server));
 		dialog.setIndeterminate(true);
 		dialog.setCancelable(true);
 		
-		initThreading();
-		
 		finish = (Button) findViewById(R.id.finish_button);
 		finish.setOnClickListener(this);
 		
 		summaryTextView = (TextView) findViewById(R.id.SummaryTextView);
 		summaryTextView.setText(summaryString());
+		
+		payTask = new PayTask();
+	}
+
+	public PagamentoDireto getPagamentoDireto() {
+		return pagamentoDireto;
 	}
 	
-	private void initThreading() {
-		guiThread = new Handler();
-		requestThread = Executors.newSingleThreadExecutor();
+	public void finishIt() {
+		finish();
+	}
+	
+    private class PayTask extends AsyncTask<String, Void, Void>{
+		private final ProgressDialog dialog = new ProgressDialog(Summary.this);
 		
-		// this task will start the progress dialog, perform the request to moip server and dismiss the dialog.
-		updateTask = new Runnable() {
-			@Override
-			public void run() {
-				moipTask = new Runnable() {
-					@Override
-					public void run() {
-						guiThread.post(new Runnable() {
-							@Override
-							public void run() {
-								dialog.show();
-							}
-						});
-						
-						pagamentoDireto.pay();
-						
-						guiThread.post(new Runnable() {
-							@Override
-							public void run() {
-								dialog.hide();
-//								Intent intent = new Intent( );
-//								intent.putExtra("response", response);
-//								setResult( RESULT_OK, intent);
-								finish();
-							}
-						});
-					} 
-				};
-				
-				requestThread.submit(moipTask);
-			} 
-		};
+		protected void onPreExecute(){
+			this.dialog.setMessage("Por favor, aguarde...");
+			this.dialog.show();
+		}
+		
+		@Override
+		protected Void doInBackground(String... params) {
+			getPagamentoDireto().pay();
+			
+			return null;
+		}
+		
+		protected void onPostExecute(final Void unused){
+			if(this.dialog.isShowing())
+				this.dialog.dismiss();
+			
+			finishIt();
+		}
 	}
 
 	private CharSequence summaryString() 
@@ -184,15 +169,9 @@ public class Summary extends Activity implements OnClickListener {
 		switch(v.getId())
 		{
 			case(R.id.finish_button):
-				guiThread.post(updateTask);
+				//guiThread.post(updateTask);
+				payTask.execute();
 				break;
 		}		
-	}
-	
-	@Override
-	protected void onDestroy() {
-		// Terminate extra threads here
-		requestThread.shutdownNow();
-		super.onDestroy();
 	}
 }

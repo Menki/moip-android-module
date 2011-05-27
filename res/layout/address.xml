@@ -27,7 +27,7 @@
 	        android:id="@+id/street_address"
 	        android:inputType="text" 
 	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"/>
+	        android:layout_height="wrap_content" />
 	
 	    <TextView 
 	        android:text="@string/street_number" 
@@ -36,7 +36,8 @@
 	    <EditText
 	        android:id="@+id/street_number"
 	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"/>
+	        android:layout_height="wrap_content"
+	        android:inputType="number" />
 	
 	    <TextView 
 	        android:text="@string/street_complement" 
@@ -84,7 +85,8 @@
 	    <EditText
 	        android:id="@+id/zip_code"
 	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"/>
+	        android:layout_height="wrap_content"
+	        android:inputType="number" />
 	
 	    <TextView 
 	        android:text="@string/fixed_phone" 
@@ -93,7 +95,8 @@
 	    <EditText
 	        android:id="@+id/fixed_phone"
 	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"/>
+	        android:layout_height="wrap_content"
+	        android:inputType="number" />
 
     </LinearLayout>
 </merge>

@@ -63,7 +63,7 @@ public class PagamentoDireto implements Parcelable
 	public static enum PaymentType {AVISTA, PRAZO};
 	
 	private MoIPResponse response;
-	private static OnPaymentListener listener;
+	private static OnPaymentListener listener = null;
 	
 	private RemoteServer serverType;
 	
@@ -95,7 +95,6 @@ public class PagamentoDireto implements Parcelable
 	{
 		super();
 		
-		this.listener = null;
 		this.response = new MoIPResponse();
 		this.serverType = RemoteServer.NONE;
 		this.value = null;
@@ -254,11 +253,11 @@ public class PagamentoDireto implements Parcelable
 		
 		if (this.response.getResponseStatus() == "Sucesso")
 		{
-			this.listener.onPaymentSuccess(this.response);
+			PagamentoDireto.listener.onPaymentSuccess(this.response);
 		}
 		else
 		{
-			this.listener.onPaymentFail(this.response);
+			PagamentoDireto.listener.onPaymentFail(this.response);
 		}
 	}
 

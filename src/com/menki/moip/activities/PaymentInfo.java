@@ -92,6 +92,7 @@ public class PaymentInfo extends Activity implements OnClickListener {
 		owner = (LinearLayout) findViewById(R.id.owner);
 		payer = (LinearLayout) findViewById(R.id.payer);
 		address = (LinearLayout) findViewById(R.id.address);
+		
 		brand = (Spinner) findViewById(R.id.brand);
 		creditCardNumber = (EditText) findViewById(R.id.credit_card_number);
 		expirationDate = (DatePicker) findViewById(R.id.expiration_date);
@@ -124,6 +125,26 @@ public class PaymentInfo extends Activity implements OnClickListener {
 		value.setText(value.getText() + " " + pagamentoDireto.getValue());
 
 		nextStepButton.setOnClickListener(this);
+		
+		fakeData();
+	}
+
+	private void fakeData() {
+		creditCardNumber.setText("345678901234564");
+		secureCode.setText("1234");
+		name.setText("Nome do Portador");
+		identificationType.getChildAt(1).setEnabled(true);
+		identificationNumber.setText("111.111.111-11");
+		paymentType.getChildAt(0).setEnabled(true);
+		installments.setText("2");
+		email.setText("presidente@planalto.gov.br");
+		cellPhone.setText("(11)1111-1111");
+		street.setText("Luiz Inacio Lula da Silva");
+		streetNumber.setText("123");
+		neighborhood.setText("Bairro no Acre");
+		city.setText("Rio Branco");
+		zipCode.setText("70100-000");
+		phone.setText("(11)1111-1111");
 	}
 
 	private void hideDayPicker(DatePicker datePicker) {
@@ -205,10 +226,10 @@ public class PaymentInfo extends Activity implements OnClickListener {
 	private void populatePagamentoDireto() {
 		RadioButton checked = null;
 		
-		pagamentoDireto.setBrand(brand.getSelectedItem().toString());
+		pagamentoDireto.setBrand(brand.getSelectedItem().toString().replace(" ", ""));
 		pagamentoDireto.setCreditCardNumber(creditCardNumber.getText().toString());
 		pagamentoDireto.setExpirationDate(pad((Integer) expirationDate.getMonth()) + "/" +
-				((Integer) expirationDate.getYear()).toString());
+				twoDigitsYear((Integer) expirationDate.getYear()));
 		pagamentoDireto.setSecureCode(secureCode.getText().toString());
 		pagamentoDireto.setOwnerName(name.getText().toString());
 		
@@ -217,7 +238,7 @@ public class PaymentInfo extends Activity implements OnClickListener {
 		
 		pagamentoDireto.setOwnerIdNumber(identificationNumber.getText().toString());
 		pagamentoDireto.setOwnerBirthDate(pad((Integer) bornDate.getDayOfMonth()) + "/" +
-				pad((Integer) bornDate.getMonth()) + ((Integer) bornDate.getYear()).toString());
+				pad((Integer) bornDate.getMonth()) + "/" + ((Integer) bornDate.getYear()).toString());
 		
 		checked = (RadioButton) findViewById(paymentType.getCheckedRadioButtonId());
 		pagamentoDireto.setPaymentType(checked.getText().toString());
@@ -234,6 +255,10 @@ public class PaymentInfo extends Activity implements OnClickListener {
 		pagamentoDireto.setZipCode(zipCode.getText().toString());
 		pagamentoDireto.setFixedPhone(phone.getText().toString());
 		
+	}
+
+	private String twoDigitsYear(Integer year) {
+		return year.toString().substring(2, 4);
 	}
 
 	private String pad(Integer i) {
