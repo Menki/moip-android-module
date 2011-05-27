@@ -271,13 +271,14 @@ public class MoIPXmlBuilder
 								serializer.endTag("", TAG_TELEFONEFIXO);
 							serializer.endTag("", TAG_ENDERECOCOBRANCA);
 	        			serializer.endTag("", TAG_PAGADOR);
-		        	serializer.endTag("", TAG_INSTRUCAOUNICA);
+		        	
 
-	        	Time now = new Time();
-	        	String hash = MoIPXmlBuilder.md5(serializer.toString() + now.toString());
-				serializer.startTag("", TAG_IDPROPRIO);
-					serializer.text(hash); //TODO: check meaning
-				serializer.endTag("", TAG_IDPROPRIO);		        	
+		        	Time now = new Time();
+		        	String hash = MoIPXmlBuilder.md5(serializer.toString() + now.toString());
+					serializer.startTag("", TAG_IDPROPRIO);
+						serializer.text(hash); //TODO: check meaning
+					serializer.endTag("", TAG_IDPROPRIO);
+				serializer.endTag("", TAG_INSTRUCAOUNICA);
 	        serializer.endTag("", TAG_ENVIARINSTRUCAO);
 	        serializer.endDocument();
 	        
