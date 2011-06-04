@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--  
+/**
  * Copyright (c) 2011, MENKI MOBILE SOLUTIONS - http://www.menkimobile.com.br
  * All rights reserved.
  * 
@@ -27,23 +26,68 @@
  *  SUCH DAMAGE. 
  *  
  *  @version 0.0.1
--->
+ */
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent" 
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
-	
-	<ImageView 
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content"
-        android:src="@drawable/moip_logo" 
-        android:layout_gravity="center"/>
-	
-	<Button android:layout_width="wrap_content" 
-			android:layout_height="wrap_content" 
-			android:text="@string/pagamento_direto_button" 
-			android:id="@+id/PaymentButton" 
-			android:layout_gravity="center" />
+package com.menki.moip;
 
-</LinearLayout>
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+
+import com.menki.moip.paymentmethods.PagamentoDireto;
+import com.menki.moip.utils.Config.PaymentType;
+
+public class PaymentButton extends Button implements OnClickListener
+{
+	private Context hostActivity = null;
+	private PaymentType type = PaymentType.NONE;
+	private Button button = null;
+	private PagamentoDireto pagamentoDireto;
+	
+	public PaymentButton(Context context, int id, PagamentoDireto pagamentoDireto) 
+	{
+		super(context);
+		
+		this.pagamentoDireto = pagamentoDireto;
+			
+		hostActivity = context;
+		type = PaymentType.PAGAMENTO_DIRETO;
+		
+		button = (Button) ((Activity)context).findViewById(id);
+
+		
+		//testing for a valid button
+		try
+		{
+			button.setOnClickListener(this);
+		}
+		catch( NullPointerException e)
+		{
+			Log.e("MENKI [PaymentButton] ", e.getMessage());
+			e.printStackTrace( );
+		}		
+	}
+
+	@Override
+	public void onClick(View v)
+	{
+		//calling Payment form depending on PaymentType
+		switch(this.type)
+		{
+			case PAGAMENTO_DIRETO:				
+				Intent intent = new Intent(hostActivity, PaymentInfo.class);
+				
+				intent.putExtra("PagamentoDireto", this.pagamentoDireto);
+				
+				((Activity)hostActivity).startActivity(intent);
+				break;
+			default:
+				Log.w("MENKI [PaymentButton] ", " onClick( ): Undefined payment type");
+				break;
+		}
+	}
+}

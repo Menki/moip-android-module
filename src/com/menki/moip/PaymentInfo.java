@@ -27,13 +27,16 @@
  *  
  *  @version 0.0.1
  */
-package com.menki.moip.activities;
+package com.menki.moip;
 
 import java.lang.reflect.Field;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -48,6 +51,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.menki.moip.paymentmethods.PagamentoDireto;
+import com.menki.moip.paymentmethods.PagamentoDireto.OwnerIdType;
 
 public class PaymentInfo extends Activity implements OnClickListener {
 
@@ -81,6 +85,8 @@ public class PaymentInfo extends Activity implements OnClickListener {
 
 	private Button nextStepButton;
 
+	private Dialog summaryDialog;
+	
 	private PagamentoDireto pagamentoDireto;
 
 	@Override
@@ -192,9 +198,21 @@ public class PaymentInfo extends Activity implements OnClickListener {
 				setCurrentLinearLayout(address);
 			else if (visible.equals(address)) {
 				populatePagamentoDireto();
-				Intent intent = new Intent(this,Summary.class);
-				intent.putExtra("PagamentoDireto", this.pagamentoDireto);
-				startActivity(intent);
+//				Intent intent = new Intent(this,Summary.class);
+//				intent.putExtra("PagamentoDireto", this.pagamentoDireto);
+//				startActivity(intent);
+
+				summaryDialog = new Dialog(this);
+				summaryDialog.setContentView(R.layout.summary);
+				summaryDialog.findViewById(R.id.finish_button).setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						(new PayTask()).execute();
+					}
+				});
+				
+				((TextView) summaryDialog.findViewById(R.id.SummaryTextView)).setText(summaryString());
+				summaryDialog.show();
 			}
 		break;
 		}
@@ -266,5 +284,95 @@ public class PaymentInfo extends Activity implements OnClickListener {
 			return "0" + i.toString();
 		else 
 			return i.toString();
+	}
+	
+	private CharSequence summaryString() {
+		char separator1 = ' ';
+		char separator2 = '\n';
+		StringBuilder builder = new StringBuilder(separator2);
+		
+		//Set identification type string
+		String idType = null;		
+		if (pagamentoDireto.getOwnerIdType().equals(OwnerIdType.CPF)) {
+			idType = getString(R.string.cpf);
+		}
+		else {
+			idType = getString(R.string.rg);
+		}
+		
+		//Set payment type string
+		String paymentType = null;
+		if (Integer.parseInt(this.pagamentoDireto.getInstallmentsQuantity()) == 1) {
+			paymentType = getString(R.string.cash_payment);
+		}
+		else {
+			paymentType = getString(R.string.installment_payment);
+		}
+		
+		builder.
+			// Value
+			append(getString(R.string.value) + separator1).
+			append(String.valueOf(this.pagamentoDireto.getValue()) + separator2).
+			//Full Name
+			append(getString(R.string.owner_name) + separator1).
+			append(this.pagamentoDireto.getOwnerName() + separator2). 
+			//CPF or RG
+			append(idType + ':' + separator1).
+			append(this.pagamentoDireto.getOwnerIdNumber() + separator2).
+	      	//Brand
+	      	append(getString(R.string.brand) + separator1).
+	    	append(this.pagamentoDireto.getBrand() + separator2).
+	    	//Credit card number
+	    	append(getString(R.string.credit_card_number) + separator1).
+	    	append(this.pagamentoDireto.getCreditCardNumber() + separator2).
+	    	//Expiration date
+	    	append(getString(R.string.expiration_date) + separator1).
+	    	append(this.pagamentoDireto.getExpirationDate() + separator2).
+	    	//Secure code
+	    	append(getString(R.string.secure_code) + separator1).
+	    	append(this.pagamentoDireto.getSecureCode() + separator2).
+	    	//Payment type
+	    	append(getString(R.string.payment_type) + separator1).
+	    	append(paymentType + separator2);
+		
+			if (Integer.parseInt(this.pagamentoDireto.getInstallmentsQuantity()) > 1)
+			{
+				builder.append(getString(R.string.installments) + separator1).
+		    	append(this.pagamentoDireto.getInstallmentsQuantity() + separator2);
+			}
+    	
+    	return builder;
+	}
+	
+	public PagamentoDireto getPagamentoDireto() {
+		return pagamentoDireto;
+	}
+	
+	public void finishIt() {
+		summaryDialog.dismiss();
+		finish();
+	}
+	
+    private class PayTask extends AsyncTask<String, Void, Void>{
+		private final ProgressDialog sendingDialog = new ProgressDialog(PaymentInfo.this);
+		
+		protected void onPreExecute(){
+			this.sendingDialog.setMessage(Html.fromHtml("<font color='white'>Por favor, aguarde...</font>"));
+			this.sendingDialog.show();
+		}
+		
+		@Override
+		protected Void doInBackground(String... params) {
+			PaymentInfo.this.getPagamentoDireto().pay();
+			
+			return null;
+		}
+		
+		protected void onPostExecute(final Void unused){
+			if(this.sendingDialog.isShowing())
+				this.sendingDialog.dismiss();
+			
+			finishIt();
+		}
 	}
 }

@@ -37,7 +37,8 @@
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"
 		android:layout_centerHorizontal="true"
-		android:src="@drawable/moiplabs" />
+		android:src="@drawable/moiplabs" 
+		android:paddingBottom="5dip"/>
 	
 	<ScrollView android:id="@+id/SummaryScrollView"
 		android:layout_width="wrap_content" 
@@ -48,7 +49,8 @@
 		android:text="Payment Summary" 
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"
-		android:layout_gravity="center" />
+		android:layout_gravity="center" 
+		android:textColor="@color/white"/>
  				
  	</ScrollView>
  	<LinearLayout

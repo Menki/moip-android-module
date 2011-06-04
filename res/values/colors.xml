@@ -3,4 +3,5 @@
     <color name="background">#E7ECF7</color>
     <color name="light_blue">#5B6DAD</color>
     <color name="dark_blue">#29297A</color>
+    <color name="white">#FFFFFF</color>
 </resources>

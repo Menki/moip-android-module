@@ -28,7 +28,7 @@
  *  @version 0.0.1
  */
 
-package com.menki.moip.activities;
+package com.menki.moip;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
