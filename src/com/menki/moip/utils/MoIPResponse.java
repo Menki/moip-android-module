@@ -36,6 +36,7 @@ import java.util.ArrayList;
 
 public class MoIPResponse implements Serializable 
 {	
+	private static final long serialVersionUID = 1L;
 	public String id;
 	public String responseStatus;
 	public String token;
