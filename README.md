@@ -4,6 +4,7 @@
 ## Instalação
 
 1. Clone o projeto: 
+ 
     $ git clone git@github.com:Menki/moip-android-module.git
     
 2. Adicione o projeto do módulo de integração com o MoIP ao seu workspace do eclipse utilizando a opção de importar projetos existentes
