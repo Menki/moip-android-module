@@ -43,4 +43,4 @@ Vamos adicioná-lo ao seu aplicativo. Para isto, clique com o botão direito sob
 * Abra bugs
 * Conserte bugs
 * Documente
-* [Feedback por email](mailto:info@menkimobile.com.br)
+* [Nos dê feedback por email](mailto:info@menkimobile.com.br)
