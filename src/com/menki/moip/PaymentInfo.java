@@ -69,7 +69,7 @@ public class PaymentInfo extends Activity implements OnClickListener {
 	private EditText name;
 	private RadioGroup identificationType;
 	private EditText identificationNumber;
-	private DatePicker bornDate;
+	private DatePicker birthDate;
 	private RadioGroup paymentType;
 	private EditText installments;
 	private EditText email;
@@ -106,7 +106,7 @@ public class PaymentInfo extends Activity implements OnClickListener {
 		name = (EditText) findViewById(R.id.owner_name);
 		identificationType = (RadioGroup) findViewById(R.id.identification_type);
 		identificationNumber = (EditText) findViewById(R.id.identification_number);
-		bornDate = (DatePicker) findViewById(R.id.born_date);
+		birthDate = (DatePicker) findViewById(R.id.birth_date);
 		paymentType = (RadioGroup) findViewById(R.id.payment_type);
 		installments = (EditText) findViewById(R.id.installments);
 		email = (EditText) findViewById(R.id.email);
@@ -255,8 +255,8 @@ public class PaymentInfo extends Activity implements OnClickListener {
 		pagamentoDireto.setOwnerIdType(checked.getText().toString());
 		
 		pagamentoDireto.setOwnerIdNumber(identificationNumber.getText().toString());
-		pagamentoDireto.setOwnerBirthDate(pad((Integer) bornDate.getDayOfMonth()) + "/" +
-				pad((Integer) bornDate.getMonth()) + "/" + ((Integer) bornDate.getYear()).toString());
+		pagamentoDireto.setOwnerBirthDate(pad((Integer) birthDate.getDayOfMonth()) + "/" +
+				pad((Integer) birthDate.getMonth()) + "/" + ((Integer) birthDate.getYear()).toString());
 		
 		checked = (RadioButton) findViewById(paymentType.getCheckedRadioButtonId());
 		pagamentoDireto.setPaymentType(checked.getText().toString());

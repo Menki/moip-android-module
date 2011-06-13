@@ -201,7 +201,7 @@ public class MoIPXmlBuilder
 	        							serializer.text(pagamentoDireto.getOwnerIdNumber());
 	        						serializer.endTag("", TAG_IDENTIDADE);
 	        						serializer.startTag("", TAG_TELEFONE);
-	        							serializer.text(pagamentoDireto.getOwnerPhoneNumber());
+	        							serializer.text(pagamentoDireto.getCellPhone());
 	        						serializer.endTag("", TAG_TELEFONE);
 	        						serializer.startTag("", TAG_DATANASCIMENTO);
 	        							serializer.text(pagamentoDireto.getOwnerBirthDate()); 
@@ -232,7 +232,7 @@ public class MoIPXmlBuilder
 	        					serializer.cdsect("xxxxx@email.com"/*details.get(R.id.email)*/);
 	        				serializer.endTag("", TAG_EMAIL);
 	        				serializer.startTag("", TAG_TELEFONECELULAR);
-	        					serializer.text(pagamentoDireto.getOwnerPhoneNumber());
+	        					serializer.text(pagamentoDireto.getCellPhone());
 	        				serializer.endTag("", TAG_TELEFONECELULAR);
 	        				//serializer.startTag("", TAG_APELIDO);
         						//serializer.text("APELIDO");
@@ -267,7 +267,7 @@ public class MoIPXmlBuilder
 									serializer.text(pagamentoDireto.getZipCode());
 								serializer.endTag("", TAG_CEP);
 								serializer.startTag("", TAG_TELEFONEFIXO);
-									serializer.text(pagamentoDireto.getOwnerPhoneNumber());
+									serializer.text(pagamentoDireto.getFixedPhone());
 								serializer.endTag("", TAG_TELEFONEFIXO);
 							serializer.endTag("", TAG_ENDERECOCOBRANCA);
 	        			serializer.endTag("", TAG_PAGADOR);
@@ -287,7 +287,6 @@ public class MoIPXmlBuilder
 	    }
 	    catch(Exception e) 
 	    {
-	    	Log.e("MENKI [MoIPXmlBuilder] ", e.getMessage());
 			e.printStackTrace();
 	    }
 	    

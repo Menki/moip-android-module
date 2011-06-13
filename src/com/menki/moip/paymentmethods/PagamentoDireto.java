@@ -67,6 +67,8 @@ public class PagamentoDireto implements Parcelable
 	
 	private RemoteServer serverType;
 	
+	private String token;
+	private String key;
 	private String value;	
 	private String brand; 
 	private String creditCardNumber; 	
@@ -75,7 +77,6 @@ public class PagamentoDireto implements Parcelable
 	private String ownerName;
 	private OwnerIdType ownerIdType; //Determines if this is a CPF or RG number.
 	private String ownerIdNumber;
-	private String ownerPhoneNumber;
 	private String ownerBirthDate;
 	private PaymentType paymentType; //Determines if payment type is AVISTA or PRAZO.
 	private String installmentsQuantity;
@@ -105,7 +106,6 @@ public class PagamentoDireto implements Parcelable
 		this.ownerName = null;
 		this.ownerIdType = null;
 		this.ownerIdNumber = null;
-		this.ownerPhoneNumber = null;
 		this.ownerBirthDate = null;
 		this.paymentType = null;
 		this.installmentsQuantity = null;
@@ -141,7 +141,9 @@ public class PagamentoDireto implements Parcelable
 		{
 			this.serverType = RemoteServer.TEST;
 		}
-				
+		
+		this.key = in.readString();
+		this.token = in.readString();
 		this.value = in.readString();	
 		this.brand = in.readString(); 
 		this.creditCardNumber = in.readString(); 	
@@ -162,7 +164,6 @@ public class PagamentoDireto implements Parcelable
 		
 		
 		this.ownerIdNumber = in.readString();
-		this.ownerPhoneNumber = in.readString();
 		this.ownerBirthDate = in.readString();
 		this.installmentsQuantity = in.readString();
 		this.streetAddress = in.readString();
@@ -206,7 +207,7 @@ public class PagamentoDireto implements Parcelable
 				post = new HttpPost(Config.PRODUCTION_SERVER);
 			}
 			
-			byte[] auth = (Config.TOKEN + ":" + Config.KEY).getBytes();
+			byte[] auth = (token + ":" + key).getBytes();
 			post.addHeader("Authorization", "Basic " + new String(Base64.encodeBytes(auth)));
 			StringEntity entity = new StringEntity(msg.trim(), "UTF-8");
 			entity.setContentType("application/x-www-formurlencoded");
@@ -261,6 +262,22 @@ public class PagamentoDireto implements Parcelable
 		}
 	}
 
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
+	}
+	
 	public MoIPResponse getResponse() {
 		return response;
 	}
@@ -323,14 +340,6 @@ public class PagamentoDireto implements Parcelable
 
 	public void setOwnerIdNumber(String ownerIdNumber) {
 		this.ownerIdNumber = ownerIdNumber;
-	}
-
-	public String getOwnerPhoneNumber() {
-		return ownerPhoneNumber;
-	}
-
-	public void setOwnerPhoneNumber(String ownerPhoneNumber) {
-		this.ownerPhoneNumber = ownerPhoneNumber;
 	}
 
 	public String getOwnerBirthDate() {
@@ -491,16 +500,20 @@ public class PagamentoDireto implements Parcelable
 	@Override
 	public void writeToParcel(Parcel source, int arg1) 
 	{
-		source.writeInt(this.serverType.ordinal());		
+		source.writeInt(this.serverType.ordinal());
+		source.writeString(this.key);
+		source.writeString(this.token);
 		source.writeString(this.value);	
 		source.writeString(this.brand); 
 		source.writeString(this.creditCardNumber); 	
 		source.writeString(this.expirationDate);	
 		source.writeString(this.secureCode);
 		source.writeString(this.ownerName);
-		source.writeInt(this.ownerIdType.ordinal());
+		
+		if (this.ownerIdType != null)
+			source.writeInt(this.ownerIdType.ordinal());
+		
 		source.writeString(this.ownerIdNumber);
-		source.writeString(this.ownerPhoneNumber);
 		source.writeString(this.ownerBirthDate);
 		source.writeString(this.installmentsQuantity);
 		source.writeString(this.streetAddress);

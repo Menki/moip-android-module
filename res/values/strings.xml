@@ -49,7 +49,7 @@
     <string name="credit_card_owner">Portador</string>
     <string name="owner_name">Nome:</string>
     <string name="owner_phone_number">Telefone:</string>
-    <string name="born_date">Data de nascimento:</string>
+    <string name="birth_date">Data de nascimento:</string>
     <string name="installments">Parcelas:</string>
     <string name="payment_type">Forma de pagamento:</string>
     <string name="cash_payment">A vista</string>

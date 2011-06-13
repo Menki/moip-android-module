@@ -60,11 +60,11 @@
         android:layout_height="wrap_content"/>
 
     <TextView
-        android:text="@string/born_date"
+        android:text="@string/birth_date"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>       
     <DatePicker 
-        android:id="@+id/born_date"
+        android:id="@+id/birth_date"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"/>
 

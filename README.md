@@ -16,7 +16,7 @@ Caso ocorram erros durante a compilação do projeto clique com o botão da dire
 
 Agora, não devem mais ocorrer "building errors" no projeto. 
 
-## Utilizando o módulo em meu aplicativo Android
+## Utilizando o módulo em seu aplicativo Android
 
 Vamos adicioná-lo ao seu aplicativo. Para isto, clique com o botão direito sobre o projeto do seu aplicativo no [Eclipse](http://www.eclipse.org/downloads/) e vá em "properties".
 
