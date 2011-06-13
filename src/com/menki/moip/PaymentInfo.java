@@ -198,9 +198,6 @@ public class PaymentInfo extends Activity implements OnClickListener {
 				setCurrentLinearLayout(address);
 			else if (visible.equals(address)) {
 				populatePagamentoDireto();
-//				Intent intent = new Intent(this,Summary.class);
-//				intent.putExtra("PagamentoDireto", this.pagamentoDireto);
-//				startActivity(intent);
 
 				summaryDialog = new Dialog(this);
 				summaryDialog.setContentView(R.layout.summary);
@@ -351,6 +348,11 @@ public class PaymentInfo extends Activity implements OnClickListener {
 	public void finishIt() {
 		summaryDialog.dismiss();
 		finish();
+		
+		if (pagamentoDireto.getResponse().getResponseStatus() == "Sucesso") 
+			PagamentoDireto.listener.onPaymentSuccess(pagamentoDireto.getResponse());
+		else
+			PagamentoDireto.listener.onPaymentFail(pagamentoDireto.getResponse());
 	}
 	
     private class PayTask extends AsyncTask<String, Void, Void>{

@@ -63,7 +63,7 @@ public class PagamentoDireto implements Parcelable
 	public static enum PaymentType {AVISTA, PRAZO};
 	
 	private MoIPResponse response;
-	private static OnPaymentListener listener = null;
+	public static OnPaymentListener listener = null;
 	
 	private RemoteServer serverType;
 	
@@ -252,14 +252,15 @@ public class PagamentoDireto implements Parcelable
 			e.printStackTrace();
 		}
 		
-		if (this.response.getResponseStatus() == "Sucesso")
-		{
-			PagamentoDireto.listener.onPaymentSuccess(this.response);
-		}
-		else
-		{
-			PagamentoDireto.listener.onPaymentFail(this.response);
-		}
+		// TODO: Verificar como chamar as callbacks para o caso de integração direta (sem UI)
+//		if (this.response.getResponseStatus() == "Sucesso")
+//		{
+//			PagamentoDireto.listener.onPaymentSuccess(this.response);
+//		}
+//		else
+//		{
+//			PagamentoDireto.listener.onPaymentFail(this.response);
+//		}
 	}
 
 	public String getToken() {
