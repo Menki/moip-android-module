@@ -132,7 +132,7 @@ public class PaymentInfo extends Activity implements OnClickListener {
 
 		nextStepButton.setOnClickListener(this);
 		
-		fakeData();
+		//fakeData();
 	}
 
 	private void fakeData() {
