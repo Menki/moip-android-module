@@ -48,7 +48,7 @@ Repare que adicionamos ao intent um objeto chamado "pagDir", este deve ser um ob
     pagDir.setToken("SEU TOKEN DO MOIP");
     pagDir.setKey("SUA KEY DO MOIP");
 
-Criamos um projeto de integração com MoIP utilizando as interfaces do módulo para exemplificar este processo: 
+Criamos um projeto de integração com MoIP utilizando as interfaces do módulo para exemplificar este processo. Visite-o [aqui](https://github.com/Menki/pagamento-direto-with-ui).
 
 ### Integração direta (sem as interfaces do módulo)
 
@@ -87,7 +87,7 @@ Para integração direta, basta instanciar um objeto PagamentoDireto settar seus
     
     pagDir.pay();
 
-Criamos um projeto de integração direta com MoIP para exemplificar este processo: 
+Criamos um projeto de integração direta com MoIP para exemplificar este processo. Visite-o [aqui](https://github.com/Menki/pagamento-direto-without-ui).
 
 ## Restrições
 
