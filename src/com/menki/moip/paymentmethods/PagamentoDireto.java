@@ -41,6 +41,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.os.Looper;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
@@ -252,15 +253,28 @@ public class PagamentoDireto implements Parcelable
 			e.printStackTrace();
 		}
 		
+		
+		
+		
+		Runnable runnable = new Runnable() {
+			@Override
+			public void run() {
+				Looper.prepare();
+				if (PagamentoDireto.this.response.getResponseStatus() == "Sucesso")
+				{
+					PagamentoDireto.listener.onPaymentSuccess(PagamentoDireto.this.response);
+				}
+				else
+				{
+					PagamentoDireto.listener.onPaymentFail(PagamentoDireto.this.response);
+				}
+				Looper.loop();
+			}
+		};
 		// TODO: Verificar como chamar as callbacks para o caso de integração direta (sem UI)
-//		if (this.response.getResponseStatus() == "Sucesso")
-//		{
-//			PagamentoDireto.listener.onPaymentSuccess(this.response);
-//		}
-//		else
-//		{
-//			PagamentoDireto.listener.onPaymentFail(this.response);
-//		}
+		
+		Thread thread = new Thread(runnable);
+		thread.start();
 	}
 
 	public String getToken() {

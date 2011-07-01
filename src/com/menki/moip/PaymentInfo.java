@@ -349,10 +349,10 @@ public class PaymentInfo extends Activity implements OnClickListener {
 		summaryDialog.dismiss();
 		finish();
 		
-		if (pagamentoDireto.getResponse().getResponseStatus() == "Sucesso") 
-			PagamentoDireto.listener.onPaymentSuccess(pagamentoDireto.getResponse());
-		else
-			PagamentoDireto.listener.onPaymentFail(pagamentoDireto.getResponse());
+//		if (pagamentoDireto.getResponse().getResponseStatus() == "Sucesso") 
+//			PagamentoDireto.listener.onPaymentSuccess(pagamentoDireto.getResponse());
+//		else
+//			PagamentoDireto.listener.onPaymentFail(pagamentoDireto.getResponse());
 	}
 	
     private class PayTask extends AsyncTask<String, Void, Void>{

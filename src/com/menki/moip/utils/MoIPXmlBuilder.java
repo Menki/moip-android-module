@@ -37,7 +37,6 @@ import java.security.NoSuchAlgorithmException;
 import org.xmlpull.v1.XmlSerializer;
 
 import android.text.format.Time;
-import android.util.Log;
 import android.util.Xml;
 
 import com.menki.moip.paymentmethods.PagamentoDireto;
