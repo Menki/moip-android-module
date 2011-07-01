@@ -26,7 +26,68 @@ Vamos adicioná-lo ao seu aplicativo. Para isto, clique com o botão direito sob
 
 ### Integração utilizando as interfaces do módulo
 
+Edite o arquivo AndroidManifest.xml para permitir que seu aplicativo execute a Activity pronta no Móudlo. Para isto, adicione a seguinte linha dentro da tag "&lt;application>":
+    
+    <activity android:name="com.menki.moip.PaymentInfo" android:theme="@style/Theme.backmoip" />
+
+Ainda editando o AndroidManifest.xml, você deve permitir que seu aplicativo acesse a internet, pois toda integração é feita através da API REST do MoIP. Para isto, dentro da tag "&lt;manifest>", adicione a seguinte linha:
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    
+A activity "PaymentInfo" do Módulo deve ser invocada por você. Para isto, inclua as seguintes linhas onde achar apropriado (por exemplo, no "onClick" do botão "Pagar!"):
+
+    Intent intent = new Intent(PagamentoDiretoWithUIActivity.this, PaymentInfo.class);
+  	intent.putExtra("PagamentoDireto", pagDir);
+  	startActivity(intent);
+
+Repare que adicionamos ao intent um objeto chamado "pagDir", este deve ser um objeto da classe PagamentoDireto que você deve instanciar e atribuir alguns valores, por exemplo:
+
+    pagDir = new PagamentoDireto();
+    pagDir.setOnPaymentListener(this);
+    pagDir.setServerType(RemoteServer.TEST); //utilize RemoteServer.PRODUCTION para o aplicativo oficial que for para o Android Market.
+    pagDir.setToken("SEU TOKEN DO MOIP");
+    pagDir.setKey("SUA KEY DO MOIP");
+
+Criamos um projeto de integração com MoIP utilizando as interfaces do módulo para exemplificar este processo: 
+
 ### Integração direta (sem as interfaces do módulo)
+
+Edite o arquivo AndroidManifest.xml, você deve permitir que seu aplicativo acesse a internet, pois toda integração é feita através da API REST do MoIP. Para isto, dentro da tag "&lt;manifest>", adicione a seguinte linha:
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    
+Para integração direta, basta instanciar um objeto PagamentoDireto settar seus atributos e quando desejar realizar o pagamento basta chamar o método "pay()", por exemplo:
+
+    pagDir = new PagamentoDireto();
+    pagDir.setOnPaymentListener(this);
+    pagDir.setServerType(RemoteServer.TEST); //utilize RemoteServer.PRODUCTION para o aplicativo oficial que for para o Android Market.
+    pagDir.setToken("SEU TOKEN DO MOIP");
+    pagDir.setKey("SUA KEY DO MOIP");
+    pagDir.setAddressComplement("");
+    pagDir.setBrand("Visa");
+    pagDir.setCity("Sucupira");
+    pagDir.setCountry("BRA");
+    pagDir.setCreditCardNumber("3456789012345640");
+    pagDir.setExpirationDate("08/11");
+    pagDir.setInstallmentsQuantity("2");
+    pagDir.setNeighborhood("Vila Vintem");
+    pagDir.setOwnerBirthDate("01/01/1983");
+    pagDir.setOwnerIdNumber("111.111.111-11");
+    pagDir.setOwnerIdType(OwnerIdType.CPF);
+    pagDir.setOwnerName("Lindolfo Pires");
+    pagDir.setCellPhone("(11)1111-1111");
+    pagDir.setFixedPhone("111.111.111-11");
+    pagDir.setSecureCode("101");
+    pagDir.setServerType(RemoteServer.TEST);
+    pagDir.setState("AC");
+    pagDir.setStreetAddress("Avenida Brasil");
+    pagDir.setStreetNumberAddress("100");
+    pagDir.setValue("213.25");
+    pagDir.setZipCode("10100-100");
+    
+    pagDir.pay();
+
+Criamos um projeto de integração direta com MoIP para exemplificar este processo: 
 
 ## Restrições
 
